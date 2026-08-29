@@ -42,15 +42,32 @@ def static_url(report_no: str) -> str:
             f"cr{year[-2:]}{str(int(num)).zfill(2)}.pdf")
 
 
-def head(url: str) -> dict:
+def probe(url: str) -> dict:
+    """Read the first five bytes, because the status code lies here.
+
+    A HEAD-only probe cannot answer this question. When a report is absent the
+    IMF site redirects to `/en/errors/404?URL=…`, which returns **HTTP 200 with
+    text/html** — so status alone reports success for a 178 KB error page. That
+    is exactly the mistake this module exists to stop me repeating: the first
+    version of this check reported "200 application/pdf" for documents that were
+    not there. Five bytes settle it; nothing more is read, so no document is
+    retrieved, stored or redistributed.
+    """
     try:
-        r = requests.head(url, headers=UA, allow_redirects=True, timeout=30)
+        r = requests.get(url, headers=UA, allow_redirects=True, timeout=30,
+                         stream=True)
+        magic = r.raw.read(5) if r.status_code == 200 else b""
+        r.close()
         return {"url": url, "status": r.status_code,
                 "content_type": r.headers.get("Content-Type", ""),
-                "content_length": r.headers.get("Content-Length", ""),
+                "is_pdf": magic.startswith(b"%PDF"),
                 "final_url": r.url[:160]}
     except Exception as e:                       # a failure is a result
-        return {"url": url, "status": None, "error": type(e).__name__}
+        return {"url": url, "status": None, "is_pdf": False,
+                "error": type(e).__name__}
+
+
+head = probe                                     # call sites keep their name
 
 
 def main() -> int:
@@ -61,10 +78,10 @@ def main() -> int:
     sample = rng.sample(rows, min(n, len(rows)))
 
     out = {"probed_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-           "method": "HEAD only; no document retrieved",
+           "method": "GET, first 5 bytes only; no document retrieved or stored",
            "n_sampled": len(sample), "seed": SEED, "documents": []}
 
-    print(f"Probing {len(sample)} documents, HEAD only, seed {SEED}\n")
+    print(f"Probing {len(sample)} documents, 5-byte magic check, seed {SEED}\n")
     for r in sample:
         rec = {"report_no": r["report_no"], "year": r["year"],
                "static": head(static_url(r["report_no"]))}
@@ -74,13 +91,12 @@ def main() -> int:
         st = rec["static"]
         dm = rec.get("doi", {})
         print(f"  {r['report_no']:10s} static {st.get('status')} "
-              f"{st.get('content_type','')[:24]:24s} | doi {dm.get('status','-')}")
+              f"{'PDF' if st.get('is_pdf') else 'not a PDF':10s} | "
+              f"doi {dm.get('status','-')} "
+              f"{'PDF' if dm.get('is_pdf') else ''}")
 
-    ok_static = sum(1 for d in out["documents"]
-                    if d["static"].get("status") == 200
-                    and "pdf" in (d["static"].get("content_type") or "").lower())
-    doi_pdf = sum(1 for d in out["documents"]
-                  if "pdf" in (d.get("doi", {}).get("content_type") or "").lower())
+    ok_static = sum(1 for d in out["documents"] if d["static"].get("is_pdf"))
+    doi_pdf = sum(1 for d in out["documents"] if d.get("doi", {}).get("is_pdf"))
     out["summary"] = {
         "static_serves_pdf": f"{ok_static}/{len(sample)}",
         "doi_serves_pdf": f"{doi_pdf}/{sum(1 for d in out['documents'] if 'doi' in d)}",

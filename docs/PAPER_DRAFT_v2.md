@@ -1025,10 +1025,13 @@ validation batteries and the family verdict.
 retrieval and redistribution, not access: the IMF publishes these reports and any
 reader can obtain them from the Fund's website by country and report number, or
 by the DOI, which identifies the document and resolves to its eLibrary landing
-page. Automated collection is another matter and we report it as we met it — the
-site is bot-protected, and our own retrieval needed a documented ladder in which
-**710 documents came from static paths, 354 through a public web archive and five
-through media or sequence paths**. `data/meta/imf_document_index.csv` lists all
+page. Automated collection is another matter and we report it as we met it. The site is
+bot-protected and its failures are silent: an absent report redirects to an error
+page served at **HTTP 200 with `text/html`**, so a status code alone reports
+success for a document that is not there — a byte-checked probe of 20 sampled documents on 2026-08-29 found the static path serving a real PDF for 16 and an error page for four, and the DOI resolving to a document for none (`data/meta/imf_access_probe.json`). Our own retrieval needed a
+documented ladder in which **710 documents came from static paths, 354 through a
+public web archive and five through media or sequence paths**, a split the probe
+reproduces. `data/meta/imf_document_index.csv` lists all
 1,064 by report number, year, country, DOI and SHA-256, so a reader who obtains a
 document by any route can hash it against that index and confirm byte identity
 with the copy analysed here. Seven carry no DOI and are located by country and

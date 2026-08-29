@@ -26,8 +26,12 @@ own website — no subscription, no application, no gatekeeper — and a reader
 locates a given report by its country and report number, or by the DOI, which
 identifies the document and resolves to its eLibrary landing page.
 
-**Automated retrieval is a different matter, and we report what we met rather
-than what would be convenient.** The IMF's site is bot-protected: on
+**Automated retrieval is a different matter, and I report what I met rather
+than what would be convenient.** Its failures are silent: an absent report
+redirects to an error page served at HTTP 200 with `text/html`, so a status code
+alone reports success for a document that is not there. A byte-checked probe of
+20 sampled documents on 2026-08-29 found the static path serving a real PDF for
+16, an error page for four, and the DOI resolving to a document for none. The IMF's site is bot-protected: on
 2026-08-20 the CMS pages returned HTTP 403 to an identified research client and
 `doi.org`/`elibrary.imf.org` returned HTTP 202 with an empty body, while static
 document paths served PDFs. Our own retrieval of the 1,064 documents therefore
