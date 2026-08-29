@@ -113,6 +113,16 @@ INCLUDE = [
     # number, year, country, DOI and our SHA-256, with no title and no IMF URL.
     ("data/meta/imf_document_index.csv", "09_submission",
      "the 1,064-document access index the DAS relies on"),
+    ("docs/ROUND15_PRESUBMISSION_REVIEW.md", "08_venue_research",
+     "the round-15 adversarial review, verbatim — six lenses, refute-by-default "
+     "verification; attack it rather than adopting it"),
+    ("docs/ROUND15_RESPONSE.md", "03_decisions",
+     "what was independently re-verified before acting, what was fixed, and the "
+     "five deposit files whose licence position is the author's call"),
+    ("data/analysis/block_origin_enumeration.json", "06_machine_output",
+     "exact PASS-P p at all three block origins — Table 5c's source"),
+    ("data/analysis/retrieval_route_tally.json", "06_machine_output",
+     "per-document retrieval routes, 705/4/1/354, against 1,120 attempt rows"),
     ("docs/PLOS_SUBMISSION_CHECKLIST.md", "09_submission",
      "the venue's stated limits, measured rather than assumed — including the "
      "abstract that was 374 words against a limit of 300"),
