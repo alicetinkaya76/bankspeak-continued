@@ -196,10 +196,68 @@ def fig3_power() -> None:
     save(fig, "fig3_power")
 
 
+def fig4_contrast() -> None:
+    """The estimand itself, which no other figure shows.
+
+    Figures 2 plots each institution's raw rate, which is what a reader wants
+    first but is not what the model fits. With year fixed effects and two
+    institutions the design reduces to a regression on the ANNUAL WORLD
+    BANK-IMF LOG-RATE CONTRAST, against a constant, a linear trend and a post
+    indicator. A referee asked to judge whether beta is identified needs to see
+    that series and the line fitted through its pre-period, because the whole
+    identification question is whether three post-period points depart from an
+    extrapolation of that line.
+
+    Drawn deliberately without a confidence band: the band would come from the
+    frozen bootstrap and this is a display, not a second inference.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True)
+    for ax, panel, lab in ((axes[0], "P1", "P1 — ICR vs IMF"),
+                           (axes[1], "P2", "P2 — PAD vs IMF")):
+        cells = rows(f"data/analysis/panels/cells_{panel}.csv")
+        if not cells:
+            continue
+        d = {}
+        for r in cells:
+            d.setdefault(int(r["year"]), {})[r["institution"]] = (
+                float(r["count"]), float(r["tokens"]))
+        yrs = sorted(y for y in d if {"WB", "IMF"} <= set(d[y]))
+        import math
+        contrast = []
+        for y in yrs:
+            wb, imf = d[y]["WB"], d[y]["IMF"]
+            contrast.append(math.log((wb[0] + 0.5) / wb[1])
+                            - math.log((imf[0] + 0.5) / imf[1]))
+        pre = [i for i, y in enumerate(yrs) if y < CUT]
+        post = [i for i, y in enumerate(yrs) if y >= CUT]
+        ax.plot([yrs[i] for i in pre], [contrast[i] for i in pre], "o-",
+                ms=4, lw=1.4, color=WB, label="pre-period contrast")
+        ax.plot([yrs[i] for i in post], [contrast[i] for i in post], "o-",
+                ms=6, lw=1.6, color="#c00000", label="post-period (3 years)")
+        # least squares through the pre-period only, extrapolated across
+        import numpy as np
+        xs = np.array([yrs[i] for i in pre], dtype=float)
+        ys = np.array([contrast[i] for i in pre], dtype=float)
+        b, a = np.polyfit(xs, ys, 1)
+        span = np.array([min(yrs), max(yrs)], dtype=float)
+        ax.plot(span, a + b * span, "--", lw=1.4, color="#444444",
+                label=f"pre-2023 trend, extrapolated ({b:+.3f}/yr)")
+        ax.axvline(CUT - 0.5, color="#888888", lw=0.8)
+        ax.set_title(lab, fontsize=10)
+        ax.set_xlabel("year")
+        ax.legend(frameon=False, fontsize=7.5, loc="upper left")
+    axes[0].set_ylabel("log(WB rate) − log(IMF rate)")
+    fig.suptitle("Figure 4 — The estimand: the annual World Bank–IMF log-rate "
+                 "contrast, and the pre-2023 trend the post years depart from",
+                 fontsize=11, y=1.02)
+    save(fig, "fig4_contrast")
+
+
 def main() -> int:
     fig1_composition()
     fig2_panels()
     fig3_power()
+    fig4_contrast()
     return 0
 
 

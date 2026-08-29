@@ -3,6 +3,7 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+0d96f80  2026-08-29  Figure 4: draw the estimand, which no figure showed
 92d0827  2026-08-29  Option B applied: the reconstruction leads, the apparatus becomes the warrant
 b752327  2026-08-29  Move 1,600 words to a supplement, and regroup thirteen limitations into four
 406a7ef  2026-08-29  The access route was never missing — it needed stating, and one file to act on

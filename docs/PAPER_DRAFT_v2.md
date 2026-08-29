@@ -18,7 +18,7 @@ Report series through fiscal 2024.
 The trajectories reproduce. Mean temporal anchoring falls from 39.96 occurrences
 per thousand tokens in 1946–65 to 22.97 in 2020–24, while nominalisation, acronym
 density, management vocabulary and a broader bureaucratic register rise, the last
-from 0.252 per thousand to 7.631.
+from 0.252 per thousand to 7.631 — a thirtyfold ratio, but an absolute rise of 7.38 per thousand from a very small base, which is the more honest way to carry it.
 
 Rebuilding the corpus yields a second result, about measurement rather than about
 the Bank. Over the same fiscal years the same archive gives a 43% decline or a
@@ -346,6 +346,17 @@ that functional form; the data do not adjudicate between "a break in 2023" and
 "the pre-existing divergence continued". We therefore do not use causal treatment
 language anywhere, and §6.4's event study — whose bins impose no trend form — is
 the closest the design comes to letting the data speak on this point.
+
+**Figure 4 plots that contrast directly**, with the pre-2023 line fitted and
+extrapolated across the post window, because the identification question is
+visible in it and not in the raw institutional rates. Two features are worth
+seeing before any coefficient: the contrast is already rising through the whole
+pre-period (+0.031 per year on P1, +0.048 on P2), and the three post-period
+points do not form a step. On P1 the 2023 contrast sits **0.54 log points below**
+the extrapolated trend, 2024 sits 1.25 above it, and 2025 falls back to 0.70
+above — still elevated, but the shape is a single displaced year rather than a
+level shift, which is the same fact C4 records when deleting 2024 collapses the
+result.
 
 **Inference.** PASS-P, a nested bootstrap with B = 9,999 and a wild score
 block procedure, Holm-adjusted across the two panels at α = 0.05. One property of
@@ -953,6 +964,11 @@ in `docs/figures/`.
   institution, both confirmatory panels, with the prespecified 2023 break marked.
 - **Figure 3** — `fig3_power`. The preregistered power curve under three
   companion settings, with the 0.80 requirement and the observed θ̂ = 0.586.
+- **Figure 4** — `fig4_contrast`. The estimand itself: the annual World Bank–IMF
+  log-rate contrast for both panels, with the pre-2023 trend fitted and
+  extrapolated across the post window. Drawn without a confidence band, because
+  the band would come from the frozen bootstrap and this is a display, not a
+  second inference.
 
 ---
 
