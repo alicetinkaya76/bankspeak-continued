@@ -18,7 +18,7 @@ Report series through fiscal 2024.
 The trajectories reproduce. Mean temporal anchoring falls from 39.96 occurrences
 per thousand tokens in 1946–65 to 22.97 in 2020–24, while nominalisation, acronym
 density, management vocabulary and a broader bureaucratic register rise, the last
-from 0.252 per thousand to 7.631 — a thirtyfold ratio, but an absolute rise of 7.38 per thousand from a very small base, which is the more honest way to carry it.
+from 0.252 per thousand to 7.631 — a thirtyfold ratio, though from a very small base: an absolute rise of 7.38 per thousand.
 
 Rebuilding the corpus yields a second result, about measurement rather than about
 the Bank. Over the same fiscal years the same archive gives a 43% decline or a
@@ -35,9 +35,10 @@ analysis plan sealed and externally timestamped before any outcome existed. **No
 panel satisfies the prespecified decision rule.** One panel reaches *p* = 0.0142
 and then fails the concentration guard — removing a single word family sends the
 coefficient to −0.067 with an interval spanning zero — fails
-leave-one-post-year-out, changes significance under two other preregistered
-inference routes, and shows a pre-period event-study bin exceeding the estimate
-itself. The comparator also rose, and ex ante power at the observed effect size is
+leave-one-post-year-out, loses significance under one preregistered secondary
+route (HAC(3), *p* = 0.162) and falls short of its own Holm threshold under the
+other (document-level QML, *p* = 0.033 against 0.025), and shows a pre-period
+event-study bin exceeding the estimate itself. The comparator also rose, and ex ante power at the observed effect size is
 0.16–0.22.
 
 The result bounds what a three-post-year, single-comparator lexical design can
@@ -45,6 +46,7 @@ establish; it is not evidence of absence. The transferable lesson is that a
 nominally significant aggregate lexical break can rest on one word family, one
 post-period year and one arbitrary block origin, while a sealed multi-condition
 rule correctly withholds the claim.
+
 ---
 
 ## 1. Introduction
@@ -74,8 +76,10 @@ journal abstracts are not — is an open and testable question.
 **First, that the *Bankspeak* trajectory is real and continues.** Rebuilt from
 primary documents and extended through fiscal 2024, the pamphlet's qualitative
 claim survives independent re-measurement: temporal anchoring declines while
-nominalisation, acronym density and management vocabulary rise. The register that
-grows fastest over eight decades is not the one the pamphlet named.
+nominalisation, acronym density and management vocabulary rise. In ratio terms the fastest-growing register — a
+broader bureaucratese vocabulary, rising thirtyfold — is not among the five
+features the pamphlet named, though acronym density supplies the largest
+*absolute* rise.
 
 **Second, that the size of that finding is hostage to a decision almost nobody
 reports.** Measured over the same fiscal years, the same archive gives a 43%
@@ -134,7 +138,7 @@ consumer complaints; Juzek & Ward (2025) examine the same shift in scientific
 writing. All of these estimate a *population* quantity from aggregate frequencies
 rather than classifying individual documents. Our Tier-1/Tier-2 marker design
 follows that logic, with one addition: because our corpus spans eight decades, we
-must separate an LLM-era shift from an eighty-year bureaucratese drift that was
+must separate an LLM-era shift from a decades-long bureaucratese drift that was
 already underway, which is what the two-tier split is for.
 
 **Detection and its critiques.** We deliberately do *not* build on the AI-text
@@ -478,9 +482,13 @@ is a no-op here.
 Annual-Report facet returns, 134 enter the assembled series; the other 195 are
 sibling-organisation volumes (IFC, MIGA, ICSID) and duplicates, removed by logged
 ruling. Those excluded files do not merely add noise: **they trend in the opposite
-direction.** Their token-weighted rate runs 22.00 per thousand in 1946–65 against
-38.25 in 2020–26 — rising — while the Bank's own volumes fall from 39.96 to
-22.97. Figure 1 plots all three series. Mixing a rising population into a falling
+direction.** Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
+1946–65 against 33.53 in 2020–24 — rising — while the Bank's own volumes fall from
+39.96 to 22.97. (Both are unweighted means of per-year token-weighted rates,
+matched to the same years, which is the aggregation Table 3b and Figure 1 use. An
+earlier draft quoted 38.25 for the late window by taking each series over its own
+available years, and that figure was inflated by a single fiscal-2025 file — the
+same year-set error §8 records us making once already.) Figure 1 plots all three series. Mixing a rising population into a falling
 one flattens the decline, and that is the whole mechanism.
 
 The transferable lesson is therefore not the one we started with, and it is more
@@ -589,6 +597,8 @@ paper — an omission found by external review, and a serious one in a study who
 warrant is adherence to a frozen plan. Both are reported here.
 
 **Table 5b — three inference routes, same data** (*p* for the WB×post term).
+Bold marks a *p* below that panel's Holm threshold — 0.025 on P1, 0.05 on P2 —
+not below 0.05 unconditionally.
 
 | | PASS-P (governing) | HAC(3) annual | doc-level QML |
 | --- | --- | --- | --- |
@@ -946,7 +956,7 @@ the guard would have reported the *p*-value.
 We do not claim the World Bank's prose was unaffected by LLMs. We claim that this
 design, with this corpus and this comparator, cannot answer that question at the
 evidentiary standard it set for itself, and that the honest report of such a
-design is its bound. The eighty-year series stands on its own.
+design is its bound. The reconstructed series stands on its own.
 
 ---
 

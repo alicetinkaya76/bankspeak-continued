@@ -1,7 +1,7 @@
 # Supplementary material
 
-Companion to *Eighty Years of Bankspeak, and a Preregistered Test That Could Not
-Confirm an LLM Break*. Everything here was in the main text of an earlier draft
+Companion to *Reconstructing Bankspeak: Eight Decades of World Bank Language, a
+Corpus-Selection Effect, and an Unconfirmed Post-2022 Break*. Everything here was in the main text of an earlier draft
 and was moved rather than cut: the material is evidence, but it is procedural
 evidence, and a reader evaluating the claims does not need it inline.
 

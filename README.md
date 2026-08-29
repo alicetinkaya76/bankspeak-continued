@@ -1,7 +1,8 @@
 # Bankspeak, Continued — analysis code and design record
 
-Code, tests, and the complete frozen design record for *Eighty Years of
-Bankspeak, and a Preregistered Test That Could Not Confirm an LLM Break* — an
+Code, tests, and the complete frozen design record for *Reconstructing Bankspeak: Eight
+Decades of World Bank Language, a Corpus-Selection Effect, and an Unconfirmed
+Post-2022 Break* — an
 independent reconstruction of Moretti and Pestre's *Bankspeak* (2015) from
 primary World Bank documents, extended to fiscal 2024, plus a preregistered test
 of whether post-2022 LLM-associated vocabulary shows a World Bank discontinuity

@@ -40,9 +40,9 @@ time-series test of whether Tier-1 LLM-associated vocabulary shows a post-2022
 World Bank discontinuity relative to an International Monetary Fund comparator.
 No panel satisfies the prespecified decision rule. One panel produces a nominally
 small *p*-value and then fails the concentration guard fixed in advance, fails a
-leave-one-post-year-out check, changes significance under two other preregistered
-inference routes, and shows a pre-period event-study bin exceeding the estimate
-itself. **An ex ante power analysis, computed before any outcome existed, shows
+leave-one-post-year-out check, loses significance under one preregistered
+secondary inference route and falls short of its own Holm threshold under the
+other, and shows a pre-period event-study bin exceeding the estimate itself. **An ex ante power analysis, computed before any outcome existed, shows
 that an effect of the observed size would have been detected about one time in
 five.** That figure is a disclosed design parameter, not a post-hoc excuse, which
 is why it appears here rather than only in the discussion.
