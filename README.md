@@ -113,7 +113,7 @@ World Bank content is public disclosure under its Access to Information Policy.
 This repository is archived with a DOI:
 
 > Çetinkaya, A. (2026). *Bankspeak, Continued — analysis code and frozen design
-> record* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.22152945
+> record* (v1.1.0). Zenodo. https://doi.org/10.5281/zenodo.22158882
 
 `10.5281/zenodo.22152944` is the concept DOI and always resolves to the latest
 version. `CITATION.cff` carries machine-readable metadata. Until the paper is
