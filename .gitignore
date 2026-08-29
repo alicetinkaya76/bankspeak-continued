@@ -1,7 +1,13 @@
 # The corpus and its bibliographic frames never enter this repository.
-data/
+# data/ is excluded wholesale, with ONE re-inclusion: the access index, which
+# carries report number, year, country, DOI and SHA-256 and no document content.
+# Git will not descend into an excluded directory, so each level must be
+# re-included explicitly before the file can be.
+data/*
 !data/meta/
+data/meta/*
 !data/meta/imf_document_index.csv
+
 *.pdf
 __pycache__/
 *.pyc
