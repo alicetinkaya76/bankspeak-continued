@@ -161,3 +161,38 @@ is true of that release. The repository has since moved — `plos_compliance.py`
 `make_vancouver_refs.py` and four more tests — so at submission the archive
 should be re-cut and both the DOI and the test count updated together. Doing it
 now instead would only mint a Zenodo version that a later edit obsoletes.
+
+---
+
+## The submission PDF
+
+```bash
+python tools/build_submission_pdf.py
+```
+
+Builds `build/submission/PLOS_ONE_submission.pdf` — 25 pages, figures embedded
+with captions, from the Markdown source rather than from a second hand-maintained
+copy. PLOS's format-free route takes exactly this: one PDF with the text and the
+figures in it.
+
+**It reads the PDF back and refuses to call it done if a glyph is missing**,
+which is not a precaution but a repair. XeLaTeX does not fail on a character its
+font cannot set; it writes a notdef and carries on. Two rounds of that happened
+here:
+
+- Times New Roman has no U+2079, so **"2⁹ = 512" was typeset as "2 = 512"** — the
+  statement of the bootstrap's support becoming an arithmetic falsehood, in a
+  build that reported success.
+- The estimand is written inside a code span, so it is set in the *monospace*
+  font, and the default has no Greek. The line defining the whole design,
+  `log E[count_it] = year FE + γ·WB + τ·(WB × centred year) + β·(WB × post)`,
+  **came out with all three coefficients deleted.**
+
+Both are now impossible to ship: super- and subscripts are rewritten as LaTeX
+math, fonts are chosen by rendering a Greek sample and reading it back rather
+than by loading successfully, and the finished PDF is scanned for notdefs and for
+seven load-bearing strings before the build reports success.
+
+The title page carries the author name from `CITATION.cff` and leaves the
+**affiliation and ORCID as visible placeholders**. They are not invented, and
+they are visible so they cannot be uploaded unnoticed.

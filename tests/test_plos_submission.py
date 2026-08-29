@@ -11,6 +11,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "tools" / "plos_compliance.py"
 PAPER = ROOT / "docs" / "PAPER_DRAFT_v2.md"
@@ -68,3 +70,47 @@ def test_checker_fails_on_a_citation_in_the_abstract(tmp_path):
     r = run(str(fake))
     assert r.returncode == 1, r.stdout
     assert "abstract citations: ['(2015)']" in r.stdout
+
+
+# --- the single submission PDF -------------------------------------------------
+
+import importlib.util
+
+_spec = importlib.util.spec_from_file_location(
+    "build_submission_pdf", ROOT / "tools" / "build_submission_pdf.py")
+_pdf = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_pdf)
+
+
+def test_unicode_scripts_become_latex_math():
+    """Times New Roman has no glyph for U+2079, so "2**9 = 512" set in it becomes
+    "2 = 512" with no error anywhere. The claim about the bootstrap's support
+    turns into an arithmetic falsehood in the submitted PDF."""
+    assert _pdf.scripts_to_math("support is 2⁹ = 512") == "support is 2$^{9}$ = 512"
+    assert _pdf.scripts_to_math("MDE₈₀ is") == "MDE$_{80}$ is"
+    assert _pdf.scripts_to_math("|b₂|") == "|b$_{2}$|"
+
+
+def test_figure_embedding_refuses_a_missing_image(monkeypatch, tmp_path):
+    """A submission PDF with a figure silently dropped is worse than a failed
+    build, because nothing in the output says a figure is missing."""
+    monkeypatch.setattr(_pdf, "FIGDIR", tmp_path)          # empty
+    md = ("# T\n\n## Figures\n\n- **Figure 1** — `fig1_composition`. A caption.\n\n---\n")
+    with pytest.raises(SystemExit) as e:
+        _pdf.embed_figures(md)
+    assert "no image for fig1_composition" in str(e.value)
+
+
+def test_figure_embedding_refuses_a_section_it_cannot_parse():
+    with pytest.raises(SystemExit) as e:
+        _pdf.embed_figures("# T\n\n## Figures\n\n- Figure 1: no backticks here.\n\n---\n")
+    assert "matched no caption entries" in str(e.value)
+
+
+def test_every_manuscript_figure_has_an_image_on_disk():
+    stems = re.findall(r"- \*\*Figure \d+\*\* — `([a-z0-9_]+)`",
+                       PAPER.read_text(encoding="utf-8"))
+    assert stems, "no figure entries found in the manuscript"
+    for stem in stems:
+        assert (_pdf.FIGDIR / f"{stem}.pdf").exists() or \
+               (_pdf.FIGDIR / f"{stem}.png").exists(), stem
