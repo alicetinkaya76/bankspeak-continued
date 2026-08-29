@@ -1,6 +1,9 @@
 # Data Availability Statement — PLOS ONE
 
-*Submission-ready. Paste into the journal's Data Availability field.*
+*One substitution away from submission-ready. The evidence-deposit DOI below is
+still a bracket, because the deposit has not been uploaded; fill it, delete this
+note, then paste into the journal's Data Availability field. A bracket left in
+that field is an editorial return before peer review.*
 
 ---
 
@@ -35,10 +38,12 @@ alone reports success for a document that is not there. A byte-checked probe of
 2026-08-20 the CMS pages returned HTTP 403 to an identified research client and
 `doi.org`/`elibrary.imf.org` returned HTTP 202 with an empty body, while static
 document paths served PDFs. Our own retrieval of the 1,064 documents therefore
-needed a documented ladder: **710 came from static paths, 354 were resolved
-through a public web archive, and five through media or sequence paths**
-(`data/meta/imf_retrieval/_manifest.csv` records the route and the URL used for
-every document). A researcher scripting the same collection should expect the
+needed a documented ladder: **705 came from static paths, four through a media
+tree, one through a bounded verification-gated sequence, and 354 through a public
+web archive** (`tools/retrieval_route_tally.py` regenerates this from the
+retrieval manifest, whose bytes are deposited by hash only because they carry
+IMF document URLs; the published index carries report number, year, country, DOI
+and SHA-256 for all 1,064). A researcher scripting the same collection should expect the
 same friction; a researcher opening reports in a browser will not meet it.
 
 To make the corpus identifiable either way, `data/meta/imf_document_index.csv`

@@ -196,3 +196,27 @@ seven load-bearing strings before the build reports success.
 The title page carries the author name from `CITATION.cff` and leaves the
 **affiliation and ORCID as visible placeholders**. They are not invented, and
 they are visible so they cannot be uploaded unnoticed.
+
+---
+
+## Round 15 changed what "ready" means
+
+An adversarial pre-submission review (`ROUND15_PRESUBMISSION_REVIEW.md`, response
+and independent verification in `ROUND15_RESPONSE.md`) found six defects, none of
+them in the confirmatory analysis and all of them in what an editor touches
+first. Four are fixed; the open ones are listed at the end of the response.
+
+The commands that now guard this, all in the suite except the last two:
+
+```bash
+python tools/plos_compliance.py                    # the venue's stated limits
+python tools/placeholder_report.py                 # unfilled fields, wrapped ones too
+python tools/block_origin_enumeration.py           # Table 5c, all three origins
+python tools/retrieval_route_tally.py              # 705/4/1/354, documents not rows
+python tools/check_deposit_covers_generators.py    # REFUSES today, by design
+```
+
+`check_deposit_covers_generators.py` exits non-zero on purpose: five generator
+inputs are in no deposit list, and which of them may travel is a licence question
+reserved for the author. It fails loudly so the decision is taken rather than
+discovered by a referee running the regeneration command.

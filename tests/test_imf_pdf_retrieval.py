@@ -32,6 +32,17 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# The frozen IMF sample is withheld from the public export under the permission,
+# so in the published repository these five tests have no input. A missing
+# permission-gated file is a SKIP, not a failure: a red suite in the archive
+# tells a reader the analysis is broken, when what is actually true is that one
+# input is licensed and they do not have it. The reason string says which file.
+FROZEN_IMF = ROOT / "data" / "meta" / "frozen_sampling_imf_v1.csv"
+needs_frozen_imf_sample = pytest.mark.skipif(
+    not FROZEN_IMF.exists(),
+    reason="needs data/meta/frozen_sampling_imf_v1.csv, withheld from the public "
+           "repository under the IMF permission (present in the author's tree)")
+
 
 def _load(name):
     spec = importlib.util.spec_from_file_location(name, ROOT / "tools" / f"{name}.py")
@@ -219,6 +230,7 @@ def test_wanted_tokens_cover_both_short_and_padded_report_forms():
 
 # ------------------------------------------------------- permission conditions
 
+@needs_frozen_imf_sample
 def test_l2_gate_closed_issues_no_archive_request(tmp_path, monkeypatch):
     """Condition 3. The gate must prevent the request, not discard its result."""
     calls = []
@@ -238,6 +250,7 @@ def test_l2_gate_closed_issues_no_archive_request(tmp_path, monkeypatch):
     assert rows[0]["route"] == "L2_blocked_condition3"
 
 
+@needs_frozen_imf_sample
 def test_l2_gate_open_does_reach_the_archive(tmp_path, monkeypatch):
     """The complement: the gate is a real switch, not a permanent refusal."""
     calls = []
@@ -270,6 +283,7 @@ def test_media_legacy_url_reuses_the_legacy_filename(report_no, expected):
     assert url.endswith(expected)
 
 
+@needs_frozen_imf_sample
 def test_l1b_is_tried_before_any_archive_request(tmp_path, monkeypatch):
     """L1b touches only imf.org, so it must run before the gated archive rung —
     and when it succeeds the archive is never contacted at all."""
@@ -330,6 +344,7 @@ def test_archive_walk_gives_up_honestly_when_no_capture_has_a_link(monkeypatch):
     assert url is None and cands == []
 
 
+@needs_frozen_imf_sample
 def test_only_frozen_sample_records_are_requested():
     """Condition 1: the retrieval's universe is exactly the frozen 1,064."""
     frozen = {r["id"] for r in csv.DictReader(
@@ -465,6 +480,7 @@ def test_sequence_candidates_cover_the_2019_year_root_shape():
     assert any(u.endswith("/cr/2019/english/1ecuea2019001.pdf") for u in c)
 
 
+@needs_frozen_imf_sample
 def test_l1c_refuses_a_real_pdf_that_names_a_different_report(tmp_path, monkeypatch):
     """The gate that makes enumeration legitimate rather than guessing.
 

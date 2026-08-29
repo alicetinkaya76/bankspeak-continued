@@ -114,3 +114,35 @@ def test_every_manuscript_figure_has_an_image_on_disk():
     for stem in stems:
         assert (_pdf.FIGDIR / f"{stem}.pdf").exists() or \
                (_pdf.FIGDIR / f"{stem}.png").exists(), stem
+
+
+# --- unfilled fields ----------------------------------------------------------
+
+_ph_spec = importlib.util.spec_from_file_location(
+    "placeholder_report", ROOT / "tools" / "placeholder_report.py")
+_ph = importlib.util.module_from_spec(_ph_spec)
+_ph_spec.loader.exec_module(_ph)
+
+
+def test_the_manuscript_carries_no_unfilled_placeholder():
+    assert _ph.scan(_ph.MANUSCRIPT) == []
+
+
+def test_the_scanner_sees_a_placeholder_wrapped_across_a_line_break(tmp_path):
+    """The two that mattered were both wrapped, and a line-scoped pattern found
+    neither. Without this control the tool's clean verdict is unearned."""
+    f = tmp_path / "wrapped.md"
+    f.write_text("the deposit is **[deposited at DOI … / to be deposited\n"
+                 "before publication]** and nothing else.\n", encoding="utf-8")
+    hits = _ph.scan([f])
+    assert len(hits) == 1, hits
+    assert "to be deposited before publication" in hits[0][2]
+
+
+def test_the_scanner_does_not_flag_a_confidence_interval():
+    """The manuscript is full of '[-0.732, 0.239]'. A scanner that calls those
+    placeholders gets switched off within a day."""
+    f = ROOT / "docs" / "PAPER_DRAFT_v2.md"
+    text = f.read_text(encoding="utf-8")
+    assert "[−0.732, 0.239]" in text or "[" in text
+    assert not [h for h in _ph.scan([f])]

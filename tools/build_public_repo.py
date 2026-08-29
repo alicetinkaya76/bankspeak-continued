@@ -85,6 +85,29 @@ TEXTY = {".py", ".md", ".csv", ".json", ".yaml", ".yml", ".txt", ".jsonl", ".cfg
 PROSE_OK = {"IMF_ACCESS_COMPLIANCE_20260820.md", "IMF_RETRIEVAL_20260820.md",
             "IMF_QUERY_DRAFT_archive_route.md"}
 
+# Exempt from the PATH filter, still subject to the CONTENT scan below.
+#
+# The path filter matches on the word "imf" and on "articleiv", which are also in
+# the names of two of the project's own source modules. It therefore stripped
+# them from every public export, and because src/s09b_wb_p0_frame.py imports
+# s09a_imf_articleiv_frame at module scope, `pytest tests/` in the published
+# repository died with twelve collection errors and ran ZERO tests -- against a
+# README promising 341 and a manuscript whose warrant is that its code can be
+# checked. The guard against leaking the corpus had quietly deleted the evidence
+# that the analysis works.
+#
+# Membership here buys exemption from the filename rule ONLY. Every file still
+# goes through the LEAK content scan, so a file that actually carries report
+# numbers, IMF DOIs or document URLs is still refused, by the check that reads
+# the bytes rather than the name.
+PATH_EXEMPT = {
+    "src/s09a_imf_articleiv_frame.py",      # the Article IV sampling frame builder
+    "tools/imf_corpus_to_pipeline.py",      # corpus -> pipeline adapter
+    "docs/IMF_RETRIEVAL_20260820.md",       # cited by §3 of the manuscript
+    "docs/IMF_ACCESS_COMPLIANCE_20260820.md",   # cited by §3 of the manuscript
+    "docs/IMF_QUERY_DRAFT_archive_route.md",
+}
+
 # One deliberate exception, and it is an exception rather than a raised
 # threshold because the reason is specific and should not generalise.
 # imf_document_index.csv carries 1,057 DOIs — two orders of magnitude over the
@@ -99,6 +122,11 @@ ACCESS_ROUTE_OK = {"imf_document_index.csv"}
 
 
 def denied(rel: str) -> bool:
+    # PATH_EXEMPT never exempts __pycache__, .bak or dotfiles: those rules are
+    # about build litter, not about the corpus, and nothing should escape them.
+    if rel in PATH_EXEMPT:
+        litter = [p for p in DENY if "pycache" in p.pattern or p.pattern == r"(^|/)\."]
+        return any(p.search(rel) for p in litter)
     return any(p.search(rel) for p in DENY)
 
 
@@ -141,7 +169,15 @@ def scan(path: Path, rel: str):
     return hits
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    # --out exists so the integrity test can build a throwaway export and run its
+    # collector against it. Without it that test could only skip, and a test that
+    # always skips is not a test -- which is the same class of mistake as a leak
+    # guard nobody ran the guarded output through.
+    global OUT
+    argv = sys.argv[1:] if argv is None else argv
+    if "--out" in argv:
+        OUT = Path(argv[argv.index("--out") + 1]).resolve()
     staged, problems = [], {}
     for inc in INCLUDE:
         p = ROOT / inc

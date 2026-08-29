@@ -6,7 +6,10 @@ and was moved rather than cut: the material is evidence, but it is procedural
 evidence, and a reader evaluating the claims does not need it inline.
 
 Every figure regenerates from the deposited artifacts. Code archive:
-`10.5281/zenodo.22152945`. Stage-A preregistration `10.17605/OSF.IO/5C9J8`;
+`10.5281/zenodo.22152944` — the concept DOI, which always resolves to the latest
+version. An earlier draft cited `10.5281/zenodo.22152945`, which is v1.0.0, the
+one release cut before `data/meta/imf_document_index.csv` existed; a reader sent
+there would not have found the access route the paper relies on. Stage-A preregistration `10.17605/OSF.IO/5C9J8`;
 Stage-B analysis plan `10.5281/zenodo.22098259`.
 
 ---

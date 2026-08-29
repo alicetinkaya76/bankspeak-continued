@@ -224,6 +224,10 @@ def test_no_imf_corpus_or_raw_archive_is_ever_deposited(tmp_path, monkeypatch):
     assert not any(s.startswith("data/meta/imf_articleiv_raw") for s in staged)
 
 
+@pytest.mark.skipif(
+    not (ROOT / "zenodo_deposit" / "MANIFEST.csv").exists(),
+    reason="needs a built zenodo_deposit/MANIFEST.csv; run "
+           "tools/prepare_zenodo_deposit.py first (build artifact, not in git)")
 def test_excluded_files_still_carry_a_hash_so_they_stay_verifiable():
     """Excluding bytes must not cost verifiability: §5 permits publishing
     SHA-256 hashes, and the manifest is how a holder of the originals checks."""

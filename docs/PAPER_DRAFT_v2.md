@@ -259,10 +259,12 @@ rulings above.
 
 IMF documents are used under a written permission that forbids redistributing
 documents or extracted text and permits publishing derived non-substitutive
-outputs including SHA-256 hashes. The Zenodo deposit therefore carries the World
-Bank raw captures and all derived artifacts in full, and every IMF-derived file
-by hash only, each listed by path so any holder of the originals can verify
-byte-for-byte.
+outputs including SHA-256 hashes. The evidence deposit is therefore built to
+carry the World Bank raw captures and all derived artifacts in full, and every
+IMF-derived file by hash only, each listed by path so any holder of the originals
+can verify byte-for-byte. It is prepared by `tools/prepare_zenodo_deposit.py` and
+**will be deposited before publication**; §9 gives its contents, and its DOI is
+inserted there once it is minted.
 
 ---
 
@@ -614,11 +616,31 @@ blocks, so the test statistic has a support of exactly 2⁹ = 512 sign patterns,
 and 9,999 Monte Carlo draws sample that support with replacement rather than
 adding information. Enumerating all 512 exactly, at the frozen block origin,
 gives P1 = 8/512 = **0.0156** and P2 = 50/512 = **0.0977** — close to the Monte
-Carlo values, so the simulation is faithful. Shifting the origin of the same
-three-year partition by two years, however, gives P1 = 164/512 = **0.3203**. The
-preregistered origin governs and we do not substitute another. But a headline
-*p*-value that moves twentyfold with an arbitrary partition offset is reported as
-what it is.
+Carlo values, so the simulation is faithful.
+
+Twenty-seven years in three-year blocks admit exactly three distinct partitions,
+and all three are given here. An earlier draft reported one of them, described it
+as a two-year shift when it is a one-year shift, and omitted the partition that
+moves the other panel.
+
+**Table 5c — exact PASS-P *p* at every available block origin.** Enumeration over
+all 512 sign patterns; `tools/block_origin_enumeration.py` regenerates it.
+
+| origin offset | P1 | P2 |
+| --- | --- | --- |
+| 0 — preregistered | **8/512 = 0.0156** | 50/512 = 0.0977 |
+| 1 year | 164/512 = 0.3203 | 78/512 = 0.1523 |
+| 2 years | 8/512 = 0.0156 | **18/512 = 0.0352** |
+
+The preregistered origin governs and we do not substitute another. But the table
+cuts both ways and both directions belong in it. A one-year shift moves P1's
+headline twentyfold, 0.0156 to 0.3203. A two-year shift leaves P1 exactly where
+the frozen origin puts it and takes **P2 to 0.0352, below the 0.05 threshold Holm
+would set for that panel** — so the partition that would have made the second
+panel nominally significant is one an arbitrary earlier choice ruled out. A
+convention that can move one panel's *p* by a factor of twenty and carry the
+other across its own threshold is not a nuisance; it is a reason the single
+reported *p* should not be read as a measurement.
 
 **The engine holds its size.** An 800-replicate study under a null carrying the
 design's own year-level shock gives empirical size 0.0512 (P1) and 0.0425 (P2)
@@ -1015,7 +1037,10 @@ here. Code MIT; documents CC BY 4.0.
 
 **Evidence deposit.** Frames, frozen samples, raw World Bank API captures, power
 curves, quality flags, per-document exclusion ledgers, panel cells, both
-validation batteries and the family verdict.
+validation batteries and the family verdict. **Not yet deposited at the time of
+writing: DOI to be inserted here before publication.** It is built by
+`tools/prepare_zenodo_deposit.py`, which also writes the SHA-256 manifest listing
+every IMF-derived file by hash without depositing its bytes.
 
 **Access to the comparator corpus.** The permission of 2026-08-20 governs bulk
 retrieval and redistribution, not access: the IMF publishes these reports and any
@@ -1025,9 +1050,10 @@ page. Automated collection is another matter and we report it as we met it. The 
 bot-protected and its failures are silent: an absent report redirects to an error
 page served at **HTTP 200 with `text/html`**, so a status code alone reports
 success for a document that is not there — a byte-checked probe of 20 sampled documents on 2026-08-29 found the static path serving a real PDF for 16 and an error page for four, and the DOI resolving to a document for none (`data/meta/imf_access_probe.json`). Our own retrieval needed a
-documented ladder in which **710 documents came from static paths, 354 through a
-public web archive and five through media or sequence paths**, a split the probe
-reproduces. `data/meta/imf_document_index.csv` lists all
+documented ladder in which **705 documents came from static paths, four through a
+media tree, one through a bounded verification-gated sequence and 354 through a
+public web archive**, a split the probe reproduces
+(`tools/retrieval_route_tally.py`). `data/meta/imf_document_index.csv` lists all
 1,064 by report number, year, country, DOI and SHA-256, so a reader who obtains a
 document by any route can hash it against that index and confirm byte identity
 with the copy analysed here. Seven carry no DOI and are located by country and
