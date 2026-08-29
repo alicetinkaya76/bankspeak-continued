@@ -55,11 +55,12 @@ OUT = ROOT.parent / "bankspeak-public"
 # and the benefit is nil because nobody can rerun the pipeline without the
 # corpus anyway. So data/ stays out and the README says where it lives.
 INCLUDE = ["src", "tools", "tests", "config", "docs", "Makefile",
-           "requirements.txt", "requirements-ppl.txt"]
+           "requirements.txt", "requirements-ppl.txt",
+           "data/meta/imf_document_index.csv"]
 
 # Never, whatever else matches.
 DENY = [
-    re.compile(r"(^|/)imf", re.I),
+    re.compile(r"(^|/)imf(?!_document_index)", re.I),
     re.compile(r"articleiv", re.I),
     re.compile(r"(^|/)diagnostics/"),
     re.compile(r"__pycache__|\.pyc$|\.bak"),
@@ -83,6 +84,18 @@ TEXTY = {".py", ".md", ".csv", ".json", ".yaml", ".yml", ".txt", ".jsonl", ".cfg
 # Files that legitimately discuss the IMF in prose and carry no document data.
 PROSE_OK = {"IMF_ACCESS_COMPLIANCE_20260820.md", "IMF_RETRIEVAL_20260820.md",
             "IMF_QUERY_DRAFT_archive_route.md"}
+
+# One deliberate exception, and it is an exception rather than a raised
+# threshold because the reason is specific and should not generalise.
+# imf_document_index.csv carries 1,057 DOIs — two orders of magnitude over the
+# cap — and must travel anyway: it IS the access route PLOS ONE requires, the
+# thing that lets a reader fetch the same documents from the publisher and check
+# their copy against ours. It holds report number, year, country, DOI and
+# SHA-256, and deliberately no title and no imf.org URL, so it is derived
+# non-substitutive output under §5 of the permission rather than a copy of the
+# catalogue. Withholding it would make the hash manifest unusable, which is
+# conservatism that defeats verification.
+ACCESS_ROUTE_OK = {"imf_document_index.csv"}
 
 
 def denied(rel: str) -> bool:
@@ -141,7 +154,7 @@ def main() -> int:
             if denied(rel):
                 continue
             h = scan(f, rel)
-            if h and f.name not in PROSE_OK:
+            if h and f.name not in PROSE_OK and f.name not in ACCESS_ROUTE_OK:
                 problems[rel] = h
             else:
                 staged.append((f, rel))
@@ -155,8 +168,19 @@ def main() -> int:
                 print(f"        {line}")
         return 1
 
+    # Replace only what this builder owns. An earlier version wiped the whole
+    # target directory and destroyed the git checkout along with the
+    # hand-written README, licences and Zenodo metadata that do not come from
+    # the source tree. Preserving them is not a convenience: .git holds the
+    # published history, and re-cloning to recover it is a step that can be
+    # forgotten at exactly the wrong moment.
+    PRESERVE = {".git", "README.md", "LICENSE", "LICENSE-docs", "CITATION.cff",
+                ".zenodo.json", ".gitignore", "COMMIT_HISTORY.md"}
     if OUT.exists():
-        shutil.rmtree(OUT)
+        for child in OUT.iterdir():
+            if child.name in PRESERVE:
+                continue
+            shutil.rmtree(child) if child.is_dir() else child.unlink()
     for f, rel in staged:
         d = OUT / rel
         d.parent.mkdir(parents=True, exist_ok=True)

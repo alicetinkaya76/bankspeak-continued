@@ -106,6 +106,12 @@ HASH_ONLY_TREES = [
     ("data/meta/imf_articleiv_raw", "IMF Coveo listing archive — IMF content"),
     ("data/raw/imf_article_iv", "IMF Article IV corpus, 1,064 PDFs — licensed"),
 ]
+# The access route, deposited rather than hashed. See
+# tools/build_imf_access_index.py: report number, year, country, DOI and our
+# SHA-256, with no title and no IMF URL. A hash list whose rows cannot be mapped
+# to obtainable documents verifies nothing.
+INCLUDE_FILES += ["data/meta/imf_document_index.csv"]
+
 HASH_ONLY_FILES = [
     "data/meta/frozen_sampling_imf_v1.csv",
     "data/meta/imf_articleiv_frame.csv",

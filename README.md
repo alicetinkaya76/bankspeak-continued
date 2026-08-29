@@ -38,6 +38,12 @@ including the decisions that went against the study's own interest.
 
 ## What is not here, and why
 
+**The access route IS here.** `data/meta/imf_document_index.csv` lists all 1,064
+IMF documents by report number, year, country, DOI and SHA-256. The IMF publishes
+these reports itself, so a reader resolves each DOI, downloads from the
+publisher, and hashes their copy to confirm byte identity with the one analysed —
+without going through the author. The index carries no title and no IMF URL.
+
 **No corpus, and no IMF bibliographic data.** The 1,064 IMF Article IV staff
 reports are used under a written permission that forbids redistributing documents
 or extracted text. The permission does allow derived non-substitutive outputs,

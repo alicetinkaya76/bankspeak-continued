@@ -1080,22 +1080,41 @@ Preregistration OSF `10.17605/OSF.IO/5C9J8`; SAP Zenodo
 `10.5281/zenodo.22098259`. Frames, frozen samples, raw API captures, power
 curves, quality flags, per-document exclusion ledgers, the panel cells, both
 validation batteries and the family verdict are deposited — 656 files.
-**Analysis code is not yet in that deposit**, and that is a gap this paper cannot
-carry to submission. The repository's working policy has been that git carries
-the decision and Zenodo carries the evidence, so the manifest contains only
-`data/`. For a paper whose warrant is auditability that is not sufficient: the
-submitted deposit must include the executable analysis and generator code, a
-dependency lockfile or container, a single top-level rerun entry point, seeds and
-versions, and a mapping from every numbered table and figure to the command that
-produces it.
+**Analysis code and design record:** `10.5281/zenodo.22152945` (concept DOI
+`10.5281/zenodo.22152944`, which always resolves to the latest version), archived
+from `github.com/alicetinkaya76/bankspeak-continued` at release v1.0.0. It carries
+the frozen inference engine, the validation battery, the full pipeline, 333 tests,
+every preregistration draft and amendment, decisions D-1..D-13, both deviation
+records, and the generators that produce every table and figure here. Code is MIT
+licensed; the documents are CC BY 4.0.
 
-**Access to the restricted comparator.** The IMF Article IV corpus cannot be
-redistributed. A hash manifest establishes identity, not availability, so the
-submitted Data Availability Statement must additionally name an **independent
-route** by which another researcher may apply for the same material — an IMF
-office or institutional contact that is not the author. A statement placing the
-corresponding author as sole gatekeeper would not satisfy PLOS ONE's third-party
-data policy and would not be honest about what a reader can do. The IMF Article
+The corpus is deliberately absent from that archive. It carries no World Bank or
+IMF document, no extracted text, and no bibliographic frame — the builder that
+produced it refuses to stage a file exceeding a density threshold for IMF report
+numbers, DOIs, document URLs or titles, on the principle that naming a document
+is citation and shipping the frame is redistribution.
+
+**Access to the comparator corpus, without going through us.** The written
+permission of 2026-08-20 governs bulk retrieval and redistribution; it does not
+govern access, because **the IMF publishes these documents itself**. Every Article
+IV staff report in the sample is retrievable from the Fund's own publication
+service by report number, and by DOI through the IMF eLibrary; checked
+2026-08-29, those PDFs return HTTP 200 without authentication. No reader needs our
+copy and no reader needs us.
+
+To make that route actionable, `data/meta/imf_document_index.csv` lists all 1,064
+documents by **report number, year, country, DOI and SHA-256**. A researcher
+resolves the DOI, downloads the document from the publisher, and hashes it to
+confirm byte identity with the copy analysed here before rerunning anything. Seven
+documents carry no DOI and are reached by report number.
+
+The index deliberately carries **no title and no IMF URL**. That is the same line
+this study draws throughout: the catalogue frame with every title and link is
+verbatim IMF content and is not published, while a report number, a DOI and a hash
+we computed are derived non-substitutive outputs of the kind the permission
+allows. Withholding the identifiers too would have been more conservative and
+would have been wrong — a hash manifest whose rows cannot be mapped to obtainable
+documents verifies nothing. The IMF Article
 IV corpus was retrieved under written permission from the International Monetary
 Fund (2026-08-20) and is **not** redistributed; its SHA-256 manifest is
 deposited so any holder of the originals can verify byte-for-byte. World Bank

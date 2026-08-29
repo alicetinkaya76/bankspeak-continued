@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+4420f15  2026-08-29  Code archive has a DOI: 10.5281/zenodo.22152945 — the last submission blocker closes
+70c6d3f  2026-08-29  Publish the code archive, and refuse to publish what the permission forbids
 528eb48  2026-08-29  Simulate the bespoke engine instead of asserting it, and put the code in the deposit
 34e6078  2026-08-29  The factor of three is document selection; concatenation contributes exactly nothing
 3c5ff9f  2026-08-29  Run the two sensitivities the preregistration promised and the paper never reported

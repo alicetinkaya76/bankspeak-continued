@@ -1,5 +1,7 @@
 # The corpus and its bibliographic frames never enter this repository.
 data/
+!data/meta/
+!data/meta/imf_document_index.csv
 *.pdf
 __pycache__/
 *.pyc
