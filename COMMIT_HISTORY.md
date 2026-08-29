@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+109482f  2026-08-29  The abstract was 374 words against a limit of 300, and nothing measured it
+e863b0b  2026-08-29  Hand the reviewer the citation audit that already ran, and say it lied three times
 ede8050  2026-08-29  Audit the citations by machine, after the machine stopped lying three times
 6d90fe6  2026-08-29  Third-eye brief v3: the review that happens after the venue is chosen
 8acd8cd  2026-08-29  The probe I wrote to stop the mistake could not have caught it

@@ -26,7 +26,7 @@ than trusted.
 ```
 src/      the analysis pipeline and the frozen inference engine
 tools/    retrieval, corpus repair, table and figure generators, sensitivity studies
-tests/    the suite that pins the frozen contracts (333 tests)
+tests/    the suite that pins the frozen contracts (337 tests)
 config/   pinned configuration, marker family definitions, alias maps
 docs/     preregistration drafts and amendments, the frozen SAP and its freeze
           record, decisions D-1..D-13, deviation records, third-eye review
@@ -72,8 +72,13 @@ be checked from this repository alone:
 
 ```bash
 pip install -r requirements.txt
-python -m pytest tests/ -q                 # 333 tests, no corpus needed
+python -m pytest tests/ -q                 # 337 tests, no corpus needed
+python tools/plos_compliance.py            # manuscript against the venue's stated limits
+python tools/make_vancouver_refs.py        # numbered reference list, built from Crossref
 ```
+
+`make_vancouver_refs.py` is the only one of those that reaches the network. It
+resolves each reference DOI and refuses to invent an entry it cannot resolve.
 
 With the Zenodo deposit unpacked into `data/`:
 

@@ -9,43 +9,38 @@ outcome reported here was computed: Zenodo `10.5281/zenodo.22098259`, sha256
 
 ## Abstract
 
-Moretti and Pestre's *Bankspeak* (2015) reported a long-run shift in World Bank
-prose from temporally anchored description toward nominalised management
-language, on a corpus and measurement rules never released. We independently
-reconstruct the analysis from primary documents and extend the assembled Annual
-Report series through fiscal 2024.
+Moretti and Pestre's *Bankspeak* reported a long-run shift in World Bank prose
+from temporally anchored description toward nominalised management language, on a
+corpus and rules never released. We reconstruct it from primary
+documents and extend the assembled Annual Report series through fiscal 2024.
 
-The trajectories reproduce. Mean temporal anchoring falls from 39.96 occurrences
-per thousand tokens in 1946–65 to 22.97 in 2020–24, while nominalisation, acronym
-density, management vocabulary and a broader bureaucratic register rise, the last
-from 0.252 per thousand to 7.631 — a thirtyfold ratio, though from a very small base: an absolute rise of 7.38 per thousand.
+The trajectories reproduce: mean temporal anchoring falls from 39.96 per
+thousand tokens in 1946–65 to 22.97 in 2020–24, and a broader bureaucratic
+register rises from 0.252 per thousand to 7.631 — a thirtyfold ratio but an
+absolute rise of 7.38.
 
-Rebuilding the corpus yields a second result, about measurement rather than about
-the Bank. Over the same fiscal years the same archive gives a 43% decline or a
-14% decline, and decomposing that gap assigns **all** of it to which files count
-as Annual Reports: the 195 excluded sibling-organisation volumes trend upward
-while the Bank's own volumes fall. Concatenating volumes into fiscal-year units —
-the operation one would expect to matter — contributes nothing, being
-arithmetically identical to a token-weighted mean for a token-normalised rate.
+A second result concerns measurement, not the Bank. Over the same fiscal
+years the same archive gives a 43% or a 14% decline, and decomposing that gap
+assigns **all** of it to which files count as Annual Reports: the 195 excluded
+sibling-organisation volumes trend upward while the Bank's own fall. Concatenating
+volumes into fiscal-year units contributes nothing: for a token-normalised rate it
+is arithmetically identical to a token-weighted mean.
 
-We then use the rebuilt corpus for a preregistered comparative interrupted
-time-series test of whether Tier-1 LLM-associated vocabulary shows a post-2022
-World Bank discontinuity relative to an IMF Article IV comparator, with the
-analysis plan sealed and externally timestamped before any outcome existed. **No
-panel satisfies the prespecified decision rule.** One panel reaches *p* = 0.0142
-and then fails the concentration guard — removing a single word family sends the
-coefficient to −0.067 with an interval spanning zero — fails
-leave-one-post-year-out, loses significance under one preregistered secondary
-route (HAC(3), *p* = 0.162) and falls short of its own Holm threshold under the
-other (document-level QML, *p* = 0.033 against 0.025), and shows a pre-period
-event-study bin exceeding the estimate itself. The comparator also rose, and ex ante power at the observed effect size is
-0.16–0.22.
+We then test, under a plan sealed and timestamped before any outcome
+existed, whether vocabulary associated with large language models shows a
+post-2022 World Bank discontinuity against an International Monetary Fund
+comparator. **No panel satisfies the prespecified decision rule.** One reaches
+*p* = 0.0142, then fails the concentration guard — removing a single word family
+sends the coefficient to −0.067 with an interval spanning zero — fails
+leave-one-post-year-out, fails both preregistered secondary routes (*p* = 0.162
+and 0.033 against a 0.025 threshold), and shows a pre-period event-study bin above
+the estimate. The comparator also rose; ex ante power at that
+effect size is 0.16–0.22.
 
-The result bounds what a three-post-year, single-comparator lexical design can
-establish; it is not evidence of absence. The transferable lesson is that a
-nominally significant aggregate lexical break can rest on one word family, one
-post-period year and one arbitrary block origin, while a sealed multi-condition
-rule correctly withholds the claim.
+The result bounds what a three-post-year, single-comparator design can
+establish; it is not evidence of absence. A nominally significant aggregate break
+can rest on one word family, one post-period year and one arbitrary block origin,
+while a sealed multi-condition rule correctly withholds the claim.
 
 ---
 
@@ -1009,13 +1004,14 @@ in `docs/figures/`.
 Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
-**Code and design record.** `10.5281/zenodo.22158882` (concept DOI `10.5281/zenodo.22152944`, which always
-resolves to the latest version), archived from
+**Code and design record.** `10.5281/zenodo.22158882` (concept DOI
+`10.5281/zenodo.22152944`, which always resolves to the latest version), archived
+from
 `github.com/alicetinkaya76/bankspeak-continued` at release v1.1.0: the frozen
-inference engine, the validation battery, the full pipeline, 333 tests, every
-preregistration draft and amendment, decisions D-1..D-13, both deviation records,
-and the generators that produce every table and figure here. Code MIT; documents
-CC BY 4.0.
+inference engine, the validation battery, the full pipeline, the 333 tests that
+release carries, every preregistration draft and amendment, decisions D-1..D-13,
+both deviation records, and the generators that produce every table and figure
+here. Code MIT; documents CC BY 4.0.
 
 **Evidence deposit.** Frames, frozen samples, raw World Bank API captures, power
 curves, quality flags, per-document exclusion ledgers, panel cells, both
