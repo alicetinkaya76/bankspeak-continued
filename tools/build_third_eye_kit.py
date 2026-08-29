@@ -113,6 +113,17 @@ INCLUDE = [
     # number, year, country, DOI and our SHA-256, with no title and no IMF URL.
     ("data/meta/imf_document_index.csv", "09_submission",
      "the 1,064-document access index the DAS relies on"),
+    ("docs/PLOS_SUBMISSION_CHECKLIST.md", "09_submission",
+     "the venue's stated limits, measured rather than assumed — including the "
+     "abstract that was 374 words against a limit of 300"),
+    ("tools/plos_compliance.py", "07_code",
+     "what measures them, with the negative control that makes its clean "
+     "verdict mean something"),
+    ("docs/REFERENCES_vancouver.md", "09_submission",
+     "the numbered reference list built from Crossref, ordered by first "
+     "appearance, held ready for the accept-stage conversion"),
+    ("tools/make_vancouver_refs.py", "07_code",
+     "what builds it, and what it refuses to invent"),
     ("tools/rq1_decomposition.py", "07_code", "the decomposition"),
     ("tools/probe_imf_access.py", "07_code", "the access probe"),
     ("tools/audit_citations.py", "07_code",

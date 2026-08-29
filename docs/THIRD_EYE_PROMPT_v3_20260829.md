@@ -62,6 +62,15 @@ weak reproducibility or a conclusion outrunning the data all are.
 
 - Does the abstract earn a read of the introduction? Does the title describe the
   paper that follows?
+- **The abstract was rewritten down to PLOS's 300-word limit and now sits at
+  exactly 300.** It was 374, and four audit rounds had not caught it because none
+  of them read the submission form. `09_submission/PLOS_SUBMISSION_CHECKLIST.md`
+  records what the cut cost: the two preregistered secondary inference routes,
+  previously named one by one, are now given as failing both with both *p*-values
+  kept, and *Bankspeak*'s year is gone because PLOS forbids citations in an
+  abstract. The limits are already measured by `tools/plos_compliance.py` — do
+  not re-derive them. **Judge the trade: does the compressed abstract still
+  disclose what a reader must know before §6?**
 - **Would you send this out, desk-reject it, or return it for the data-availability
   check?** Answer as a decision, not a discussion.
 - `docs/SUBMISSION_COVER_LETTER.md` and `docs/SUBMISSION_DATA_AVAILABILITY.md`
