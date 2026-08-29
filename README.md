@@ -83,6 +83,7 @@ python tools/make_paper_figures.py         # regenerates Figures 1-3
 python tools/prereg_sensitivities.py       # PREREG §4 secondary sensitivities
 python tools/rq1_decomposition.py          # the RQ1 corpus-construction decomposition
 python tools/passp_calibration.py 800      # PASS-P size under the null
+python tools/probe_imf_access.py 12        # records the live IMF access routes
 ```
 
 Every number in the manuscript regenerates from these. If a table and the code

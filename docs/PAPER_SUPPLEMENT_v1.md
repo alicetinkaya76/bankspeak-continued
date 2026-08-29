@@ -170,7 +170,8 @@ provenance control while failing measurement validity:
 - **Fiscal 2002** had been two un-OCR'd scans yielding twelve tokens and failing
   assembly QC. After OCR: 73,917 tokens at a 0.234 function-word share.
 - **Fiscal 2007** had been 46,723 tokens of mojibake produced by a broken font
-  encoding. After re-extraction: 50,807 tokens at 0.254.
+  encoding, which is what the broken ToUnicode CMap produced. OCR bypassed the
+  encoding entirely: 50,807 tokens at 0.254.
 
 None of the repairs was made with the RQ1 comparison in view, which is why the
 agreement with the pamphlet is harder to attribute to analyst choice than a first

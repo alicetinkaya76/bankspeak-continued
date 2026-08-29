@@ -94,7 +94,8 @@ appears at all.
 
 **Third, that a preregistered test of the post-2022 LLM hypothesis on this corpus
 cannot support the claim** — and that saying so is worth more than the
-alternative. One panel reaches *p* = 0.0142 and fails three preregistered checks.
+alternative. One panel reaches *p* = 0.0142 and fails the two preregistered checks that
+bear on the data, plus a third that failed on our own stratifier error.
 The concentration guard is the informative one: with a single word family removed
 the differential coefficient is −0.067 with an interval spanning zero. A study
 without that guard would have published the *p*-value.
@@ -161,9 +162,10 @@ against our prespecified 2023 (§6.4).
 
 **Reproducibility and corpus design.** Biber (1993) on representativeness in
 corpus design, Sandve et al. (2013) on reproducible computational research, and
-Wilkinson et al. (2016) on FAIR data supply the standards the audit design is
-built to meet. §3.3 reports a case in which all three were satisfied and the
-measurement was still invalid, which is the specific gap this design addresses.
+Wilkinson et al. (2016) on FAIR data supply the standards this study's provenance
+controls were built to meet. §3.3 reports a case in which all three were satisfied and the
+measurement was still invalid — which is why the controls here extend to
+measurement validity and not only to provenance.
 
 ---
 ## 3. Data
@@ -236,9 +238,9 @@ full scan counts and the populations they are measured over.
 
 | Class | Detected | Ruling and effect |
 |---|---|---|
-| No text layer | 192 IMF documents, all 1999–2004 | OCR'd (SAP §S9). Method is collinear with the estimand, so the effect was bounded where era is held fixed: OCR recovers 1.012× the native token count, mean token length within 0.6%. Restored fiscal 2002 and 2007 to the AR series. |
+| No text layer | 192 IMF documents, all 1999–2004 | OCR'd (SAP §S9). Method is collinear with the estimand, so the effect was bounded where era is held fixed: OCR recovers a median 1.012× the native token count over 20 paired documents, mean token length within 0.6%. Restored fiscal 2002 and 2007 to the AR series. |
 | Lost inter-word spacing | 70 of 2,688 server-text documents; **0 of 437** from our own PDF extraction | Re-extracted from PDF, accepted only on measured two-sided improvement (D-7). Final: 61 replaced, 4 kept, of 65. |
-| Non-English or bilingual | 20 documents | Excluded by ruling (D-8/D-11); seven leave the confirmatory panels. |
+| Non-English or bilingual | 20 ruled, 10 inside the Stage-B sample | Excluded by ruling (D-8/D-11); of the ten, seven fall inside 1999–2025 and leave the confirmatory panels. |
 | Mojibake / table dump | 3 + 1 | Adjudicated individually; ledger `d13_kept.csv`. |
 
 One row of that table is a finding rather than housekeeping: the spacing loss came
@@ -250,7 +252,7 @@ safer source.
 
 | Ledger | Rule | Documents | Strata touched |
 |---|---|---|---|
-| `d8_exclusions.csv` | D-8/D-11: non-English or bilingual documents | 20 | icr, pad |
+| `d8_exclusions.csv` | D-8/D-11: non-English or bilingual documents | 20 ruled; **10 applied** (a subset of the 395 below) | icr, pad |
 | `intention_to_sample_exclusions.csv` | PREREG §7 intention-to-sample | 395 | annual_report, icr, pad |
 | `d13_kept.csv` | D-13: flagged, adjudicated, **KEPT** (listed for completeness; not an exclusion) | 1 | annual_report |
 
@@ -353,14 +355,7 @@ the closest the design comes to letting the data speak on this point.
 
 **Figure 4 plots that contrast directly**, with the pre-2023 line fitted and
 extrapolated across the post window, because the identification question is
-visible in it and not in the raw institutional rates. Two features are worth
-seeing before any coefficient: the contrast is already rising through the whole
-pre-period (+0.031 per year on P1, +0.048 on P2), and the three post-period
-points do not form a step. On P1 the 2023 contrast sits **0.54 log points below**
-the extrapolated trend, 2024 sits 1.25 above it, and 2025 falls back to 0.70
-above — still elevated, but the shape is a single displaced year rather than a
-level shift, which is the same fact C4 records when deleting 2024 collapses the
-result.
+visible in it and not in the raw institutional rates.
 
 **Inference.** PASS-P, a nested bootstrap with B = 9,999 and a wild score
 block procedure, Holm-adjusted across the two panels at α = 0.05. One property of
@@ -673,7 +668,16 @@ thousand tokens, by year:
 | IMF Article IV | 0.103 | 0.115 | **0.128** | **0.112** | **0.160** |
 
 In both panels the Bank's rate in 2023 is at or *below* its 2022 value — on ICR
-it more than halves — and the increase arrives in 2024. Whatever produced the
+it more than halves — and the increase arrives in 2024.
+
+The same shape appears in the estimand itself (Figure 4). Against a line fitted
+through the 1999–2022 contrast and extrapolated forward, P1's 2023 observation
+sits **0.54 log points below** the trend, 2024 sits 1.25 above it, and 2025 falls
+back to 0.70 above — elevated, but a single displaced year rather than a level
+shift, which is what C4 records arithmetically below. That fitted line is an
+unweighted least-squares display fit on the continuity-corrected annual contrast
+(+0.031 per year on P1, +0.048 on P2); it is **not** the frozen model's τ̂, which
+Table 4 gives as 0.0371 and 0.0483. Whatever produced the
 post-period rise did not begin at the boundary the design placed it at, which is
 visible in Figure 2 and is the same fact C4 detects arithmetically. A
 discontinuity story indexed to the public release of general-purpose chat models
@@ -807,7 +811,7 @@ arriving here by a fourth independent route.
 
 What this arm does *not* do is separate β from τ. Its terminal bin is exactly
 [2023, 2025] — the same three post years — so dropping the linear form adds no
-post-period information, and limitation 9 stands unchanged.
+post-period information, and §7's identification limitation stands unchanged.
 
 ### 6.5 A post-hoc sensitivity: what the standardized arm says once it can run
 
@@ -849,8 +853,8 @@ claim to know which; on P2 they are not. Supplement S5 gives per-cell coverage.
 
 ## 7. Limitations
 
-Grouped by what they threaten, because thirteen numbered items read as
-accumulation rather than as argument.
+Grouped by what they threaten, because a numbered list reads as accumulation
+rather than as argument.
 
 **Identification — what the design cannot separate.** The comparator is
 non-equivalent: institution and genre are confounded, the Fund's pre-period base
@@ -870,7 +874,7 @@ without treating it as established.
 **Measurement — what the corpus does to the estimate.** 192 IMF documents had no
 text layer and are OCR'd; every one is pre-period, so extraction method is
 collinear with the estimand and cannot be controlled against era. We bounded it
-instead where era is held fixed: OCR recovers 1.012× the native token count with
+instead where era is held fixed: OCR recovers a median 1.012× the native token count over 20 paired documents with
 mean token length within 0.6%. Exclusions are pre-period-weighted — seven
 documents leave the panels by language ruling, all ICR, all 2000–2005 — and
 removing pre-period documents from one arm is not neutral to a pre/post contrast,
@@ -902,7 +906,24 @@ be obtained from the publisher and verified against our hashes.
 
 ## 8. Discussion
 
-### The measurement lessons transfer further than the finding
+### What the reconstruction establishes
+
+The pamphlet's central claim survives independent re-measurement from primary
+documents, which is not nothing: *Bankspeak* has been cited across the digital
+humanities and international-organisation literatures for a decade on a corpus
+nobody could inspect. What we offer is a **reconstruction, not a replication**
+(§7): the original features and assembly rules were never released, so there is no
+workflow to re-execute and no numerical target to hit. The agreement is
+qualitative and directional, and that is the strongest form available when the
+predecessor's method is unavailable.
+
+Extension through fiscal 2024 adds the part the pamphlet could not have: the
+drift did not stop when the series did. And the reconstruction earns its keep a
+second time by making the corpus-selection result visible at all — that finding
+exists only because rebuilding forced a decision about what counts as an Annual
+Report, and then made both answers computable.
+
+### Three method results, and how far they travel
 
 Three results here are about method rather than about the World Bank, and each
 was found by measurement rather than suspicion:
@@ -962,7 +983,7 @@ design is its bound. The reconstructed series stands on its own.
 
 ## Figures
 
-All three regenerate from `data/` via `tools/make_paper_figures.py`; PNG and PDF
+All four regenerate from `data/` via `tools/make_paper_figures.py`; PNG and PDF
 in `docs/figures/`.
 
 - **Figure 1** — `fig1_composition`. Temporal anchoring per thousand tokens over
@@ -988,9 +1009,9 @@ in `docs/figures/`.
 Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
-**Code and design record.** `10.5281/zenodo.22152945` (concept DOI
-`10.5281/zenodo.22152944`), archived from
-`github.com/alicetinkaya76/bankspeak-continued` at release v1.0.0: the frozen
+**Code and design record.** `10.5281/zenodo.22158882` (concept DOI `10.5281/zenodo.22152944`, which always
+resolves to the latest version), archived from
+`github.com/alicetinkaya76/bankspeak-continued` at release v1.1.0: the frozen
 inference engine, the validation battery, the full pipeline, 333 tests, every
 preregistration draft and amendment, decisions D-1..D-13, both deviation records,
 and the generators that produce every table and figure here. Code MIT; documents
@@ -1000,24 +1021,23 @@ CC BY 4.0.
 curves, quality flags, per-document exclusion ledgers, panel cells, both
 validation batteries and the family verdict.
 
-**Access to the comparator corpus, without going through us.** The written
-permission of 2026-08-20 governs bulk retrieval and redistribution; it does not
-govern access, because **the IMF publishes these documents itself**. Every Article
-IV staff report in the sample is retrievable from the Fund's own publication
-service by report number and by DOI through the IMF eLibrary; checked 2026-08-29,
-those PDFs return HTTP 200 without authentication. To make that route actionable,
-`data/meta/imf_document_index.csv` lists all 1,064 documents by report number,
-year, country, DOI and SHA-256: resolve the DOI, download from the publisher, hash
-the file, confirm byte identity with the copy analysed, then rerun. Seven
-documents carry no DOI and are reached by report number.
+**Access to the comparator corpus.** The permission of 2026-08-20 governs bulk
+retrieval and redistribution, not access: the IMF publishes these reports and any
+reader can obtain them from the Fund's website by country and report number, or
+by the DOI, which identifies the document and resolves to its eLibrary landing
+page. Automated collection is another matter and we report it as we met it — the
+site is bot-protected, and our own retrieval needed a documented ladder in which
+**710 documents came from static paths, 354 through a public web archive and five
+through media or sequence paths**. `data/meta/imf_document_index.csv` lists all
+1,064 by report number, year, country, DOI and SHA-256, so a reader who obtains a
+document by any route can hash it against that index and confirm byte identity
+with the copy analysed here. Seven carry no DOI and are located by country and
+report number.
 
 The index carries **no title and no IMF URL**, which is the line this study draws
-throughout — the catalogue frame with every title and link is verbatim IMF content
+throughout: the catalogue frame with every title and link is verbatim IMF content
 and is not published, while a report number, a DOI and a hash we computed are
-derived non-substitutive outputs of the kind the permission allows. Withholding
-the identifiers as well would have been more conservative and would have been
-wrong: a hash manifest whose rows cannot be mapped to obtainable documents
-verifies nothing.
+derived non-substitutive outputs of the kind the permission allows.
 
 **Acknowledgement.** Contains IMF Staff Country Reports retrieved from www.imf.org
 under written permission from the International Monetary Fund (2026-08-20). The

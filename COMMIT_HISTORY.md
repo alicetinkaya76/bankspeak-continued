@@ -3,6 +3,9 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+f2743b9  2026-08-29  The access claim promised a route I had not walked — corrected against evidence
+3f304cf  2026-08-29  Point the submission at v1.1.0 — 10.5281/zenodo.22158882
+f01f36e  2026-08-29  Six blockers from the post-reframe check, and the worst one was in the archive
 0d96f80  2026-08-29  Figure 4: draw the estimand, which no figure showed
 92d0827  2026-08-29  Option B applied: the reconstruction leads, the apparatus becomes the warrant
 b752327  2026-08-29  Move 1,600 words to a supplement, and regroup thirteen limitations into four
