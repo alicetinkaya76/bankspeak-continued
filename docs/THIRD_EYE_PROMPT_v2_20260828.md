@@ -1,3 +1,7 @@
+**SUPERSEDED by THIRD_EYE_PROMPT_v3_20260829.md** — v2 asked a reviewer to choose a venue; the venue is now decided (PLOS ONE) and v3 asks for the pre-submission review instead. Kept for the record.
+
+---
+
 # Third-eye review brief v2 — `PAPER_DRAFT_v2.md`
 
 Supersedes `THIRD_EYE_PROMPT_20260827.md`, which was written while

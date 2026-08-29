@@ -1051,7 +1051,12 @@ World Bank content is public disclosure under its Access to Information Policy.
 
 ## References
 
-*All entries Crossref/publisher-verified; re-checked before submission.*
+*Audited by `tools/audit_citations.py` on 2026-08-29: all 25 entries parsed,
+22 resolved against Crossref with matching first author and year, two
+conference papers carry stable proceedings URLs in place of a DOI, and every
+entry is cited in the body with no in-text citation missing from the list.
+The Lopez Bernal (2017) Crossref record is the online-first one and carries no
+print pagination; the printed citation here is the fuller one.*
 
 **Bankspeak and institutional discourse.** Moretti, F. & Pestre, D. (2015).
 Bankspeak: The language of World Bank reports. *Literary Lab Pamphlet 9*; also
@@ -1071,8 +1076,10 @@ Ward, Z. (2025). *COLING 2025*:6397–6411.
 
 **Detection and critiques.** Gehrmann, S. et al. (2019). *ACL system
 demonstrations*. DOI 10.18653/v1/P19-3019. · Ippolito, D. et al. (2020). *ACL*.
-DOI 10.18653/v1/2020.acl-main.164. · Mitchell, E. et al. (2023). *ICML*, PMLR
-202:24950–24962. · Liang, W. et al. (2023). *Patterns* 4(7):100779. DOI
+DOI 10.18653/v1/2020.acl-main.164. · Mitchell, E. et al. (2023). DetectGPT:
+zero-shot machine-generated text detection using probability curvature.
+*Proceedings of ICML*, PMLR 202:24950–24962.
+https://proceedings.mlr.press/v202/mitchell23a.html · Liang, W. et al. (2023). *Patterns* 4(7):100779. DOI
 10.1016/j.patter.2023.100779. · Weber-Wulff, D. et al. (2023). *International
 Journal for Educational Integrity* 19:26. DOI 10.1007/s40979-023-00146-z. · Wu,
 J. et al. (2025). *Computational Linguistics* 51(1):275–338. DOI

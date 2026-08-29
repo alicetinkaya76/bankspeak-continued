@@ -97,6 +97,29 @@ INCLUDE = [
     ("docs/VENUE_RESEARCH_20260828.md", "08_venue_research",
      "a prior venue-research pass; its conclusions are unacted-on and several "
      "of its facts are explicitly unverified"),
+    # The submission package itself — the editor reads these before the paper.
+    ("docs/SUBMISSION_COVER_LETTER.md", "09_submission",
+     "the cover letter as it would be sent"),
+    ("docs/SUBMISSION_DATA_AVAILABILITY.md", "09_submission",
+     "the data-availability statement as it would be pasted into the form"),
+    ("docs/PAPER_SUPPLEMENT_v1.md", "01_manuscript",
+     "the eight-section supplement the manuscript cross-references"),
+    ("data/analysis/rq1_decomposition.json", "06_machine_output",
+     "the corpus-selection decomposition behind the title's second claim"),
+    ("data/meta/imf_access_probe.json", "06_machine_output",
+     "byte-checked probe of the access routes the DAS describes"),
+    # The access route itself, so a reviewer evaluating the data-availability
+    # statement can see what it points at. Already public on GitHub; report
+    # number, year, country, DOI and our SHA-256, with no title and no IMF URL.
+    ("data/meta/imf_document_index.csv", "09_submission",
+     "the 1,064-document access index the DAS relies on"),
+    ("tools/rq1_decomposition.py", "07_code", "the decomposition"),
+    ("tools/probe_imf_access.py", "07_code", "the access probe"),
+    ("tools/audit_citations.py", "07_code",
+     "the mechanical half of the citation audit — DOI resolution and the two-way"
+     " in-text cross-check; the claim-support check is the reviewer's"),
+    ("data/analysis/citation_audit.json", "06_machine_output",
+     "its output: 25 entries, 22 Crossref-resolved, no uncited entry"),
     ("docs/VENUE_FINAL_20260828.md", "08_venue_research",
      "THE CURRENT RECOMMENDATION: PLOS ONE, with the Article-in-Press finding "
      "that eliminated the previous favourite"),
