@@ -1,4 +1,4 @@
-# Eighty Years of Bankspeak, and a Preregistered Test That Could Not Confirm an LLM Break
+# Reconstructing Bankspeak: Eight Decades of World Bank Language, a Corpus-Selection Effect, and an Unconfirmed Post-2022 Break
 
 Statistical analysis plan frozen and externally timestamped **before** any
 outcome reported here was computed: Zenodo `10.5281/zenodo.22098259`, sha256
@@ -69,23 +69,37 @@ consumer complaints (Kobak et al. 2025; Liang et al. 2025a, 2025b; Juzek & Ward
 which are edited, templated, reviewed and legally constrained in ways that
 journal abstracts are not — is an open and testable question.
 
-**This paper makes three contributions, and the order matters.**
+**What this paper establishes, in the order it establishes it.**
 
-The lead contribution is a **genre-aware, provenance-preserving audit design** for
-measuring institutional language change, demonstrated over eighty years of World
-Bank prose. The corpus is infrastructure; the replication of *Bankspeak* is a
-validation gate on that infrastructure; the post-2022 test is an application.
+**First, that the *Bankspeak* trajectory is real and continues.** Rebuilt from
+primary documents and extended through fiscal 2024, the pamphlet's qualitative
+claim survives independent re-measurement: temporal anchoring declines while
+nominalisation, acronym density and management vocabulary rise. The register that
+grows fastest over eight decades is not the one the pamphlet named.
 
-The second is the **replication and extension** itself (RQ1): does the Bankspeak
-trajectory continue past 2012? It does, and the register that grows
-fastest is not the one the pamphlet named.
+**Second, that the size of that finding is hostage to a decision almost nobody
+reports.** Measured over the same fiscal years, the same archive gives a 43%
+decline in temporal anchoring or a 14% decline, and decomposing the gap assigns
+all of it to *which files count as Annual Reports* — the excluded
+sibling-organisation volumes trend upward while the Bank's own volumes fall.
+Concatenating volumes into fiscal-year units, the operation one would expect to
+matter, contributes nothing. We state this early because it generalises past this
+corpus: the unit of analysis can be inert while document selection is worth a
+factor of three, and selection is usually one clause in a data section, if it
+appears at all.
 
-The third is a **preregistered negative** (RQ2): is there a post-2022
-discontinuity in Tier-1 LLM-associated vocabulary in World Bank operational
-documents, relative to an IMF comparator? Our answer is that the design cannot
-support the claim, and we report in detail why — including a power analysis
-computed before any outcome existed which shows the test would have missed an
-effect of the size we observed about four times in five.
+**Third, that a preregistered test of the post-2022 LLM hypothesis on this corpus
+cannot support the claim** — and that saying so is worth more than the
+alternative. One panel reaches *p* = 0.0142 and fails three preregistered checks.
+The concentration guard is the informative one: with a single word family removed
+the differential coefficient is −0.067 with an interval spanning zero. A study
+without that guard would have published the *p*-value.
+
+The apparatus that makes the third claim reportable — a two-stage sealed
+preregistration, a frozen inference engine, ruled defect ledgers, and a deposit
+that hash-lists a corpus it may not redistribute — is described in §§3 and 5. We
+do not offer it as a finding. We offer it as the reason an unconfirmed result
+could be written down at all, rather than quietly becoming a different paper.
 
 Two commitments run through the paper. **On vocabulary:** we write "post-2022
 increase", "consistent with", "convergent evidence"; we never write "is
@@ -119,7 +133,7 @@ frequencies in PubMed abstracts against pre-2022 baselines; Liang et al. (2025a,
 consumer complaints; Juzek & Ward (2025) examine the same shift in scientific
 writing. All of these estimate a *population* quantity from aggregate frequencies
 rather than classifying individual documents. Our Tier-1/Tier-2 marker design
-follows that logic, with one addition: because our corpus spans eighty years, we
+follows that logic, with one addition: because our corpus spans eight decades, we
 must separate an LLM-era shift from an eighty-year bureaucratese drift that was
 already underway, which is what the two-tier split is for.
 
@@ -867,28 +881,6 @@ be obtained from the publisher and verified against our hashes.
 
 ## 8. Discussion
 
-### What a bounded negative is worth
-
-The literature on LLM-associated vocabulary has grown quickly and reports
-positives almost exclusively. Our design was built to be able to fail, and it
-did: a guard fixed before the comparison existed removed a single word family and the
-preregistered estimand crossed zero; a leave-one-out check showed the result
-resting on one year; a comparator chosen to absorb sector-wide drift moved in the
-same direction as the treated arm.
-
-None of those checks would have been reached had the analysis stopped at
-*p* = 0.0142. All three were specified in advance, which is the only condition
-under which their verdicts mean anything.
-
-The case result worth carrying away is narrower than "LLMs did or did not change
-institutional prose", and more useful: **a nominally significant aggregate
-lexical break can be produced here by one word family, one post-period year, and
-one block origin, while a sealed multi-condition rule correctly withholds the
-claim.** Each of those three is a routine choice that a study without a frozen
-decision rule would make silently and defensibly. We do not know how often that
-combination arises elsewhere; we know it arose here, and that a design without
-the guard would have reported the *p*-value.
-
 ### The measurement lessons transfer further than the finding
 
 Three results here are about method rather than about the World Bank, and each
@@ -915,6 +907,28 @@ was found by measurement rather than suspicion:
   extraction remedy was written to a ledger, satisfied its gate, and never
   reached the corpus. Both were caught because a downstream count disagreed with
   an upstream one, not because anything raised an error.
+
+### What a bounded negative is worth
+
+The literature on LLM-associated vocabulary has grown quickly and reports
+positives almost exclusively. Our design was built to be able to fail, and it
+did: a guard fixed before the comparison existed removed a single word family and the
+preregistered estimand crossed zero; a leave-one-out check showed the result
+resting on one year; a comparator chosen to absorb sector-wide drift moved in the
+same direction as the treated arm.
+
+None of those checks would have been reached had the analysis stopped at
+*p* = 0.0142. All three were specified in advance, which is the only condition
+under which their verdicts mean anything.
+
+The case result worth carrying away is narrower than "LLMs did or did not change
+institutional prose", and more useful: **a nominally significant aggregate
+lexical break can be produced here by one word family, one post-period year, and
+one block origin, while a sealed multi-condition rule correctly withholds the
+claim.** Each of those three is a routine choice that a study without a frozen
+decision rule would make silently and defensibly. We do not know how often that
+combination arises elsewhere; we know it arose here, and that a design without
+the guard would have reported the *p*-value.
 
 ### What we do not claim
 
