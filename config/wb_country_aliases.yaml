@@ -1,0 +1,22 @@
+# WB-side country-name aliases (D&R 'count' field spellings) -> ISO3.
+# Extends the s09a SEED_ALIASES after comma-inversion rotation; extended at
+# Stage-B as unmapped_country rows surface. Keys are normalized lowercase.
+"cabo verde": CPV
+"cote divoire": CIV
+"north macedonia": MKD
+"republic of north macedonia": MKD
+"viet nam": VNM
+"kyrgyz republic": KGZ
+"slovak republic": SVK
+"west bank and gaza": PSE
+"democratic republic of congo": COD
+# Stage-B, 2026-08-27: names the D&R `count` field uses that the WB country
+# endpoint spells differently. Each is a single sovereign country; every
+# remaining unresolved value in data/meta/country_unresolved.csv is a region,
+# an aggregate, or a territory the current classification no longer lists, and
+# is left to fall to `unknown` as PREREG §6 requires.
+"lao peoples democratic republic": LAO
+"venezuela republica bolivariana de": VEN
+"micronesia federated states": FSM
+"st maarten": SXM
+"republic moldova": MDA

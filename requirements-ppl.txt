@@ -1,0 +1,4 @@
+# optional stage s06 only (heavy). Install after core requirements.
+torch==2.3.1
+transformers==4.42.4
+accelerate==0.31.0

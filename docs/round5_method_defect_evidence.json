@@ -1,0 +1,29 @@
+{
+  "ci_null_imposed_examples": {
+    "0.0": {
+      "beta_hat": -0.13705697065478306,
+      "p_two_sided": 0.082,
+      "ci_basic": [
+        -0.4336619674794614,
+        -0.12843788631120584
+      ],
+      "method": "block",
+      "B_valid": 999
+    },
+    "0.9": {
+      "beta_hat": 0.7645551032441422,
+      "p_two_sided": 0.001,
+      "ci_basic": [
+        1.1696189536607338,
+        1.8325704619821643
+      ],
+      "method": "block",
+      "B_valid": 999
+    }
+  },
+  "floor_report_example": {
+    "actual_pseudo_cell_floor_share": 0.22001262626262627,
+    "returned_floored_share": 0.0
+  },
+  "mde_calibration_note": "crit_abs_z is computed only from sorted Wald z values; nested-bootstrap p-values are recorded but unused in lines 61-73."
+}

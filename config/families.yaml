@@ -1,0 +1,27 @@
+# Frozen Tier-1 outcome definition (PREREG v0.3, Appendix A).
+# The sha256 of THIS file is recorded in the Stage-A PDF at freeze.
+version: 1
+master_seed: 20260806
+matching_rule:
+  tokenizer: "[A-Za-z']+"
+  lowercase: true
+  membership: exact_token          # a hit = token in the 28-form set; \b matching is NOT used
+  lemmatization: false
+stopword_gate:
+  source: src/s10_assemble_ar.py   # 15-word frozenset, unchanged
+  n_words: 15
+  sha256_sorted_newline: 3b5d2b51754f73011aeb20ce28bcfcdeb2908ea9380d3d49decf6ee2bb22c41a
+families:
+  delve:        [delve, delves, delved, delving]
+  underscore:   [underscore, underscores, underscored, underscoring]
+  showcase:     [showcase, showcases, showcased, showcasing]
+  pivotal:      [pivotal]
+  intricate:    [intricate, intricacies]
+  meticulous:   [meticulous, meticulously]
+  boast:        [boast, boasts, boasted]
+  commendable:  [commendable]
+  realm:        [realm, realms]
+  testament:    [testament]
+  tapestry:     [tapestry]
+  seamless:     [seamless, seamlessly]
+  multifaceted: [multifaceted]

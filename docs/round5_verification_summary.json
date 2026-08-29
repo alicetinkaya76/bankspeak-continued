@@ -1,0 +1,59 @@
+{
+  "checksum_entries": 106,
+  "must_exist_count": 18,
+  "runtime": {
+    "python": "3.13.5",
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "pandas": "2.2.3",
+    "numpy": "2.3.5"
+  },
+  "families_sha256": "79b381ef190bbbb5ec51db6889be62487510c60737e4df4e9012c354db0d6c50",
+  "family_counts": {
+    "rows": 2753,
+    "zero_token": 6,
+    "tier1_total": 2608,
+    "row_sum_mismatches": 0,
+    "markers_reconstruction": 2607.9676435,
+    "post_ge_2023_total": 775,
+    "decomposition_post_total": 775,
+    "post_by_stratum": {
+      "annual_report": 20,
+      "icr": 417,
+      "pad": 338
+    }
+  },
+  "provenance": {
+    "rows": 3145,
+    "versions": {
+      "v1": 2753,
+      "v0_pilot_only": 392
+    },
+    "analysis_eligible": 2747,
+    "nll_eligible": 2743,
+    "short_docs": [
+      {
+        "id": 2017572,
+        "path": "annual_report/2002/2017572.pdf",
+        "tokens": 12.0
+      },
+      {
+        "id": 34063941,
+        "path": "annual_report/2008/34063941.txt",
+        "tokens": 32.0
+      },
+      {
+        "id": 10752676,
+        "path": "icr/2009/10752676.txt",
+        "tokens": 14.0
+      },
+      {
+        "id": 10508321,
+        "path": "pad/2009/10508321.txt",
+        "tokens": 14.0
+      }
+    ]
+  },
+  "mde_claimed": 1.8734642040310812,
+  "mde_observed": 1.8734642040311191,
+  "mde_delta": 3.7969627442180354e-14
+}

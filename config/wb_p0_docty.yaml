@@ -1,0 +1,9 @@
+# P0 candidate genres: exact D&R docty strings in the FROZEN priority order
+# (PREREG v0.5 SS2). The strings below are the expected facet labels; they
+# MUST be confirmed verbatim against the s00 facet probe at Stage-B BEFORE any
+# live capture, and any correction is logged in DESIGN_RATIONALE.md. The s09b
+# pipeline is label-agnostic: it consumes this map and never hardcodes labels.
+priority:
+  - {genre: cem, docty: "Country Economic Memorandum"}
+  - {genre: scd, docty: "Systematic Country Diagnostic"}
+  - {genre: cpf, docty: "Country Partnership Framework"}

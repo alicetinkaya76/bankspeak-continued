@@ -1,0 +1,118 @@
+# Single source of truth. Scripts read this; no ad-hoc constants in code.
+project: bankspeak-continued
+seed: 20260806
+sampling_version: 2  # Stage-B runtime copy; see tools/build_stageb_runtime.py        # bump on any sampling-design change; never overwrite frozen CSVs
+contact_email: ali.cetinkaya@selcuk.edu.tr   # used in User-Agent for API politeness
+
+api:
+  base_url: "https://search.worldbank.org/api/v3/wds"
+  format: json
+  rows_per_page: 100
+  sleep_seconds: 0.6
+  max_retries: 5
+  backoff_base: 2.0
+  timeout: 60
+  lang_exact: "English"
+  fields:            # fl= list; keep minimal but sufficient
+    - id
+    - guid
+    - docdt
+    - docty
+    - majdocty
+    - display_title
+    - repnb
+    - volnb
+    - totvolnb
+    - count
+    - lang
+    - abstracts
+    - pdfurl
+    - txturl
+    - url
+
+years:
+  start: 1946
+  end: 2026
+
+strata:                       # docty_exact values VERIFIED via s00 facets + API probes, 2026-08-06.
+  annual_report:
+    docty_exact: ["World Bank Annual Report"]
+    per_year_cap: null        # take all volumes; dedupe by repnb, concat per fiscal year
+    note: >-
+      Direct continuation of Moretti-Pestre corpus. Facet 'World Bank Annual Report'
+      spans 1946-2025 (331 English docs); the generic 'Annual Report' facet is
+      trust-fund/IEG/facility annual reports (wrong genre). Label also carries
+      MIGA/ICSID annual reports -> filter by title/repnb at assembly (D11).
+  pad:
+    docty_exact: ["Project Appraisal Document"]
+    per_year_cap: 40
+    note: "Operational genre; API probe: 6,515 English docs, 1997-2026."
+  icr:
+    docty_exact: ["Implementation Completion and Results Report"]
+    per_year_cap: 40
+    note: >-
+      Single label suffices: plain 'Implementation Completion Report' is NOT an API
+      facet (total=0); the modern label spans 1994-2026 (8,534 English docs), i.e. it
+      absorbs the historical variant. 'Implementation Completion Report Review' is an
+      IEG review genre, deliberately excluded.
+
+sampling:
+  min_docs_per_cell: 5        # below this, s01 flags LOW; no widening is performed
+  cell: [year, stratum]
+
+assembly_qc:                  # per-assembled-unit extraction-quality gate (added 2026-08-07
+  min_tokens: 5000            # after third-eye audit found FY2002 = 12 tokens; legitimate
+  min_stopword_share: 0.15    # units are >=17k tokens and >=0.20 stopword share, defective
+                              # units (cover-sheet-only, table dumps) sit at <=0.01)
+
+markers:
+  tier1:   # strong LLM-associated words; provenance: excess-word literature (Kousha&Thelwall-style lists; Liang et al. distributional work)
+    [delve, delves, delved, delving,
+     underscore, underscores, underscored, underscoring,
+     showcase, showcases, showcased, showcasing,
+     pivotal, intricate, intricacies, meticulous, meticulously,
+     boast, boasts, boasted, commendable, realm, realms,
+     testament, tapestry, seamless, seamlessly, multifaceted]
+  tier2:   # bureaucratese shared by Bankspeak and LLM style; provenance: Pamphlet 9 vocabulary + WB usage
+    [foster, fosters, fostering, leverage, leverages, leveraging,
+     harness, harnesses, harnessing, robust, holistic, transformative,
+     innovative, resilient, resilience, sustainable, empower, empowers,
+     empowering, bold, vibrant, unlock, unlocking, landscape, crucial,
+     vital, accelerate, accelerating, scalable, strengthen, strengthening,
+     strengthens, stakeholder, stakeholders, governance]
+  mgmt_lexicon:  # D4 classic feature; curated from the pamphlet's highlighted management register
+    [governance, empowerment, stakeholder, stakeholders, partnership,
+     partnerships, capacity, sustainability, implementation, framework,
+     frameworks, alignment, synergies]
+
+perplexity:
+  models:            # pinned FROZEN instruments; training data predates ChatGPT (D6)
+    - {hf_id: "gpt2", revision: "607a30d783dfa663caf39e06633721c8d4cfcd7e", note: "2019; canonical frozen baseline; pinned 2026-08-09"}
+    - {hf_id: "EleutherAI/pythia-1.4b", revision: "fedc38a16eea3bd36a96b906d78d11d2ce18ed79", note: "Pile-trained; pre-ChatGPT data; pinned 2026-08-09"}
+  max_tokens_per_doc: 2048
+  stride: 512
+  device: auto        # mps on macOS, cuda if available, else cpu
+
+its:
+  breakpoint: "2023-01-01"
+  placebo_breakpoints: ["2016-01-01","2017-01-01","2018-01-01","2019-01-01","2020-01-01","2021-01-01"]
+  pre_trend_window_years: 8
+  newey_west_lags: 2
+
+imf_coveo:
+  # SAP addendum A1 (2026-08-19): Stage-B transport for the imf.org Article IV
+  # SPROLL listing. Endpoint + aq/cq filters are the ones the public page
+  # itself sends (diagnostics/20260819_sproll, probes P1-P4). The api_key is
+  # the site's PUBLIC Coveo search key, served to every visitor inside the
+  # page bundle; it may rotate - a rotation surfaces as 401/403 and the
+  # capture aborts fail-closed.
+  search_url: "https://imfproduction561s308u.org.coveo.com/rest/search/v2?organizationId=imfproduction561s308u"
+  api_key: "xx742a6c66-f427-4f5a-ae1e-770dc7264e8a"
+  # A3 (2026-08-19): one request must return a whole date window;
+  # 1000 is the servers cap and comfortably exceeds the largest
+  # observed year (335 in 2013). A window that still comes back
+  # truncated is split (year -> month -> day), never paginated.
+  page_size: 1000
+  sleep_seconds: 1.0
+  year_lo: 1946
+  year_hi: 2026

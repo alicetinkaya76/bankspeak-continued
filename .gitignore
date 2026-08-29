@@ -1,0 +1,7 @@
+# The corpus and its bibliographic frames never enter this repository.
+data/
+*.pdf
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

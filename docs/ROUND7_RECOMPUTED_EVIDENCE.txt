@@ -1,0 +1,229 @@
+# Round-7 recomputed evidence
+generated_utc=2026-08-10T20:50:23Z
+
+## Environment
+Python 3.13.5
+platform=Linux-6.18.35-x86_64-with-glibc2.41
+numpy=2.3.5
+pandas=2.2.3
+statsmodels=0.14.6
+pytest=9.0.2
+
+## Package identity
+3ebf7db6447b43e2e1e1d4f3481a3f7f57b316a931b6186c32756a649be174a3  /mnt/data/round7_package_20260810.zip
+zip_bytes=1718795
+zip_entry_count=122
+forbidden_entries=[]
+json={
+  "zip_sha256": "3ebf7db6447b43e2e1e1d4f3481a3f7f57b316a931b6186c32756a649be174a3",
+  "zip_bytes": 1718795,
+  "entry_count": 122,
+  "sha256sums_sha256": "304cc473e47a8e66833c1bf0f245636cf8cbe992efcf552fcdfd062ee28f91c4",
+  "manifest_sha256": "78f8aa6ef6a7734ea16a001b8f3c30e172de93d986dc9cb2050b3a8e10ba2ca1",
+  "python_version": "3.11.9",
+  "python_version_sha256": "61141e9590171b900fdf709e7ea8f050d5c2a69198d4a4a1977d7c45186307e5",
+  "requirements_sha256": "770300e1fcfcc4ff39d491f23d4a50111eb6ce8dae44df89bd818f88640ed8c9",
+  "requirements_ppl_sha256": "01020da68a9be519ffba0acb4caf686cbb8081b6e8d2b5e2b92429b63368a04e",
+  "requirements_lock_sha256": null,
+  "git_commit": "bfbfd0827a923910acfc35e53987fe5852001e26",
+  "logs": {
+    "tests": "e9aa84342d94876f5e52e48baa4208df2439ac9f3fe8d10f4aef06aa5e97f155",
+    "selftest": "8651f8f36048d0b3124911e932eaec96eb41053b0b380b6637c5130f66d3da40"
+  },
+  "ruling_sha256": null,
+  "built_utc": "2026-08-10T20:22:50+00:00"
+}
+
+## SHA256SUMS
+.python-version: OK
+Makefile: OK
+config/config.pilot.yaml: OK
+config/config.yaml: OK
+config/config.yaml.bak-pin: OK
+config/config.yaml.bak-round4: OK
+config/families.yaml: OK
+config/wb_country_aliases.yaml: OK
+config/wb_p0_docty.yaml: OK
+data/analysis/.gitkeep: OK
+data/analysis/its_results.csv: OK
+data/analysis/paper/F1_ar_assembled_classic.png: OK
+data/analysis/paper/F2_marker_tiers_by_stratum.png: OK
+data/analysis/paper/NUMBERS.md: OK
+data/analysis/paper/T1_corpus.csv: OK
+data/analysis/paper/T2_its.csv: OK
+data/analysis/paper/T3_power.csv: OK
+data/analysis/plot_annual_report_tier1_per1k.png: OK
+data/analysis/plot_icr_tier1_per1k.png: OK
+data/analysis/plot_pad_tier1_per1k.png: OK
+data/analysis/power.csv: OK
+data/analysis/robustness/breakpoint_rank_2023.csv: OK
+data/analysis/robustness/breakpoint_scan_tier1.csv: OK
+data/analysis/robustness/loyo_ar_tier1.csv: OK
+data/analysis/robustness/robust_aggregation.csv: OK
+data/analysis/robustness/tier1_decomposition.csv: OK
+data/features/.gitkeep: OK
+data/features/ar_fy_features.csv: OK
+data/features/classic.csv: OK
+data/features/family_counts.csv: OK
+data/features/markers.csv: OK
+data/features/ppl.csv: OK
+data/meta/ar_assembly_log.csv: OK
+data/meta/ar_unit_qc.csv: OK
+data/meta/download_failures.csv: OK
+data/meta/extraction_log.csv: OK
+data/meta/extraction_log_v2.csv: OK
+data/meta/frozen_sampling_v1.csv: OK
+data/meta/manifest.tsv: OK
+docs/DATA_LICENSES.md: OK
+docs/DESIGN_RATIONALE.md: OK
+docs/PAPER_DRAFT_v0.md: OK
+docs/PREREG_DRAFT_v0.1.md: OK
+docs/PREREG_DRAFT_v0.2.md: OK
+docs/PREREG_DRAFT_v0.3.md: OK
+docs/PREREG_DRAFT_v0.4.md: OK
+docs/PREREG_DRAFT_v0.5.md: OK
+docs/PREREG_v0.4_AMENDMENTS.md: OK
+docs/PREREG_v0.5_AMENDMENTS.md: OK
+docs/RESPONSE_TO_REVIEW.md: OK
+docs/ROUND2_AUDIT_COMPLETION.md: OK
+docs/ROUND2_AUDIT_COMPLETION_v1.1.md: OK
+docs/ROUND2_AUDIT_COMPLETION_v1.2.md: OK
+docs/ROUND2_AUDIT_COMPLETION_v1.3_ADDENDUM.md: OK
+docs/ROUND3_THIRD_EYE_REVIEW.md: OK
+docs/ROUND4_THIRD_EYE_REVIEW.md: OK
+docs/ROUND6_BUILD_PLAN.md: OK
+docs/ROUND7_KIT_NOTES.md: OK
+docs/STAGE0_REPORT.md: OK
+docs/STAGE_A_FREEZE_RECORD.md: OK
+docs/STAGE_A_FREEZE_RECORD_v2.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v2.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v3.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v4.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v5.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v6.md: OK
+docs/THIRD_EYE_REVIEW_PROMPT_v7.md: OK
+docs/round2_external_review.md: OK
+docs/round5_method_defect_evidence.json: OK
+docs/round5_verification_summary.json: OK
+requirements-ppl.txt: OK
+requirements.txt: OK
+src/apply_patches.py: OK
+src/backfill_provenance.py: OK
+src/bootstrap_engine.py: OK
+src/families.py: OK
+src/g1_audit.py: OK
+src/make_cells_template.py: OK
+src/mde_sim.py: OK
+src/percell_seed.py: OK
+src/pin_model_revisions.py: OK
+src/s00_discover_facets.py: OK
+src/s01_fetch_metadata.py: OK
+src/s02_download_texts.py: OK
+src/s03_extract_text.py: OK
+src/s04_features_classic.py: OK
+src/s05_features_markers.py: OK
+src/s05b_family_counts.py: OK
+src/s06_perplexity_panel.py: OK
+src/s06_perplexity_panel.py.bak-round4: OK
+src/s07_power_analysis.py: OK
+src/s08_its_analysis.py: OK
+src/s08_its_analysis.py.bak-round4: OK
+src/s09_frame_sampler.py: OK
+src/s09_imf_comparator_stub.py: OK
+src/s09a_imf_articleiv_frame.py: OK
+src/s09b_wb_p0_frame.py: OK
+src/s10_assemble_ar.py: OK
+src/s11_paper_artifacts.py: OK
+src/s12_robustness.py: OK
+src/s13_validation_battery.py: OK
+src/standardize.py: OK
+src/textstats.py: OK
+src/utils.py: OK
+tests/test_assembly_rules.py: OK
+tests/test_battery.py: OK
+tests/test_bootstrap_smoke.py: OK
+tests/test_cells_template.py: OK
+tests/test_families.py: OK
+tests/test_features_smoke.py: OK
+tests/test_g1_audit.py: OK
+tests/test_imf_frame.py: OK
+tests/test_packager.py: OK
+tests/test_percell_seed.py: OK
+tests/test_sampler.py: OK
+tests/test_standardize.py: OK
+tests/test_wb_frame.py: OK
+tools/build_audit_package.py: OK
+tools/build_audit_package.py.bak: OK
+MANIFEST.tsv: OK
+
+## MANIFEST validation
+header=path	bytes	sha256
+manifest_rows=120
+manifest_failures=[]
+spotcheck=[('.python-version', True, True), ('Makefile', True, True), ('config/config.pilot.yaml', True, True), ('config/config.yaml', True, True), ('config/config.yaml.bak-pin', True, True)]
+
+## Pytest
+..................................................                       [100%]
+50 passed in 9.99s
+
+## Selftest
+[selftest null-large] beta=-0.137 p=0.117 ci=[-0.3, 0.011] beta_in_ci=True floored=0.0000 alpha=0.000 governing=ci_percentile
+[selftest effect-large] beta=+0.765 p=0.003 ci=[0.623, 0.898] beta_in_ci=True floored=0.0000 alpha=0.000 governing=ci_percentile
+[selftest null-small] beta=+1.104 p=0.193 ci=[0.157, 2.02] beta_in_ci=True floored=0.0316 alpha=0.000 governing=ci_percentile
+[selftest nb2-overdispersed] beta=-0.310 p=0.257 ci=[-0.922, 0.259] beta_in_ci=True floored=0.0000 alpha=0.035 governing=ci_percentile
+[selftest duplicate-rejection] OK (duplicate institution-year cells: [('WB', 1994)]...)
+
+## MDE smoke
+{
+  "crit_abs_z": 5.043422061750127,
+  "boot_size_at_null": 0.1,
+  "wald_boot_concordance": 0.9,
+  "calibration_ok": false,
+  "ncal": 10,
+  "B": 199,
+  "sigma_delta": 0.1
+}
+[mde] curve decision engine: full_nested_pass_p
+ theta  power_p1  power_p2  power_family
+   0.0  0.033333  0.000000      0.033333
+   0.9  0.900000  0.933333      0.933333
+[mde] family MDE80 = 0.9 (engine=full_nested_pass_p, companion=full, sigma_delta=0.1)
+
+## Targeted counterexamples
+<stdin>:14: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '1000000.4' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+/opt/pyvenv/lib/python3.13/site-packages/statsmodels/genmod/generalized_linear_model.py:1342: PerfectSeparationWarning: Perfect separation or prediction detected, parameter may not be identified
+  warnings.warn(msg, category=PerfectSeparationWarning)
+integer_contract=ACCEPTED_1000000.4
+std_pi={'A': 0.5, 'B': 0.5}
+std_feasible=True ess=[{'institution': 'IMF', 'period': 'post', 'ess': 2250000.0, 'total_tokens': 3000000.0, 'ok': True}, {'institution': 'IMF', 'period': 'pre', 'ess': 1500000.0, 'total_tokens': 1500000.0, 'ok': True}, {'institution': 'WB', 'period': 'post', 'ess': 2250000.0, 'total_tokens': 3000000.0, 'ok': True}, {'institution': 'WB', 'period': 'pre', 'ess': 1500000.0, 'total_tokens': 2000000.0, 'ok': True}] min_cov={'IMF': 1.0, 'WB': 1.0}
+actual_post_token_support_WB=0.750
+actual_post_token_support_IMF=0.750
+gap_bins_error=StopIteration: 
+g1_16_rows={'n': 16, 'n_pass': 16, 'g1_pass': True, 'title_only_n': 0}
+holm_none_p0_not_failed={'state': 'fallback', 'viable': [], 'alpha': 0.05, 'p0_failed': False, 'decisions': {}, 'family_pass': False, 'passing_panels': [], 'headline_template': None}
+imf_trinidad_and_tobago=excluded_regional_multicountry
+wb_trinidad_and_tobago=(None, 'excluded_regional_multicountry')
+imf_fssa={'status': 'included', 'fssa_cotitled': True, 'country_iso3': 'CAN', 'report_no': 'CR2024-321'}
