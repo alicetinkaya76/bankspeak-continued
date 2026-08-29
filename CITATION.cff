@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software or its design record, please cite it."
+title: "Bankspeak, Continued — analysis code and frozen design record"
+abstract: >-
+  Analysis code, test suite and complete frozen design record for an independent
+  reconstruction of Moretti and Pestre's Bankspeak (2015) from primary World Bank
+  documents, extended to fiscal 2024, together with a two-stage preregistered
+  test of whether post-2022 LLM-associated vocabulary shows a World Bank
+  discontinuity relative to an IMF Article IV comparator. The confirmatory result
+  is negative: no panel satisfies the preregistered decision rule. The corpus
+  itself is not included; the IMF material is held under a permission forbidding
+  redistribution and is represented by SHA-256 hashes in a separate evidence
+  deposit.
+authors:
+  - family-names: "Çetinkaya"
+    given-names: "Ali"
+    email: "kapsul.yonetim@gmail.com"
+type: software
+keywords:
+  - computational humanities
+  - corpus linguistics
+  - institutional discourse
+  - preregistration
+  - null result
+  - interrupted time series
+  - World Bank
+  - large language models
+repository-code: "https://github.com/alicetinkaya76/bankspeak-continued"
+references:
+  - type: data
+    title: "Stage-A preregistration"
+    doi: "10.17605/OSF.IO/5C9J8"
+    authors:
+      - family-names: "Çetinkaya"
+        given-names: "Ali"
+  - type: data
+    title: "Stage-B statistical analysis plan (frozen, externally timestamped)"
+    doi: "10.5281/zenodo.22098259"
+    authors:
+      - family-names: "Çetinkaya"
+        given-names: "Ali"

@@ -94,9 +94,12 @@ disagree, the table is wrong.
 
 ## Licence
 
-**Not yet set.** The licence for this code is the author's decision and has not
-been made; until a `LICENSE` file appears here, default copyright applies. If you
-want to reuse any of it, open an issue.
+**Code** (`src/`, `tools/`, `tests/`, `config/`) — MIT, see [`LICENSE`](LICENSE).
+**Documentation** (`docs/`) — CC BY 4.0, see [`LICENSE-docs`](LICENSE-docs).
+
+Neither licence extends to World Bank or IMF material, none of which is in this
+repository. The IMF corpus is held under a permission forbidding redistribution;
+World Bank content is public disclosure under its Access to Information Policy.
 
 ## Citation
 
