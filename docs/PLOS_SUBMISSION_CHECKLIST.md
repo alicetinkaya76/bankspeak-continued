@@ -216,7 +216,11 @@ python tools/retrieval_route_tally.py              # 705/4/1/354, documents not 
 python tools/check_deposit_covers_generators.py    # REFUSES today, by design
 ```
 
-`check_deposit_covers_generators.py` exits non-zero on purpose: five generator
-inputs are in no deposit list, and which of them may travel is a licence question
-reserved for the author. It fails loudly so the decision is taken rather than
-discovered by a referee running the regeneration command.
+`check_deposit_covers_generators.py` **now exits 0.** It was written to refuse
+while five generator inputs were in no deposit list; the licence question behind
+that was decided on 2026-08-30 and is recorded in `ROUND15_RESPONSE.md`. Four of
+the five travel unchanged; the frozen sampling frame is deposited with
+`display_title`, `txturl` and `pdfurl` dropped, because those carry verbatim IMF
+titles and document URLs and no generator reads them. The deposit was then
+unpacked and the promised command run against it: all seven tables came out
+byte-identical.

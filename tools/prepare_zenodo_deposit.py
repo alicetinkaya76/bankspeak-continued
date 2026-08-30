@@ -29,6 +29,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
+import re
 import hashlib
 import shutil
 import sys
@@ -117,7 +119,78 @@ HASH_ONLY_FILES = [
     "data/meta/imf_articleiv_frame.csv",
     "data/meta/imf_retrieval/_manifest.csv",
     "data/meta/imf_retrieval/_verification.csv",
+    # The unredacted frozen sample. Its redacted twin is deposited at the same
+    # path (see REDACT_FILES); the original is hashed here so a holder of the
+    # licensed material can still confirm byte identity with what we analysed.
+    "data/meta/frozen_sampling_v2.csv",
 ]
+
+# --- the five inputs the table and figure generators read ------------------
+#
+# The data-availability statement promises that every table regenerates from the
+# deposit by a named command. It could not: none of these was staged, and
+# `make_paper_tables.py` died on a ZeroDivisionError because Table 1's
+# denominator comes from a file that was not there.
+#
+# Four of the five travel unchanged. Their identifying column is a report
+# number, which `data/meta/imf_document_index.csv` already publishes as permitted
+# derived output, and their `path` column is `stratum/year/id` — it names no
+# title and no URL.
+INCLUDE_FILES += [
+    "data/meta/extraction_log.csv",
+    "data/meta/ocr_log.csv",
+    "data/features/classic.csv",
+    "data/features/family_counts.csv",
+]
+
+# The fifth cannot travel whole. `frozen_sampling_v2.csv` carries
+# `display_title` and `pdfurl` for all 1,064 IMF documents — verbatim titles and
+# imf.org document URLs, which is the bibliographic frame the permission forbids
+# redistributing, and precisely what this project has refused to publish
+# elsewhere.
+#
+# The decision is to drop those columns rather than the file, and to drop them
+# for EVERY row rather than only the IMF ones. Two reasons. The World Bank's
+# titles and URLs are public and could travel, but neither generator reads any of
+# the three columns — checked, zero occurrences — so keeping them buys nothing,
+# and the WB raw API captures are already deposited in full, so no provenance is
+# lost. And a whole-column rule cannot leak through a misclassified row, which a
+# row-conditional rule can.
+#
+# What survives is what Table 1 actually needs: id, stratum, year, docdt, repnb.
+REDACT_FILES = [
+    ("data/meta/frozen_sampling_v2.csv",
+     ("display_title", "txturl", "pdfurl"),
+     "redacted: IMF titles and document URLs dropped; unredacted original "
+     "hashed above so byte identity stays verifiable"),
+]
+
+# Signatures that must not survive redaction. Checked on the written bytes, not
+# on the plan, because the plan is what one believes and the bytes are what ships.
+REDACT_MUST_NOT_CONTAIN = [
+    (re.compile(r"imf\.org", re.I), "imf.org URL"),
+    (re.compile(r"(?i)staff\s+report\s+for\s+the"), "Article IV title boilerplate"),
+    (re.compile(r"(?i)article\s+iv\s+consultation"), "Article IV title boilerplate"),
+    (re.compile(r"10\.5089/"), "IMF DOI prefix"),
+]
+
+
+def redact_csv(src: Path, drop: tuple[str, ...]) -> str:
+    """Return the file's text with the named columns removed."""
+    with src.open(newline="", encoding="utf-8") as fh:
+        rd = csv.DictReader(fh)
+        keep = [c for c in (rd.fieldnames or []) if c not in drop]
+        missing = [c for c in drop if c not in (rd.fieldnames or [])]
+        if missing:
+            raise SystemExit(f"[deposit] REFUSING: {src.name} has no column(s) "
+                             f"{missing}; the redaction plan does not match the "
+                             "file and would ship it unchanged")
+        buf = io.StringIO()
+        w = csv.DictWriter(buf, fieldnames=keep, lineterminator="\n")
+        w.writeheader()
+        for r in rd:
+            w.writerow({c: r[c] for c in keep})
+    return buf.getvalue()
 
 
 def sha256(path: Path) -> str:
@@ -170,6 +243,32 @@ def main(argv: list[str] | None = None) -> int:
                 d = out / "payload" / r
                 d.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(f, d)
+    # Redacted files go into the payload at their ORIGINAL path, so an unpacked
+    # deposit is a working tree and `python tools/make_paper_tables.py` runs
+    # against it with no rewiring. The manifest carries the redacted bytes' hash;
+    # the original's hash is in the hash-only block.
+    for rel, drop, note in REDACT_FILES:
+        src = ROOT / rel
+        if not src.exists():
+            print(f"[deposit] missing, skipped: {rel}")
+            continue
+        text = redact_csv(src, drop)
+        for pat, what in REDACT_MUST_NOT_CONTAIN:
+            if pat.search(text):
+                raise SystemExit(f"[deposit] REFUSING: {what} survived redaction "
+                                 f"of {rel}. Dropping {drop} was not enough; the "
+                                 "column plan is wrong, not the check.")
+        digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        rows.append({"path": rel, "disposition": "deposited_redacted",
+                     "bytes": len(text.encode("utf-8")), "sha256": digest,
+                     "note": note})
+        n_inc += 1
+        bytes_inc += len(text.encode("utf-8"))
+        if a.copy:
+            d = out / "payload" / rel
+            d.parent.mkdir(parents=True, exist_ok=True)
+            d.write_text(text, encoding="utf-8")
+
     for rel, note in HASH_ONLY_TREES + [(f, "") for f in HASH_ONLY_FILES]:
         for f in walk(rel):
             rows.append({"path": f.relative_to(ROOT).as_posix(),

@@ -200,41 +200,67 @@ Checked against the sources, with every URL fetched:
 - Table 4's PASS-E intervals are relabelled "nominal 95%; coverage not
   established," since no coverage study exists.
 
-## Still open
+## The deposit decision, taken
 
-**One item, and it is the author's by the project's own rule.** Everything else
-the review raised has been verified and acted on above.
+The one item left open above was the licence position of five files the
+generators read. The author delegated it, so it is decided here, and the
+reasoning is recorded because a licence call should be auditable.
 
-- **The deposit stages none of the five inputs the generators read**, so "each
-  table regenerates by a named command" would fail even after upload. I
-  reproduced the gap independently — `tools/check_deposit_covers_generators.py`
-  parses the generators for data paths, checks them against the deposit's include
-  and hash-only lists, and now **refuses** rather than letting the promise fail
-  silently at a referee's terminal:
+**Where the decision actually lives is columns, not files.** Inspecting all five
+against IMF signatures:
 
-  ```
-  generators read 14 data files; 9 covered by the deposit
-     NOT DEPOSITED  data/features/classic.csv
-     NOT DEPOSITED  data/features/family_counts.csv
-     NOT DEPOSITED  data/meta/extraction_log.csv
-     NOT DEPOSITED  data/meta/frozen_sampling_v2.csv
-     NOT DEPOSITED  data/meta/ocr_log.csv
-  ```
+| file | what identifies a document | verdict |
+|---|---|---|
+| `data/features/classic.csv` | `id` only, plus numeric features | deposit unchanged |
+| `data/features/family_counts.csv` | `id` only, plus counts | deposit unchanged |
+| `data/meta/extraction_log.csv` | `id`, and `path` = `stratum/year/id` | deposit unchanged |
+| `data/meta/ocr_log.csv` | same, plus page and character counts | deposit unchanged |
+| `data/meta/frozen_sampling_v2.csv` | **`display_title` and `pdfurl` for all 1,064 IMF rows** | deposit redacted |
 
-  **The fix is not "stage these five", and the tool deliberately does not do it.**
-  `frozen_sampling_v2.csv` carries `display_title`, `txturl` and `pdfurl` for all
-  1,064 IMF documents — the verbatim bibliographic frame the permission forbids
-  redistributing — so it cannot be deposited whole, and it is the file Table 1's
-  denominator comes from. `ocr_log.csv` carries IMF report numbers.
-  `classic.csv` and `family_counts.csv` carry report-number ids plus numeric
-  features only, which is the same class as the already-published
-  `imf_document_index.csv`. `extraction_log.csv` shows no IMF signature at all.
+The identifier in the first four is a report number, which
+`data/meta/imf_document_index.csv` **already publishes** as permitted derived
+output under §5 of the permission, and their `path` column is `stratum/year/id` —
+it names no title and no URL. Nothing new travels.
 
-  Five files, four different licence positions. CLAUDE.md forbids auto-resolving
-  borderline include/exclude cases, and this is one, so the inventory is here and
-  the call is the author's. A redacted frozen sample — ids, strata and years
-  without titles or URLs — is the obvious candidate for Table 1, but proposing it
-  is as far as a script should go.
+The fifth is the only real case. Checked per institution: its 1,064 IMF rows
+carry `display_title` (verbatim Article IV titles) and `pdfurl`
+(`www.imf.org/external/pubs/ft/scr/…`), which is exactly the bibliographic frame
+this project has refused to publish everywhere else. Its 2,738 World Bank rows
+carry World Bank titles and `documents.worldbank.org` URLs, which are public
+disclosure and unrestricted.
+
+**Decision: drop `display_title`, `txturl` and `pdfurl` — for every row, not only
+the IMF ones.** Two reasons, and the second is why it is not over-cautious:
+
+1. **Neither generator reads any of the three.** I checked every column subscript
+   in `make_paper_tables.py` and `make_paper_figures.py`: zero occurrences. The
+   World Bank's titles and URLs could lawfully travel and buy nothing, and the WB
+   raw API captures are already deposited in full, so no provenance is lost.
+2. **A whole-column rule cannot leak through a misclassified row.** A
+   row-conditional blanking would be one bad institution label away from
+   publishing a title. The stricter rule is also the simpler one to verify.
+
+What survives is `id, stratum, year, docdt, repnb` — what Table 1's denominator
+actually needs. The unredacted original is listed in the manifest by SHA-256, so
+dropping columns costs no verifiability: a holder of the licensed material can
+still confirm byte identity with the file we analysed.
+
+**Verified, not asserted.** The deposit was built, unpacked as `data/`, and the
+promised command run against it:
+
+```
+$ python tools/make_paper_tables.py        # in a tree whose data/ is the deposit
+[tables] wrote docs/tables/T1_corpus.md … T7_standardization.md
+```
+
+All seven tables came out **byte-identical** to the repository's, and all four
+figures regenerated. `tools/check_deposit_covers_generators.py` now exits 0
+instead of refusing, and `tests/test_deposit_redaction.py` pins the plan, the
+hash of the original, and a refusal when the column plan does not match the file.
+
+**What this does not do.** It does not deposit the retrieval manifest, whose
+bytes carry IMF document URLs and which stays hash-only; the data-availability
+statement now says so rather than citing it as though a reader could open it.
 
 Nothing in this list touches the confirmatory null, which both estimand
 reviewers reproduced bit-identically from the deposited cells
