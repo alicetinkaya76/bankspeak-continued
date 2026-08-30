@@ -122,8 +122,14 @@ World Bank content is public disclosure under its Access to Information Policy.
 This repository is archived with a DOI:
 
 > Çetinkaya, A. (2026). *Bankspeak, Continued — analysis code and frozen design
-> record* (v1.1.0). Zenodo. https://doi.org/10.5281/zenodo.22158882
+> record*. Zenodo. https://doi.org/10.5281/zenodo.22152944
 
-`10.5281/zenodo.22152944` is the concept DOI and always resolves to the latest
-version. `CITATION.cff` carries machine-readable metadata. Until the paper is
+That is the **concept DOI**: it always resolves to the latest version, so it
+cannot go stale the way a version DOI in a file inside that same version does.
+The current release is v1.2.0 (`10.5281/zenodo.22168611`).
+
+**Do not cite v1.0.0 or v1.1.0.** Neither archive can run its own test suite:
+`pytest tests/ -q` in either dies with twelve collection errors and runs zero
+tests, because the export filter stripped two of this project's own source
+modules. v1.2.0 is the first release that runs. `CITATION.cff` carries machine-readable metadata. Until the paper is
 published, cite the preregistration DOIs above alongside it.
