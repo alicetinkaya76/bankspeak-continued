@@ -349,3 +349,56 @@ that does not survive is any that treats a bound barely clearing zero as evidenc
 S6.3 shows are not a neutral subsample, and both facts point the same way.
 
 Reproduce with `python tools/passe_coverage.py 400 499`.
+
+### S10.4 The calibrations were run under the wrong null
+
+S9 and S10.1 measure size under i.i.d. per-cell noise — Poisson, or gamma-mixed
+Poisson for overdispersion. Neither carries any serial dependence. **That is a
+defect in those studies, and it was found by an external reading rather than
+here.**
+
+It matters because of what the blocks are for. Under an i.i.d. null a three-year
+block has nothing to absorb, so S10.1's conclusion — that the residual inflation
+must live in the block construction — was a diagnosis by elimination that could
+not perform the elimination. It could not separate *blocking is failing* from
+*blocking is unnecessary against this null*.
+
+The preregistration names a different process, and `src/mde_sim.py` implements it
+for the power analysis: a World-Bank-specific **differential AR(1) shock**,
+δ_t = ρ·δ_{t−1} + N(0, σ_δ) with ρ = 0.5 and σ_δ = 0.3205, which the analysis plan
+identifies as the binding constraint on power. Differential rather than common,
+because a shock hitting both institutions in a year is absorbed by the saturated
+year dummies — a fact the preregistration had itself recorded, and the reason it
+replaced the common shock. Blocks exist to absorb exactly this. So the same size
+study, run under it: 800 replicates, Monte Carlo standard error 0.008.
+
+| panel | null | size at nominal 0.05 | median null *p* |
+|---|---|---:|---:|
+| P1 | i.i.d. Poisson (what S9 and S10.1 used) | **0.064** | 0.330 |
+| P1 | preregistered differential AR(1) | **0.139** | 0.247 |
+| P1 | AR(1) plus the corrected dispersion | **0.121** | 0.277 |
+| P2 | i.i.d. Poisson (what S9 and S10.1 used) | **0.048** | 0.305 |
+| P2 | preregistered differential AR(1) | **0.101** | 0.269 |
+| P2 | AR(1) plus the corrected dispersion | **0.107** | 0.275 |
+
+**Under the process the design was preregistered against, the governing test
+rejects two to three times as often as it claims.** 0.139 on P1 and 0.101 on P2,
+against a nominal 0.05 — where the i.i.d. nulls gave 0.064 and 0.048.
+
+Three things follow.
+
+The **size problem is driven by serial dependence, not by overdispersion**. The
+i.i.d. NB2 arms of S9 and S10.1 were measuring a smaller, different thing.
+
+The **block-construction diagnosis survives**, and now on evidence that can carry
+it: nine three-year blocks exist to absorb serial dependence, and against the
+dependence the preregistration specified they do not absorb enough. That the post
+window is exactly block nine (§6.2) is the sharp end of the same problem.
+
+And **P1's *p* = 0.0142 is weaker still** than S9 and S10.1 made it. A test that
+rejects 14% of the time under its own preregistered null does not support a
+nominal 0.0142 at face value. The preregistered rule declined to confirm that
+panel on other grounds; this says the ground it *did* pass was softer than it
+looked.
+
+Reproduce with `python tools/ar1_null_calibration.py 800 599`.

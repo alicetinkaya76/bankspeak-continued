@@ -3,6 +3,10 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+b48de80  2026-08-30  Every calibration in this paper was run under a null that could not test it
+68743d9  2026-08-30  Check that sixteen rounds of renumbering left no reference pointing nowhere
+d55d4d9  2026-08-30  The kit did not carry the evidence for the section the paper now leans on
+954339d  2026-08-30  Two guards that were passing for the wrong reason
 d34bf01  2026-08-30  The intervals do not cover, and the number is 0.81
 7b13387  2026-08-30  Three of the reviewer's seven citations do not belong, and my auditor had a hole
 1276718  2026-08-30  Every one of H-SHARED's 1,607 discarded draws failed the same way

@@ -777,11 +777,22 @@ Second, **the correction does not fix the size**. Under a null carrying the
 dispersion the corrected estimator itself reports, empirical size at a nominal
 0.05 is 0.078 on P1 corrected against 0.081 frozen, and 0.065 on both for P2
 (3,000 replicates, Monte Carlo standard error 0.004). The inflation is therefore
-**not** coming from the dispersion estimator, and the remedy a referee would
-naturally prescribe does not deliver a correctly sized test here. What remains is
-the block structure itself: nine blocks, a 512-point discrete support, and a
-studentisation whose denominator is estimated from the same nine sums. We report
-this because it is the more useful finding and because it is against us.
+not coming from the dispersion estimator.
+
+**And those nulls were the wrong ones.** Every calibration to this point drew
+i.i.d. per-cell noise, which is a poor test of machinery whose blocks exist to
+absorb serial dependence — a defect an external reading found, not us. Rerun
+against the process the preregistration actually specifies, a World-Bank-specific
+differential AR(1) shock at ρ = 0.5 and σ_δ = 0.3205, the size is **0.139 on P1
+and 0.101 on P2** (supplement S10.4). Two to three times nominal, where the
+i.i.d. nulls gave 0.064 and 0.048.
+
+So the size problem is serial dependence rather than overdispersion, the block
+construction is where it lives — nine blocks, a 512-point support, a
+studentisation estimated from the same nine sums, and a post window that is
+exactly one of them — and **P1's *p* = 0.0142 is softer than any figure this
+paper has previously attached to it.** We report this because it is the more
+useful finding and because it is against us.
 
 **The documents seen at Stage A do not carry the result.** 748 Stage-B World Bank
 documents were also in the Stage-A frame, so the design is sequential rather than
@@ -1082,10 +1093,12 @@ where they gate anything — and both conditions that use them failed on the
 coefficient, not on the width. A reader treating the
 apparatus as reusable should establish both first, and should note that the null
 *p*-value distribution is not uniform. **A degrees-of-freedom correction to the
-dispersion estimator is not the fix**: supplement S10 applies one and the size
-does not move (0.078 against 0.081 on P1), which locates the problem in the nine-
-block construction rather than in the variance estimate. The design-level remedy
-is more blocks, and more blocks means more years.
+dispersion estimator is not the fix**: supplement S10.1 applies one and the size
+does not move. Nor is dispersion the problem — under the differential AR(1) shock
+the preregistration specifies, size reaches **0.139** (S10.4), against 0.064 under
+an i.i.d. null. The fault is serial dependence and the nine-block construction
+that was meant to absorb it. The design-level remedy is more blocks, and more
+blocks means more years.
 
 **Provenance and access.** 748 of 2,738 documents (27.3%) in the Stage-B World
 Bank sample had their outcomes inspected at Stage-A. The IMF half of the contrast

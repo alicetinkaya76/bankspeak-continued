@@ -1,3 +1,7 @@
+**SUPERSEDED by THIRD_EYE_PROMPT_v5_20260830.md** — v4 predates round 16.
+
+---
+
 # Third-eye brief v4 — final pre-submission review for PLOS ONE
 
 Supersedes `THIRD_EYE_PROMPT_v3_20260829.md`, which predates round 15.

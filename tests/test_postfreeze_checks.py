@@ -130,3 +130,34 @@ def test_coverage_is_worse_under_the_dispersion_the_data_suggest():
         pois = [v["coverage"] for k, v in cells.items() if k.endswith("poisson")]
         nb2 = [v["coverage"] for k, v in cells.items() if k.endswith("nb2_corrected")]
         assert sum(nb2) / len(nb2) < sum(pois) / len(pois), panel
+
+
+# --- the null the design was preregistered against -----------------------------
+
+_ar1 = _load("ar1_null_calibration")
+AR1_JSON = ROOT / "data" / "analysis" / "ar1_null_calibration.json"
+
+
+def test_the_ar1_null_uses_the_preregistered_parameters():
+    """rho and sigma_delta must be the preregistration's, not convenient ones."""
+    assert _ar1.RHO == 0.5
+    assert abs(_ar1.SIGMA_DELTA - 0.3205) < 1e-9
+
+
+def test_the_shock_is_differential_not_common():
+    """A shock hitting both institutions in a year is absorbed by the saturated
+    year dummies — the defect the preregistration recorded and replaced. If this
+    became common, the study would silently measure nothing again."""
+    src = (ROOT / "tools" / "ar1_null_calibration.py").read_text(encoding="utf-8")
+    assert "wb_mask *" in src or "wb_mask*" in src, "the shock is no longer WB-specific"
+
+
+@pytest.mark.skipif(not AR1_JSON.exists(), reason="run tools/ar1_null_calibration.py")
+def test_size_is_worse_under_serial_dependence_than_under_iid():
+    """The finding S10.4 rests on. If these ever converge, the supplement's
+    diagnosis — that the fault is serial dependence, not overdispersion — is
+    stale and must be rewritten rather than quietly left standing."""
+    d = json.loads(AR1_JSON.read_text())
+    for panel, arms in d["panels"].items():
+        assert arms["ar1"]["size_05"] > arms["poisson"]["size_05"], panel
+        assert arms["ar1"]["size_05"] > 0.09, (panel, arms["ar1"])

@@ -170,3 +170,37 @@ def test_the_audit_source_no_longer_uses_a_bare_substring_test():
     src = (ROOT / "tools" / "audit_citations.py").read_text(encoding="utf-8")
     assert "n not in body" not in src, "the substring uncited-check is back"
     assert "(?<![A-Za-zÀ-ÿ])" in src
+
+
+# --- internal cross-references -------------------------------------------------
+
+def test_every_internal_cross_reference_resolves():
+    r = subprocess.run([sys.executable,
+                        str(ROOT / "tools" / "check_cross_references.py")],
+                       capture_output=True, text=True, timeout=120)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_the_cross_reference_check_can_fail(tmp_path, monkeypatch):
+    """A reference to a section that does not exist must be caught. Without this
+    the clean verdict above could mean the pattern matches nothing at all."""
+    spec = importlib.util.spec_from_file_location(
+        "check_cross_references", ROOT / "tools" / "check_cross_references.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    fake = tmp_path / "p.md"
+    fake.write_text("## 1. Intro\n\nAs shown in §9.9 and Table 42.\n", encoding="utf-8")
+    monkeypatch.setattr(m, "PAPER", fake)
+    monkeypatch.setattr(m, "SUPP", tmp_path / "absent.md")
+    assert m.main() == 1
+
+
+def test_a_preregistration_reference_is_not_read_as_an_internal_one():
+    """§11.5 in this manuscript is the PREREGISTRATION's §11.5. A naive pattern
+    reports three false dangling references on that alone."""
+    paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
+    assert "PREREG §11.5" in paper, "the qualified form this guards is gone"
+    r = subprocess.run([sys.executable,
+                        str(ROOT / "tools" / "check_cross_references.py")],
+                       capture_output=True, text=True, timeout=120)
+    assert "section 11.5" not in r.stdout

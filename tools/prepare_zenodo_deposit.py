@@ -141,6 +141,12 @@ INCLUDE_FILES += [
     "data/meta/ocr_log.csv",
     "data/features/classic.csv",
     "data/features/family_counts.csv",
+    # Table 3c's only source. It maps each Annual-Report file to the rule that
+    # excluded it, and without it no outside reader can rebuild the
+    # sibling/duplicate split the corpus-boundary result now rests on. It carries
+    # ids, years, decisions and rules; the display_title column travels because
+    # these are World Bank titles, public under the Access to Information Policy.
+    "data/meta/ar_assembly_log.csv",
 ]
 
 # The fifth cannot travel whole. `frozen_sampling_v2.csv` carries

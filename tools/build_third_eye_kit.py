@@ -131,6 +131,35 @@ INCLUDE = [
      "the two experiments behind S9 — recovery and size, 1,000 replicates each"),
     ("data/analysis/retrieval_route_tally.json", "06_machine_output",
      "per-document retrieval routes, 705/4/1/354, against 1,120 attempt rows"),
+    # Round 16. The manuscript now cites S10 and Table 3c; without these the
+    # reviewer is asked to take three simulations and a decomposition on trust.
+    ("data/analysis/ar_exclusion_classes.json", "06_machine_output",
+     "Table 3c: what the 195 excluded Annual-Report files are, by class and trend"),
+    ("data/meta/ar_assembly_log.csv", "06_machine_output",
+     "the assembler's rule per document — Table 3c's only source, and the only "
+     "file that maps a volume to IFC vs MIGA vs ICSID"),
+    ("tools/ar_exclusion_classes.py", "07_code",
+     "what builds it, from the assembler's own logged rule per document"),
+    ("data/analysis/dispersion_robust_inference.json", "06_machine_output",
+     "S10.1: the d.o.f.-corrected dispersion, the exact p under it, and the size "
+     "it does NOT repair"),
+    ("tools/dispersion_robust_inference.py", "07_code",
+     "the post-freeze size-controlled analysis; the frozen engine is untouched"),
+    ("data/analysis/stage_a_exposure_sensitivity.json", "06_machine_output",
+     "S10.2: the panels rerun without every Stage-A-inspected document"),
+    ("tools/stage_a_exposure_sensitivity.py", "07_code", "what reruns them"),
+    ("data/analysis/ar1_null_calibration.json", "06_machine_output",
+     "S10.4: size under the preregistered differential AR(1) shock — 0.139 and "
+     "0.101 against a nominal 0.05, where the i.i.d. nulls gave 0.064 and 0.048"),
+    ("tools/ar1_null_calibration.py", "07_code",
+     "the calibration run against the null the design was preregistered against, "
+     "after an external reading found every earlier one used i.i.d. noise"),
+    ("data/analysis/passe_coverage.json", "06_machine_output",
+     "S10.3: measured PASS-E interval coverage against a nominal 0.95"),
+    ("tools/passe_coverage.py", "07_code", "the coverage study"),
+    ("data/analysis/hshared_draw_diagnostics.json", "06_machine_output",
+     "why all 1,607 discarded H-SHARED draws failed the same way"),
+    ("tools/hshared_draw_diagnostics.py", "07_code", "the discard classifier"),
     ("docs/PLOS_SUBMISSION_CHECKLIST.md", "09_submission",
      "the venue's stated limits, measured rather than assumed — including the "
      "abstract that was 374 words against a limit of 300"),
