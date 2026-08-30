@@ -14,15 +14,31 @@ Stage-B analysis plan `10.5281/zenodo.22098259`.
 
 ---
 
-## S1. PASS-P size under the null
+## S1. PASS-P size under a Poisson null
 
 The engine is bespoke, so we simulated it rather than assert it.
 
 The null data-generating process is the fitted confirmatory model with the post
 coefficient set to zero and everything else retained — real token offsets, real
 year effects, real differential trend — plus a year-level log-scale shock at the
-preregistration's own σ_δ = 0.3205. A pure Poisson null would understate the
-variance the design actually faces and would flatter the test.
+preregistration's own σ_δ = 0.3205.
+
+**That shock does nothing, and an earlier version of this section said the
+opposite.** It claimed a pure Poisson null "would understate the variance the
+design actually faces and would flatter the test." The shock is drawn once per
+year and added to both institutions in that year, and the design carries a
+saturated set of year dummies, so it is absorbed exactly and generates no
+identifying variance. This is not a new discovery: `docs/PREREG_DRAFT_v0.5.md`
+and `src/mde_sim.py` both record that "the previous common year shock was
+absorbed by C(year) and generated no identifying dependence" — which is precisely
+why the preregistration replaced it with a World-Bank-specific differential shock
+for the power analysis. The calibration script reintroduced the retired one, and
+the sentence justifying it survived into the paper.
+
+The table below is therefore **a size check under a Poisson null**, correctly
+labelled. Its numbers are unaffected; only the claim about what null they came
+from was wrong. The dispersion that the design does face, and that the frozen
+estimator cannot see, is measured separately in S9.
 
 Each replicate's *p*-value is computed by enumerating all 512 sign patterns
 exactly, so no simulation noise enters the inner loop and the only Monte Carlo
@@ -181,3 +197,56 @@ agreement with the pamphlet is harder to attribute to analyst choice than a firs
 pass would be.
 
 Machine record: `data/meta/ar_unit_qc.csv`, `data/features/ar_fy_features.csv`.
+
+## S9. What the frozen dispersion estimator can see, and what PASS-P does when it cannot
+
+`mom_alpha` is the frozen NB2 dispersion estimator,
+max(0, Σ((y−μ)² − μ) / Σμ²), with no degrees-of-freedom correction. The
+confirmatory design fits **30 parameters on 54 cells**, leaving 24 residual
+degrees of freedom, so the fitted μ absorbs most of the variation the estimator
+needs in order to see dispersion at all.
+
+Two experiments, both simulated from the real design, offsets and fitted values,
+1,000 replicates each, seeded from the frozen `SEED`
+(`tools/dispersion_calibration.py`).
+
+**Recovery** draws NB2 data at a known α, refits, and reports what `mom_alpha`
+returns. **Size** imposes the null — the restricted fit's values as the mean —
+adds NB2 noise at the same α, and runs the frozen PASS-P.
+
+| panel | true α | recovered α̂ | shrunk by | PASS-P size at nominal 0.05 |
+|---|---|---|---|---|
+| P1 | 0.00 | 0.0000 | — | 0.057 |
+| P1 | 0.05 | 0.0038 | 13.1× | **0.093** |
+| P1 | 0.10 | 0.0115 | 8.7× | **0.095** |
+| P1 | 0.25 | 0.0348 | 7.2× | **0.082** |
+| P1 | 0.50 | 0.0638 | 7.8× | **0.079** |
+| P2 | 0.00 | 0.0000 | — | 0.054 |
+| P2 | 0.05 | 0.0025 | 20.4× | **0.072** |
+| P2 | 0.10 | 0.0090 | 11.1× | **0.085** |
+| P2 | 0.25 | 0.0296 | 8.4× | **0.080** |
+| P2 | 0.50 | 0.0561 | 8.9× | **0.084** |
+
+Bold marks a size more than two Monte Carlo standard errors above nominal
+(MC SE ≈ 0.007 at 1,000 replicates).
+
+Two readings, and the second is the one that matters.
+
+**The estimator cannot see dispersion that is there.** At every non-zero α it
+returns between a seventh and a twentieth of the truth. On the real data it
+returns α̂ = 0.0121 (P1) and 0.0005 (P2), which on this evidence is what a true α of
+roughly 0.10 looks like after the design has absorbed it. Condition 2's NB2 arm
+therefore fits a model barely distinguishable from the Poisson primary; its pass
+is real but nearly assured, and it is not evidence that the counts are
+equidispersed.
+
+**PASS-P over-rejects when it is.** At α = 0 the test holds (0.057 / 0.054). At
+the dispersion the data are consistent with it reaches 0.095 (P1) and 0.085 (P2)
+against a nominal 0.05. The single *p* that reached significance under the
+preregistered rule — P1's 0.0142 — comes from a test roughly twice as easy to
+trip as its label. This makes the paper's negative verdict safer, not more
+fragile, which is why it is reported here rather than left for a referee.
+
+Neither experiment was preregistered. Both are post-hoc measurements of a frozen
+component, prompted by external review, and neither changes any reported
+coefficient, interval or condition outcome.

@@ -61,7 +61,7 @@ financial crisis, a pandemic and a wholesale reorganisation of how development
 institutions produce documents. The second is that since late 2022 large language
 models have entered professional writing at scale, and a fast-growing literature
 reports LLM-associated lexical shifts in scientific abstracts, peer reviews and
-consumer complaints (Kobak et al. 2025; Liang et al. 2025a, 2025b; Juzek & Ward
+consumer complaints (Kobak et al. 2025; Liang et al. 2024, 2025a, 2025b; Juzek & Ward
 2025). Whether the same shift reaches the drafting of institutional documents —
 which are edited, templated, reviewed and legally constrained in ways that
 journal abstracts are not — is an open and testable question.
@@ -120,22 +120,38 @@ deploy language — Barnett & Finnemore (1999) on the authority effects of
 bureaucratic expertise, Cornwall & Brock (2005) on the circulation of development
 buzzwords, Mosse (2004) on the gap between policy text and practice — supplies
 the interpretive frame within which a lexical drift is worth measuring at all.
-Studies of Bank and Fund documents specifically (Broad 2006; Vetterlein 2012; De
+Studies of Bank documents specifically (Broad 2006; Vetterlein 2012; De
 Francesco & Guaschino 2020) establish that these texts are institutional
 artifacts subject to internal review, which is precisely why an LLM signal in
 them would be non-trivial and why its absence is not evidence that drafters are
-not using the tools.
+not using the tools. **We have not located an equivalent literature on Fund staff
+reports** — the third organisation in De Francesco and Guaschino is the OECD, not
+the IMF — so the comparator's drafting constraints are assumed here rather than
+established, which is a further sense in which it is non-equivalent (§7).
 
 **LLM-associated lexical shift.** The methodological template we adopt comes from
 excess-vocabulary estimation: Kobak et al. (2025) measure post-2022 excess word
-frequencies in PubMed abstracts against pre-2022 baselines; Liang et al. (2025a,
-2025b) estimate LLM-modified text at the population level in peer reviews and
-consumer complaints; Juzek & Ward (2025) examine the same shift in scientific
+frequencies in PubMed abstracts against pre-2022 baselines; Liang et al. (2024)
+estimate LLM-modified text at the population level in machine-learning conference
+peer reviews, and Liang et al. (2025a, 2025b) do the same for preprints and
+published papers, and for consumer complaints, corporate press releases, job
+postings and United Nations press releases — the last being the closest published
+measurement to an international organisation's own prose; Juzek & Ward (2025) examine the same shift in scientific
 writing. All of these estimate a *population* quantity from aggregate frequencies
 rather than classifying individual documents. Our Tier-1/Tier-2 marker design
-follows that logic, with one addition: because our corpus spans eight decades, we
-must separate an LLM-era shift from a decades-long bureaucratese drift that was
-already underway, which is what the two-tier split is for.
+follows that logic with **two** departures, and the first is the larger.
+
+Every one of those studies *derives* its word set from the corpus under study —
+Kobak and colleagues from PubMed itself, Juzek and Ward by a three-step scan of
+26.7 million abstracts, Liang and colleagues by fitting reference distributions
+to each target corpus. **We do not.** Our list is fixed a priori from their
+published lists and sealed before any of our text was measured, because a
+confirmatory design cannot both discover its words in a corpus and then confirm
+them on it. The estimation step is deleted, not adapted, and the cost is that the
+list is calibrated to scientific prose and imported into institutional prose.
+Second, because our corpus spans eight decades, we must separate an LLM-era shift
+from a decades-long bureaucratese drift that was already underway, which is what
+the two-tier split is for.
 
 **Detection and its critiques.** We deliberately do *not* build on the AI-text
 detection line (Gehrmann et al. 2019; Ippolito et al. 2020; Mitchell et al.
@@ -150,10 +166,15 @@ answers a question it can actually answer.
 **Interrupted time series and structural breaks.** The design distinguishes a
 prespecified intervention point from an estimated one. For the former we follow
 standard ITS practice (Wagner et al. 2002; Lopez Bernal et al. 2017, 2018) with
-HAC standard errors (Newey & West 1987); for the latter, breakpoint estimation in
-the Bai & Perron (1998) sense enters only as a specificity check — we ask where
-the empirical break *would* be placed if it were not fixed, and report the answer
-against our prespecified 2023 (§6.4).
+HAC standard errors (Newey & West 1987); for the latter, a descriptive breakpoint
+scan enters only as a specificity check — we refit the same specification at every
+admissible cut and rank 2023 among them by the magnitude of the fitted level
+shift (§6.4). **That is a ranking, not structural-break estimation in the Bai and
+Perron (1998) sense**, which locates breaks by global minimisation of the residual
+sum of squares and settles their number by supF and sequential supF(l+1|l) tests;
+`src/s12_robustness.py` sorts candidate cuts by |b₂| and discards the standard
+error, so we claim none of their inferential guarantees and cite them as the
+standard this check does not meet.
 
 **Reproducibility and corpus design.** Biber (1993) on representativeness in
 corpus design, Sandve et al. (2013) on reproducible computational research, and
@@ -277,11 +298,20 @@ cells with token offsets.
 claims: nominalisation density, temporal anchoring (explicit dates and time
 references), management vocabulary, acronym density, and function-word share.
 
-**Two-tier lexical markers with per-word provenance.** *Tier-1* is the
-LLM-associated set — the word families the excess-vocabulary literature reports
-rising after 2022 (`delve`, `underscore`, `showcase`, `pivotal`, `intricate`,
-`meticulous`, `boast`, `commendable`, `realm`, `testament`, `tapestry`,
-`seamless`, `multifaceted`). *Tier-2* is shared bureaucratese, which an
+**Two-tier lexical markers.** *Tier-1* is the LLM-associated set (`delve`,
+`underscore`, `showcase`, `pivotal`, `intricate`, `meticulous`, `boast`,
+`commendable`, `realm`, `testament`, `tapestry`, `seamless`, `multifaceted`).
+**Its provenance is mixed and we state it rather than round it up.** Ten of the
+thirteen appear in Kobak et al.'s published excess-vocabulary list; `boast`,
+`testament` and `tapestry` do not, and the frozen configuration attributes the
+set to "Kousha & Thelwall-style lists" alongside the distributional work, a
+source this paper does not otherwise cite. An earlier draft called this heading
+"with per-word provenance" and described the whole set as what the
+excess-vocabulary literature reports rising after 2022; `config/families.yaml`
+records one blanket attribution for all thirteen and no per-word field, so
+neither was true. Nothing about the frozen list changes — it was sealed at
+Stage-A and is the list the confirmatory run used — only the description of where
+it came from. *Tier-2* is shared bureaucratese, which an
 institution can drift toward with no LLM involvement at all. Keeping them
 separate is what allows §6.1's thirtyfold Tier-2 rise and §6.2's failure to
 establish a Tier-1 differential to be stated as different facts rather than
@@ -504,10 +534,10 @@ panels, α = 0.05).
 | --- | --- | --- |
 | α_Holm | 0.025 | 0.05 |
 | θ (WB:post, log points) | 0.586 | 0.332 |
-| 95% CI (PASS-E percentile) | [0.267, 0.921] | [0.017, 0.622] |
+| PASS-E percentile interval (nominal 95%; coverage not established, §7) | [0.267, 0.921] | [0.017, 0.622] |
 | PASS-P *p* | **0.0142** | 0.0929 |
 | C1 Holm | passes | fails |
-| C2 stability | **fails** (NB2 arm passes; standardized arm not evaluated) | **fails** (same) |
+| C2 stability | **fails** (NB2 arm passes, but see §6.2 on what that pass can detect; standardized arm not evaluated) | **fails** (same) |
 | C3 concentration guard | **fails** | fails |
 | C4 leave-one-post-year-out | **fails** | fails |
 | **panel** | **no claim** | **no claim** |
@@ -642,13 +672,34 @@ convention that can move one panel's *p* by a factor of twenty and carry the
 other across its own threshold is not a nuisance; it is a reason the single
 reported *p* should not be read as a measurement.
 
-**The engine holds its size.** An 800-replicate study under a null carrying the
-design's own year-level shock gives empirical size 0.0512 (P1) and 0.0425 (P2)
-against a nominal 0.05, and 0.0063 / 0.0050 against 0.01 (supplement S1). But the
-null *p*-value distribution is **not uniform** — median 0.336 and 0.326 — which is
-what a statistic on a 512-point discrete support does. PASS-P is valid for the
-accept/reject decision it was built to make; its *p*-value is not a continuous
-measure of evidence strength.
+**The engine holds its size under a Poisson null, and not under a mildly
+overdispersed one.** An 800-replicate study gives empirical size 0.0512 (P1) and
+0.0425 (P2) against a nominal 0.05, and 0.0063 / 0.0050 against 0.01
+(supplement S1). That study's null is Poisson: the year-level shock it adds is
+drawn once per year and applied to both institutions, and a design carrying
+saturated year dummies absorbs it exactly — as this project's own preregistration
+had already recorded before the calibration script reintroduced it.
+
+Asked the question the frozen design never asked itself, the answer is worse and
+it is against us. The frozen dispersion estimator carries no degrees-of-freedom
+correction and is applied to 54 cells fitted with 30 parameters, and it recovers
+between a seventh and a twentieth of a dispersion that is really there
+(supplement S9, `tools/dispersion_calibration.py`, 1,000 replicates). **At the
+dispersion our own data are consistent with, PASS-P's size at a nominal 0.05 is
+0.095 on P1 and 0.085 on P2** — close to double.
+
+Two consequences, and both cut the same way. Condition 2's NB2 arm ran with
+α̂ = 0.012 (P1) and 0.0005 (P2), so it fitted a model barely distinguishable from
+the Poisson primary, and its **pass carries little information**; we report it as
+a pass because it is one, and say here what it can detect. And the single *p*
+that reached significance, P1's 0.0142, comes from a test that is roughly twice
+as easy to trip as its nominal level suggests. **A result the preregistered rule
+already declined to confirm is, on this evidence, weaker still.**
+
+The null *p*-value distribution is also **not uniform** — median 0.336 and 0.326 —
+which is what a statistic on a 512-point discrete support does. PASS-P is valid
+for the accept/reject decision it was built to make; its *p*-value is not a
+continuous measure of evidence strength.
 
 **The preregistered extrapolation trigger fires, in both panels.** PREREG §9
 fixes that a differential-trend CI excluding zero, with |τ × post-window|
@@ -714,7 +765,11 @@ intervals in supplement S7.
 
 **H-SHARED, the §5 descriptive companion fixed in PREREG §9: the comparator moved
 too.** The IMF's own pre/post change is +0.145 log points, CI [0.003, 0.356] —
-modest, but its interval excludes zero. And the Fund's pre-period rate is 2.8× the
+modest, and its interval excludes zero **by 0.0029 log points**, after 1,607 of
+9,999 bootstrap draws failed to converge and were discarded (`fail_rate` 0.161,
+`B_valid` 8,392). Neither figure appeared in an earlier draft, and both belong
+next to the claim: an exclusion of zero by three thousandths, on 84% of the
+intended draws, is a direction and not a demonstration. And the Fund's pre-period rate is 2.8× the
 ICR rate and 5.3× the PAD rate (0.1153 against 0.0416 and 0.0218 per thousand):
 the non-equivalence is worse on P2, not uniform across the design. The two
 institutions were never on one level, which is what §5 means in calling this a
@@ -768,6 +823,10 @@ identifies 2023 in particular, and they do not agree.
 **Table 6 — breakpoint specificity, both checks.** `placebo_sig_frac` is the
 share of false pre-2023 cuts that are also significant (lower is better); the
 rank places 2023 among all admissible cuts by |b₂| (higher percentile is better).
+**The denominator is six** — the placebo years frozen in `config/config.yaml` are
+2016 through 2021 — so 1.00 means six of six and 0.33 means two of six. Six is a
+small denominator and the reader should weigh the column accordingly; it is
+stated here because an earlier draft gave the fractions without it.
 
 | Series | placebo_sig_frac | 2023 rank | of cuts | percentile |
 |---|---|---|---|---|
@@ -784,8 +843,9 @@ than quote a stale number.)
 
 **Read the ICR row, because that is the one the confirmatory result rests on.**
 ICR is the World Bank arm of P1 — the only panel that reached significance — and
-it is the weakest row on both checks: every false breakpoint tried on pre-2022
-data is also significant, and 2023 ranks tenth of twenty-six admissible cuts. A
+it is the weakest row on both checks: **all six** false breakpoints tried on
+pre-2022 data are also significant, and 2023 ranks tenth of twenty-six admissible
+cuts. A
 test that fires at any date does not identify 2023. Meanwhile PAD and the
 assembled Annual Report series place 2023 second of all candidate cuts — and
 neither carries a passing panel. Specificity is strongest exactly where there is
@@ -906,11 +966,16 @@ than original endpoints.
 **Inference — what the machinery can and cannot carry.** The design cannot reach
 80% power for any effect in its preregistered grid, which conditions everything
 above. Placebo fractions of 1.00 on two strata limit any 2023-specific reading.
-The engine is calibrated for size but not for interval coverage: §6.2 reports
-that PASS-P holds nominal size at 0.05 and 0.01, and we report no equivalent
-coverage study for the PASS-E intervals; a reader treating the apparatus as
-reusable should establish that first, and should note that the null *p*-value
-distribution is not uniform.
+The engine is calibrated for size under a Poisson null only, and not at all for
+interval coverage. §6.2 and supplement S9 report that PASS-P holds nominal size
+when the counts are Poisson and **loses it under mild overdispersion** — 0.095
+against a nominal 0.05 on P1 at the dispersion the data are consistent with —
+because the frozen dispersion estimator recovers roughly an eighth of what is
+there at 30 parameters on 54 cells. We report no coverage study for the PASS-E
+intervals at all, which is why Table 4 labels them nominal. A reader treating the
+apparatus as reusable should establish both first, should give the dispersion
+estimator a degrees-of-freedom correction, and should note that the null
+*p*-value distribution is not uniform.
 
 **Provenance and access.** 748 of 2,738 documents (27.3%) in the Stage-B World
 Bank sample had their outcomes inspected at Stage-A. The IMF half of the contrast
@@ -1073,8 +1138,8 @@ World Bank content is public disclosure under its Access to Information Policy.
 
 ## References
 
-*Audited by `tools/audit_citations.py` on 2026-08-29: all 25 entries parsed,
-22 resolved against Crossref with matching first author and year, two
+*Audited by `tools/audit_citations.py` on 2026-08-30: all 26 entries parsed,
+23 resolved against Crossref with matching first author and year, three
 conference papers carry stable proceedings URLs in place of a DOI, and every
 entry is cited in the body with no in-text citation missing from the list.
 The Lopez Bernal (2017) Crossref record is the online-first one and carries no
@@ -1091,7 +1156,12 @@ D. (2004). Is good policy unimplementable? *Development and Change*
 35(4):639–671. DOI 10.1111/j.0012-155X.2004.00374.x.
 
 **LLM-associated lexical shift.** Kobak, D. et al. (2025). *Science Advances*
-11(27):eadt3813. DOI 10.1126/sciadv.adt3813. · Liang, W. et al. (2025a). *Nature
+11(27):eadt3813. DOI 10.1126/sciadv.adt3813. · Liang, W. et al. (2024). Monitoring
+AI-modified content at scale: a case study on the impact of ChatGPT on AI
+conference peer reviews. *Proceedings of the 41st International Conference on
+Machine Learning*, PMLR 235:29575–29620.
+https://proceedings.mlr.press/v235/liang24b.html
+· Liang, W. et al. (2025a). *Nature
 Human Behaviour* 9:2599–2609. DOI 10.1038/s41562-025-02273-8. · Liang, W. et al.
 (2025b). *Patterns* 6(12):101366. DOI 10.1016/j.patter.2025.101366. · Juzek, T. &
 Ward, Z. (2025). *COLING 2025*:6397–6411.

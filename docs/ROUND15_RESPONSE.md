@@ -110,27 +110,101 @@ pattern was line-scoped and found neither of the two placeholders that mattered,
 because both wrap across a line break — the same defect the citation audit
 shipped and had to be repaired for.
 
-## Not yet acted on
+## Round 15, second pass — the §4 and §5 items, verified and closed
 
-The review's §4 and §5 raise items that need the author's judgement or data
-outside the review's reach, and they are **not** closed:
+Everything below was independently re-derived here, and every one of the review's
+allegations held. Three of them changed what the paper claims about itself.
 
-- **`mom_alpha` has no degrees-of-freedom correction** (30 parameters on 54
-  cells), so C2's NB2 arm may be unable to detect overdispersion and its pass may
-  carry no information. The review calls this its most consequential unverified
-  item, and it is a claim about a frozen component. It needs deciding, not
-  patching.
-- **PASS-E intervals are labelled "95% CI"** while two coverage harnesses put
-  actual coverage near 0.86. The direction is permissive-not-lenient — narrower
-  intervals make C2/C3 harder to fail, and both failed anyway — but the label
-  should be corrected or the coverage reported.
-- **The S1 calibration rationale** describes a year-level shock that the design's
-  saturated year dummies absorb, and which the preregistration had already
-  retired for exactly that reason.
-- **Two Liang citations** are described as covering peer review; the review says
-  neither does, and that the peer-review study supplying three Tier-1 families is
-  uncited. This is a claim-support question and needs reading the sources, not a
-  tool.
+### 5. The dispersion estimator cannot see dispersion, and the test over-rejects when it is there
+
+The review called this its most consequential unverified item, and it was right
+to. `mom_alpha` carries no degrees-of-freedom correction and the design fits 30
+parameters on 54 cells. Two 1,000-replicate experiments from the real design
+(`tools/dispersion_calibration.py`, supplement S9):
+
+| panel | true α | recovered α̂ | PASS-P size at nominal 0.05 |
+|---|---|---|---|
+| P1 | 0.00 | 0.0000 | 0.057 |
+| P1 | 0.05 | 0.0038 | **0.093** |
+| P1 | 0.10 | 0.0115 | **0.095** |
+| P2 | 0.05 | 0.0025 | **0.072** |
+| P2 | 0.10 | 0.0090 | **0.085** |
+
+The estimator recovers a seventh to a twentieth of what is there. On the real
+data it returns α̂ = 0.0121 (P1), which on this evidence is what a true α near
+0.10 looks like after the design has absorbed it — and at that dispersion **the
+governing test's size at a nominal 0.05 is 0.095.**
+
+Two consequences, both against us and both now in §6.2, §7 and S9. Condition 2's
+NB2 arm fitted α̂ = 0.012 and 0.0005, so it ran a model barely distinguishable
+from the Poisson primary and its pass carries little information. And P1's
+*p* = 0.0142 — the one result that reached significance — comes from a test
+roughly twice as easy to trip as its label. **A result the preregistered rule
+already declined to confirm is weaker still**, which is why this is reported
+rather than left for a referee.
+
+### 6. The calibration null's shock is absorbed, and the paper said the opposite
+
+Confirmed in the code. `tools/passp_calibration.py` draws one shock per year and
+adds it to both institutions; `build_design` carries saturated year dummies. S1
+claimed "a pure Poisson null would understate the variance the design actually
+faces and would flatter the test" — it is a Poisson null. The project already
+knew: `PREREG_DRAFT_v0.5.md` and `src/mde_sim.py` both record that "the previous
+common year shock was absorbed by C(year) and generated no identifying
+dependence," which is why the preregistration replaced it. The calibration script
+reintroduced the retired one. S1 is now titled and described as a Poisson-null
+size check; its numbers are unchanged.
+
+### 7. Four citation claims, all confirmed
+
+Checked against the sources, with every URL fetched:
+
+- **Neither Liang 2025 paper analyses peer review.** 2025a is arXiv, bioRxiv and
+  Nature-portfolio papers; 2025b is consumer complaints, press releases, job
+  postings and UN press releases. The peer-review study is Liang et al. (2024),
+  ICML, PMLR 235:29575–29620 — **uncited**, and I verified the page range at
+  `proceedings.mlr.press/v235/liang24b.html` after first mistyping it as 24950.
+  Both §1 and §2 carried the error. 2025b's UN press-release arm is also the
+  closest published measurement to this paper's own object and is now named.
+- **Every cited work derives its word set from the corpus under study; we import
+  ours.** §2 said the design followed that template "with one addition" and named
+  the two-tier split. The larger departure — the estimation step deleted and
+  replaced by an a-priori list — went unnamed. Now stated as the first of two,
+  with the cost: a list calibrated to scientific prose, imported into
+  institutional prose.
+- **§4's provenance claim was false in two ways.** It promised "per-word
+  provenance"; `config/families.yaml` has one blanket attribution for thirteen
+  families and no per-word field. And it described the whole set as what the
+  excess-vocabulary literature reports rising after 2022: I checked all thirteen
+  against Kobak et al.'s published list and **`boast`, `testament` and `tapestry`
+  are not in it.** The frozen config credits "Kousha & Thelwall-style lists,"
+  which the paper does not cite. The list itself does not change — it was sealed
+  at Stage-A — only the account of where it came from.
+- **Bai and Perron (1998) did not license what we do.** `s12_robustness.py` ranks
+  candidate cuts by |b₂| and discards the standard error; Bai and Perron locate
+  breaks by global SSR minimisation and test their number by supF. §6.4 and the
+  code were always candid; §2 was not. It now cites them as the standard the
+  check does not meet.
+- **None of Broad, Vetterlein or De Francesco & Guaschino studies the Fund** —
+  the third organisation in the last is the OECD. The sentence was the paper's
+  only warrant that the comparator's documents are review-constrained. Narrowed
+  to the Bank, with the gap stated.
+
+### 8. Two disclosures added where the numbers were fragile
+
+- **H-SHARED** clears zero by 0.0029 log points after **1,607 of 9,999 draws** are
+  discarded (`fail_rate` 0.161). Neither figure was stated. Both now sit beside
+  the claim.
+- **Table 6's placebo denominator is six** — the frozen years are 2016 to 2021 —
+  so `1.00` means six of six. The fractions were given without it.
+- Table 4's PASS-E intervals are relabelled "nominal 95%; coverage not
+  established," since no coverage study exists.
+
+## Still open
+
+**One item, and it is the author's by the project's own rule.** Everything else
+the review raised has been verified and acted on above.
+
 - **The deposit stages none of the five inputs the generators read**, so "each
   table regenerates by a named command" would fail even after upload. I
   reproduced the gap independently — `tools/check_deposit_covers_generators.py`

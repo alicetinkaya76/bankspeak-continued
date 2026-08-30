@@ -121,6 +121,11 @@ INCLUDE = [
      "five deposit files whose licence position is the author's call"),
     ("data/analysis/block_origin_enumeration.json", "06_machine_output",
      "exact PASS-P p at all three block origins — Table 5c's source"),
+    ("data/analysis/dispersion_calibration.json", "06_machine_output",
+     "supplement S9: what the frozen dispersion estimator recovers, and what "
+     "PASS-P's size does when it cannot see the dispersion"),
+    ("tools/dispersion_calibration.py", "07_code",
+     "the two experiments behind S9 — recovery and size, 1,000 replicates each"),
     ("data/analysis/retrieval_route_tally.json", "06_machine_output",
      "per-document retrieval routes, 705/4/1/354, against 1,120 attempt rows"),
     ("docs/PLOS_SUBMISSION_CHECKLIST.md", "09_submission",

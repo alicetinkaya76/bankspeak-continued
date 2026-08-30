@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+ee59d71  2026-08-30  The open list still named four items that had just been closed
+dc12cb2  2026-08-30  The test over-rejects, the estimator cannot see why, and we cite the wrong Liang
 03bf097  2026-08-30  Put round 15 in the kit, review and response both
 04014d7  2026-08-30  The leak guard had deleted the evidence that the analysis works
 c27aa5b  2026-08-30  The build said it succeeded and had deleted the estimand from the paper
