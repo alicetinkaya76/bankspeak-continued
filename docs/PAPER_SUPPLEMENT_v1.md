@@ -244,8 +244,14 @@ equidispersed.
 the dispersion the data are consistent with it reaches 0.095 (P1) and 0.085 (P2)
 against a nominal 0.05. The single *p* that reached significance under the
 preregistered rule — P1's 0.0142 — comes from a test roughly twice as easy to
-trip as its label. This makes the paper's negative verdict safer, not more
-fragile, which is why it is reported here rather than left for a referee.
+trip as its label, so **that one result is less credible than its *p* suggests.**
+
+It does **not** follow that the non-rejections are evidence of absence, and an
+earlier version of this section said the size inflation made "the paper's
+negative verdict safer", which was wrong twice over: an anti-conservative test
+tells you nothing about the panels that did not reject, and low power still
+governs what a non-rejection can mean. What the inflation does is remove the one
+reading under which the paper might have been said to have found something.
 
 Neither experiment was preregistered. Both are post-hoc measurements of a frozen
 component, prompted by external review, and neither changes any reported

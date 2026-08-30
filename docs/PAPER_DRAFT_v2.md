@@ -10,32 +10,31 @@ outcome reported here was computed: Zenodo `10.5281/zenodo.22098259`, sha256
 ## Abstract
 
 Moretti and Pestre's *Bankspeak* reported a long-run shift in World Bank prose
-from temporally anchored description toward nominalised management language, on a
-corpus and rules never released. We reconstruct it from primary
-documents and extend the assembled Annual Report series through fiscal 2024.
+from temporally anchored description toward nominalised management language, on an
+unreleased corpus and unreleased rules. We reconstruct it from primary documents
+and extend the assembled Annual Report series to fiscal 2024.
 
 The trajectories reproduce: mean temporal anchoring falls from 39.96 per
 thousand tokens in 1946–65 to 22.97 in 2020–24, and a broader bureaucratic
-register rises from 0.252 per thousand to 7.631 — a thirtyfold ratio but an
-absolute rise of 7.38.
+register rises from 0.252 to 7.631 — a thirtyfold ratio but an absolute rise
+of 7.38.
 
-A second result concerns measurement, not the Bank. Over the same fiscal
-years the same archive gives a 43% or a 14% decline, and decomposing that gap
-assigns **all** of it to which files count as Annual Reports: the 195 excluded
-sibling-organisation volumes trend upward while the Bank's own fall. Concatenating
-volumes into fiscal-year units contributes nothing: for a token-normalised rate it
-is arithmetically identical to a token-weighted mean.
+A second result concerns measurement, not the Bank. Over the same fiscal years
+the same archive gives a 43% or a 14% decline, and **all** of that gap is which
+files count as Annual Reports: the 195 excluded
+sibling volumes (94% of them) rise 64% while the Bank's own fall 43%. Concatenating
+volumes into fiscal-year units contributes nothing: for a token-normalised rate
+it is arithmetically identical to a token-weighted mean.
 
-We then test, under a plan sealed and timestamped before any outcome
-existed, whether vocabulary associated with large language models shows a
+We then test, under a plan sealed and timestamped before the comparison was
+computed, whether vocabulary associated with large language models shows a
 post-2022 World Bank discontinuity against an International Monetary Fund
 comparator. **No panel satisfies the prespecified decision rule.** One reaches
 *p* = 0.0142, then fails the concentration guard — removing a single word family
 sends the coefficient to −0.067 with an interval spanning zero — fails
 leave-one-post-year-out, fails both preregistered secondary routes (*p* = 0.162
 and 0.033 against a 0.025 threshold), and shows a pre-period event-study bin above
-the estimate. The comparator also rose; ex ante power at that
-effect size is 0.16–0.22.
+the estimate. The comparator also rose; ex ante power is 0.16–0.22.
 
 The result bounds what a three-post-year, single-comparator design can
 establish; it is not evidence of absence. A nominally significant aggregate break
@@ -487,7 +486,7 @@ sharper finding.**
 **Table 3b — where the factor of three comes from.** Each step is applied to the
 previous step's output, over the assembled series' own fiscal years.
 
-| Step | 1946–65 → 2020–26 | change | contribution |
+| Step | 1946–65 → 2020–24 | change | contribution |
 |---|---|---|---|
 | 1. whole document pool, token-weighted | 35.70 → 30.76 | −13.8% | — |
 | 2. + restrict to files that enter assembly | 39.96 → 22.97 | −42.5% | **−28.7 pp** |
@@ -502,9 +501,33 @@ is a no-op here.
 
 **The entire factor of three is document selection.** Of the 329 files the
 Annual-Report facet returns, 134 enter the assembled series; the other 195 are
-sibling-organisation volumes (IFC, MIGA, ICSID) and duplicates, removed by logged
-ruling. Those excluded files do not merely add noise: **they trend in the opposite
-direction.** Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
+removed by logged ruling. Those excluded files do not merely add noise: **they
+trend in the opposite direction.**
+
+The 195 are not one category, and a mechanism resting on a mixed category is not
+demonstrated until the mix is shown. Removing a duplicate record is data
+cleaning; excluding IFC, MIGA and ICSID volumes is a substantive decision about
+what counts as a World Bank Annual Report. `src/s10_assemble_ar.py` recorded a
+rule per document at assembly time, so the split is a read of
+`data/meta/ar_assembly_log.csv` rather than a reconstruction.
+
+**Table 3c — what the excluded files are, and where each class goes.**
+Token-weighted per-year rates, averaged over the assembled series' own fiscal
+years (`tools/ar_exclusion_classes.py`).
+
+| class | files | 1946–65 | 2020–24 | change |
+|---|---:|---:|---:|---:|
+| assembled — the Bank's own volumes | 134 | 39.96 | 22.97 | **−42.5%** |
+| sibling organisation (IFC, MIGA, ICSID) | 184 | 21.65 | 35.60 | **+64.4%** |
+| duplicate volume record | 5 | — | 27.80 | — |
+| other logged ruling | 6 | 28.61 | — | — |
+
+**The opposing trend is entirely the sibling organisations**, which are 94% of
+the exclusions. The five duplicates have no early-period observation at all, so
+they cannot produce an early-versus-late contrast in either direction, and the
+six remaining rulings have no late-period observation. The result is therefore a
+corpus-boundary finding about which institution's volumes count, not an artifact
+of deduplication. Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
 1946–65 against 33.53 in 2020–24 — rising — while the Bank's own volumes fall from
 39.96 to 22.97. (Both are unweighted means of per-year token-weighted rates,
 matched to the same years, which is the aggregation Table 3b and Figure 1 use. An
@@ -1100,7 +1123,9 @@ release carries — 346 pass in the archive and 11 skip, each naming the license
 or deposited input it needs — every preregistration draft and amendment,
 decisions D-1..D-13,
 both deviation records, and the generators that produce every table and figure
-here. Code MIT; documents CC BY 4.0.
+here. Code is MIT-licensed and author-created documentation CC BY 4.0; World
+Bank and IMF source reports keep their own rights and are not relicensed by
+either deposit.
 
 **Evidence deposit.** Frames, frozen samples, raw World Bank API captures, power
 curves, quality flags, per-document exclusion ledgers, panel cells, both

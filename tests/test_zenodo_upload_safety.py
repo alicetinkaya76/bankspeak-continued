@@ -5,6 +5,7 @@ else. These tests hold that shape in place, because the failure modes are quiet
 ones — a secret in a URL ends up in a server log, and a publish that happens by
 default cannot be undone.
 """
+import importlib.util
 import os
 import subprocess
 import sys
@@ -14,11 +15,30 @@ ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "tools" / "upload_evidence_deposit.py"
 SRC = TOOL.read_text(encoding="utf-8")
 
+_spec = importlib.util.spec_from_file_location("upload_evidence_deposit", TOOL)
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
 
-def test_it_refuses_and_explains_when_no_token_is_configured():
+
+def test_it_refuses_and_explains_when_no_token_is_configured(tmp_path,
+                                                             monkeypatch):
+    """Isolated from BOTH sources the tool reads.
+
+    The first version cleared only the environment, and once a real .env existed
+    the tool found the token there, tried to upload, and returned a Zenodo HTTP
+    error — so the test failed while the tool was behaving correctly. A test that
+    controls one of two inputs is testing neither.
+    """
     env = {k: v for k, v in os.environ.items() if "ZENODO" not in k}
-    r = subprocess.run([sys.executable, str(TOOL)], capture_output=True,
-                       text=True, env=env, timeout=120)
+    monkeypatch.setattr(_mod, "ROOT", tmp_path)          # no .env in here
+    r = subprocess.run([sys.executable, "-c",
+                        "import importlib.util,sys,pathlib;"
+                        f"spec=importlib.util.spec_from_file_location('u',r'{TOOL}');"
+                        "m=importlib.util.module_from_spec(spec);"
+                        "spec.loader.exec_module(m);"
+                        f"m.ROOT=pathlib.Path(r'{tmp_path}');"
+                        "sys.argv=['u'];sys.exit(m.main())"],
+                       capture_output=True, text=True, env=env, timeout=120)
     assert r.returncode != 0
     out = r.stdout + r.stderr
     assert "no ZENODO_TOKEN" in out
