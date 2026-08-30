@@ -102,6 +102,9 @@ INCLUDE = [
      "the cover letter as it would be sent"),
     ("docs/SUBMISSION_DATA_AVAILABILITY.md", "09_submission",
      "the data-availability statement as it would be pasted into the form"),
+    ("build/submission/PLOS_ONE_submission.pdf", "01_manuscript",
+     "the single PDF an editor actually receives — the editor lens should read "
+     "this rather than the Markdown, because layout is part of the ninety seconds"),
     ("docs/PAPER_SUPPLEMENT_v1.md", "01_manuscript",
      "the eight-section supplement the manuscript cross-references"),
     ("data/analysis/rq1_decomposition.json", "06_machine_output",

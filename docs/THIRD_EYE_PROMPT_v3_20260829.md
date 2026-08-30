@@ -1,3 +1,7 @@
+**SUPERSEDED by THIRD_EYE_PROMPT_v4_20260830.md** — v3 predates round 15, which added the dispersion finding, five citation repairs and the deposit decision. Kept for the record.
+
+---
+
 # Third-eye brief v3 — final pre-submission review for PLOS ONE
 
 Supersedes `THIRD_EYE_PROMPT_v2_20260828.md`, which asked a reviewer to *choose*

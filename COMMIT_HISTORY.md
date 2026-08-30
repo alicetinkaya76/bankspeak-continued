@@ -3,6 +3,7 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+0dd104a  2026-08-30  Third-eye brief v4: fifteen rounds in, ask the questions self-audit cannot
 5d101a1  2026-08-30  Make the deposit upload one command, once the token exists
 32630e4  2026-08-30  Automate the step after the upload, since the upload itself needs a token
 8df3a47  2026-08-30  v1.2.0 is archived at 10.5281/zenodo.22168611, and it had to be cut
