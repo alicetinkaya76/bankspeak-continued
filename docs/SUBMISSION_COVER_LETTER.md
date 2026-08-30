@@ -55,7 +55,7 @@ detection. No causal attribution to any model or vendor is made anywhere.
 separately timestamped Stage-B analysis plan (`10.5281/zenodo.22098259`, sha256
 `4aa12279…2677`, published 2026-08-25T15:01:07Z) were both sealed before any
 reported outcome was computed. The analysis code, test suite and complete
-decision record are archived at `10.5281/zenodo.22158882`. Every table and figure
+decision record are archived at `10.5281/zenodo.22168611`. Every table and figure
 regenerates from deposited artifacts by a named command, and the manuscript
 reports every preregistered sensitivity, including two that earlier drafts had
 omitted and one that disagrees with the primary test about which panel is

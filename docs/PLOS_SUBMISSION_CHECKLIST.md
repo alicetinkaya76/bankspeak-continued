@@ -153,14 +153,22 @@ secondary-sourced.** Journal Citation Reports itself is paywalled and was not
 opened, so if the twenty-versus-thirty difference matters to the application,
 confirm it through an institutional JCR subscription before submitting.
 
-## One thing to do immediately before submitting
+## The code archive — done, and it had to be
 
-**Cut a fresh release and update the code DOI in §9.** The manuscript cites
-`10.5281/zenodo.22158882` (v1.1.0) and says that release carries 333 tests, which
-is true of that release. The repository has since moved — `plos_compliance.py`,
-`make_vancouver_refs.py` and four more tests — so at submission the archive
-should be re-cut and both the DOI and the test count updated together. Doing it
-now instead would only mint a Zenodo version that a later edit obsoletes.
+**v1.2.0 is cut and archived: `10.5281/zenodo.22168611`** (concept DOI
+`10.5281/zenodo.22152944` always resolves to the latest). Every document that
+cited the old release now cites this one.
+
+This was not housekeeping. **v1.0.0 and v1.1.0 cannot run their own test
+suites** — `pytest tests/ -q` in either archive dies with twelve collection
+errors and runs zero tests, because the export filter stripped two of the
+project's own source modules. Until this release the manuscript, the cover letter
+and the data-availability statement all pointed a referee at a broken archive.
+v1.2.0 reports 346 passed, 11 skipped, each skip naming the input it needs.
+
+The GitHub–Zenodo webhook mints these automatically on release, so this half
+needs nobody. The **evidence deposit is a separate Zenodo record** and does not
+ride that integration — see below.
 
 ---
 

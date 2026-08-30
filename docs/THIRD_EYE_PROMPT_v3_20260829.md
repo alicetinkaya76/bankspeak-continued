@@ -49,7 +49,7 @@ Three claims, in the order it makes them:
    the observed effect size: 0.16–0.22.
 
 Preregistration: OSF `10.17605/OSF.IO/5C9J8`; SAP `10.5281/zenodo.22098259`.
-Code and design record: `10.5281/zenodo.22158882`.
+Code and design record: `10.5281/zenodo.22168611`.
 
 ---
 

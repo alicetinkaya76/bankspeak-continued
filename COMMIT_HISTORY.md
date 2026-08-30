@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+8df3a47  2026-08-30  v1.2.0 is archived at 10.5281/zenodo.22168611, and it had to be cut
+8107547  2026-08-30  Rebuild the deposit manifest with the redacted frame
 5d9edeb  2026-08-30  Decide the deposit, and the decision turns out to be two columns
 ee59d71  2026-08-30  The open list still named four items that had just been closed
 dc12cb2  2026-08-30  The test over-rejects, the estimator cannot see why, and we cite the wrong Liang

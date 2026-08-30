@@ -1091,12 +1091,14 @@ in `docs/figures/`.
 Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
-**Code and design record.** `10.5281/zenodo.22158882` (concept DOI
+**Code and design record.** `10.5281/zenodo.22168611` (concept DOI
 `10.5281/zenodo.22152944`, which always resolves to the latest version), archived
 from
-`github.com/alicetinkaya76/bankspeak-continued` at release v1.1.0: the frozen
-inference engine, the validation battery, the full pipeline, the 333 tests that
-release carries, every preregistration draft and amendment, decisions D-1..D-13,
+`github.com/alicetinkaya76/bankspeak-continued` at release v1.2.0: the frozen
+inference engine, the validation battery, the full pipeline, the 357 tests that
+release carries — 346 pass in the archive and 11 skip, each naming the licensed
+or deposited input it needs — every preregistration draft and amendment,
+decisions D-1..D-13,
 both deviation records, and the generators that produce every table and figure
 here. Code MIT; documents CC BY 4.0.
 
