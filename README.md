@@ -26,7 +26,7 @@ than trusted.
 ```
 src/      the analysis pipeline and the frozen inference engine
 tools/    retrieval, corpus repair, table and figure generators, sensitivity studies
-tests/    the suite that pins the frozen contracts (357 tests; 11 need
+tests/    the suite that pins the frozen contracts (378 tests; 19 need
           permission-gated or deposited inputs and skip here, naming the file)
 config/   pinned configuration, marker family definitions, alias maps
 docs/     preregistration drafts and amendments, the frozen SAP and its freeze

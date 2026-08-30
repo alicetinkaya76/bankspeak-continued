@@ -256,3 +256,96 @@ reading under which the paper might have been said to have found something.
 Neither experiment was preregistered. Both are post-hoc measurements of a frozen
 component, prompted by external review, and neither changes any reported
 coefficient, interval or condition outcome.
+
+## S10. Two post-freeze checks the review asked for
+
+Neither was preregistered. Both leave `src/bootstrap_engine.py` untouched and
+gate nothing; the confirmatory result stands as reported. They exist because a
+reviewer was right that candour about a miscalibrated procedure is not the same
+as showing the conclusion survives one.
+
+### S10.1 A dispersion estimate that respects the degrees of freedom
+
+S9 showed the frozen `mom_alpha` recovers a fraction of the dispersion present.
+The standard repair is the moment condition that accounts for the fitted
+parameters — choose α so that
+
+  Σ (y − μ)² / (μ + α μ²) = n − p
+
+instead of dividing by *n*. With 30 parameters on 54 cells the two differ a great
+deal. Size is measured under a null carrying the dispersion the corrected
+estimator itself reports, 3,000 replicates, Monte Carlo standard error 0.004.
+
+| panel | α frozen | α corrected | exact hits, frozen | exact hits, corrected | size@0.05 frozen | size@0.05 corrected |
+|---|---:|---:|---:|---:|---:|---:|
+| P1 | 0.0121 | 0.0520 | 8/512 | 8/512 | 0.081 | 0.078 |
+| P2 | 0.0005 | 0.0425 | 50/512 | 46/512 | 0.065 | 0.065 |
+
+**The verdict is robust and the size is not repaired.** The corrected α is 4.3×
+the frozen one on P1 and 85× on P2, yet the exact *p* moves by at most four
+patterns in 512 and no condition-1 outcome changes. Meanwhile empirical size
+stays near 0.078–0.081 on P1 against a nominal 0.05 whichever estimator is used.
+
+The inflation therefore does **not** originate in the dispersion estimator, and
+the remedy a referee would naturally prescribe does not deliver a correctly sized
+test on this design. What is left is the block construction itself: nine blocks,
+a 512-point support, and a studentisation whose denominator is estimated from the
+same nine sums the numerator uses. A design wanting a correctly sized test here
+needs more blocks — which means more years — not a better dispersion estimate.
+
+### S10.2 Dropping every document seen at Stage A
+
+748 Stage-B World Bank documents were also in the Stage-A frame. They are exactly
+the intersection of the two frozen sampling frames, so the set needs no
+reconstruction. Panels are rebuilt from document-level counts with those
+documents removed from the Bank arm; the comparator is untouched. Both panels
+retain all 27 common years, so nothing is lost to the common-year rule.
+
+| panel | WB docs | dropped | β full | β reduced | *p* full | *p* reduced | condition 1 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| P1 | 1066 | 164 | +0.5856 | +0.6130 | 0.0142 | 0.0103 | pass → pass |
+| P2 | 1078 | 192 | +0.3319 | +0.3206 | 0.0929 | 0.0611 | fail → fail |
+
+**Removing the exposed documents strengthens both estimates.** If prior exposure
+had manufactured the effect, dropping it would shrink the coefficient; it grows
+on P1 and the *p*-values fall on both panels. Condition 1 is unchanged either
+way. This does not make the design outcome-naïve — it was not — but it rules out
+the specific worry that Stage-A inspection produced the Stage-B contrast.
+
+Reproduce with `python tools/dispersion_robust_inference.py 3000` and
+`python tools/stage_a_exposure_sensitivity.py`.
+
+### S10.3 What the PASS-E intervals actually cover
+
+Table 4 labels them nominal because no coverage study existed. They are still
+read — §6.3 turns on a lower bound clearing zero by 0.0029 — so this measures it.
+Simulate at a known β from the real design, run the frozen PASS-E, count how often
+the interval contains the truth. Two nulls: Poisson, and NB2 at the dispersion
+the degrees-of-freedom-corrected estimator reports (S10.1), since S9 established
+the frozen estimator cannot see it. 400 replicates, B reduced to 499 from the
+frozen 9,999 to make the study feasible.
+
+| panel | truth | null | coverage (nominal 0.95) |
+|---|---|---|---:|
+| P1 | β = 0 | Poisson | 0.873 ± 0.017 |
+| P1 | β = 0 | NB2 at the corrected α | 0.848 ± 0.018 |
+| P1 | β = observed | Poisson | 0.858 ± 0.017 |
+| P1 | β = observed | NB2 at the corrected α | 0.805 ± 0.020 |
+| P2 | β = 0 | Poisson | 0.890 ± 0.016 |
+| P2 | β = 0 | NB2 at the corrected α | 0.830 ± 0.019 |
+| P2 | β = observed | Poisson | 0.907 ± 0.014 |
+| P2 | β = observed | NB2 at the corrected α | 0.820 ± 0.019 |
+
+**They under-cover everywhere, by six to fifteen points.** Under a Poisson null
+coverage runs 0.858–0.907; under the dispersion the data are consistent with it
+falls to 0.805–0.848. The intervals are too narrow, not too wide.
+
+Which way this cuts is worth stating precisely. Narrow intervals make it *easier*
+to exclude zero, and exclusion of zero is a conjunct of conditions 2 and 3 — so
+the error is permissive, and both conditions failed anyway, on the sign and
+magnitude of the refitted coefficient rather than on interval width. The reading
+that does not survive is any that treats a bound barely clearing zero as evidence:
+§6.3's H-SHARED interval is narrower than a 95% interval would be, on draws that
+S6.3 shows are not a neutral subsample, and both facts point the same way.
+
+Reproduce with `python tools/passe_coverage.py 400 499`.

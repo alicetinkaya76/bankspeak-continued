@@ -153,7 +153,15 @@ def main() -> int:
 
     # --- two-way in-text cross-check
     surnames = {e["first_author"] for e in entries if e["first_author"]}
-    uncited = sorted(n for n in surnames if n and n not in body)
+    # Word boundaries, not substrings. A surname that is a prefix of a common
+    # word passes a substring test against any body text: "Ban" is inside "Bank",
+    # which this paper contains hundreds of times, so an uncited Ban entry would
+    # have been reported as cited without anyone citing it. The check would still
+    # have returned "none" and meant nothing.
+    def cited(name: str) -> bool:
+        return re.search(rf"(?<![A-Za-zÀ-ÿ]){re.escape(name)}(?![A-Za-zÀ-ÿ])",
+                         body) is not None
+    uncited = sorted(n for n in surnames if n and not cited(n))
     intext = set(re.findall(r"([A-ZÇÖÜĞŞİ][A-Za-zÀ-ÿ'-]+)"
                             r"(?:\s*&\s*[A-ZÇÖÜĞŞİ][A-Za-zÀ-ÿ'-]+|\s+et al\.)"
                             r"\s*\(\d{4}[a-z]?\)", body))

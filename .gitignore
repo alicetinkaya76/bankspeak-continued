@@ -13,3 +13,10 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+
+# Secrets never enter this repository either. The uploader reads a Zenodo token
+# from .env; the source tree gained this line first and the export must not be
+# the copy that lacks it.
+.env
+.env.*
+!.env.example

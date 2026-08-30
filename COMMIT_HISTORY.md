@@ -3,6 +3,11 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+d34bf01  2026-08-30  The intervals do not cover, and the number is 0.81
+7b13387  2026-08-30  Three of the reviewer's seven citations do not belong, and my auditor had a hole
+1276718  2026-08-30  Every one of H-SHARED's 1,607 discarded draws failed the same way
+704f1c0  2026-08-30  Stop narrating the manuscript's biography; keep every fact it disclosed
+311a931  2026-08-30  The referee's own remedy does not work, and we can show it
 c33103e  2026-08-30  The no-token test controlled one of the two places the tool looks
 510fd7f  2026-08-30  Round 16: the exclusion class the abstract had merged, and four factual defects
 0dd104a  2026-08-30  Third-eye brief v4: fifteen rounds in, ask the questions self-audit cannot

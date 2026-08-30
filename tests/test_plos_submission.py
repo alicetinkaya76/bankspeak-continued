@@ -146,3 +146,27 @@ def test_the_scanner_does_not_flag_a_confidence_interval():
     text = f.read_text(encoding="utf-8")
     assert "[−0.732, 0.239]" in text or "[" in text
     assert not [h for h in _ph.scan([f])]
+
+
+# --- the uncited-entry check must not pass on a substring -----------------------
+
+_audit_spec = importlib.util.spec_from_file_location(
+    "audit_citations", ROOT / "tools" / "audit_citations.py")
+_audit = importlib.util.module_from_spec(_audit_spec)
+_audit_spec.loader.exec_module(_audit)
+
+
+def test_a_surname_inside_a_longer_word_does_not_count_as_a_citation():
+    """"Ban" is inside "Bank", which this paper contains hundreds of times. Under
+    substring matching an uncited Ban entry was reported as cited, and the check
+    returned "none uncited" while checking nothing for that entry."""
+    body = "the World Bank and the Bank of England published banking data"
+    hit = re.search(r"(?<![A-Za-zÀ-ÿ])Ban(?![A-Za-zÀ-ÿ])", body)
+    assert hit is None, "word-boundary matching must not find Ban inside Bank"
+    assert "Ban" in body, "but a substring test would have found it — the bug"
+
+
+def test_the_audit_source_no_longer_uses_a_bare_substring_test():
+    src = (ROOT / "tools" / "audit_citations.py").read_text(encoding="utf-8")
+    assert "n not in body" not in src, "the substring uncited-check is back"
+    assert "(?<![A-Za-zÀ-ÿ])" in src

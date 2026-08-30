@@ -31,12 +31,25 @@ def test_it_refuses_and_explains_when_no_token_is_configured(tmp_path,
     """
     env = {k: v for k, v in os.environ.items() if "ZENODO" not in k}
     monkeypatch.setattr(_mod, "ROOT", tmp_path)          # no .env in here
+    # The tool checks for the archive before it checks for the token, so without
+    # these two the refusal it gives is the right one for the wrong reason and
+    # this test never reaches the credential path it exists to check. That is how
+    # it failed in the public export, where no build/ directory ships.
+    (tmp_path / "build").mkdir()
+    (tmp_path / "build" / "zenodo_evidence_deposit.zip").write_bytes(b"PK\x05\x06" + b"\0" * 18)
+    (tmp_path / "build" / "zenodo_evidence_metadata.json").write_text("{}")
     r = subprocess.run([sys.executable, "-c",
                         "import importlib.util,sys,pathlib;"
                         f"spec=importlib.util.spec_from_file_location('u',r'{TOOL}');"
                         "m=importlib.util.module_from_spec(spec);"
                         "spec.loader.exec_module(m);"
                         f"m.ROOT=pathlib.Path(r'{tmp_path}');"
+                        # ARCHIVE and META are computed from ROOT at import, so
+                        # rebinding ROOT alone leaves them pointing at the real
+                        # tree. That is why this test still reached the tool's
+                        # archive check instead of its credential check.
+                        "m.ARCHIVE=m.ROOT/'build'/'zenodo_evidence_deposit.zip';"
+                        "m.META=m.ROOT/'build'/'zenodo_evidence_metadata.json';"
                         "sys.argv=['u'];sys.exit(m.main())"],
                        capture_output=True, text=True, env=env, timeout=120)
     assert r.returncode != 0
@@ -84,4 +97,7 @@ def test_dot_env_is_gitignored():
     """The uploader tells the author to put a secret in .env. Until this was
     written, .gitignore did not cover it."""
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-    assert ".env" in [l.strip() for l in ignore]
+    assert ".env" in [l.strip() for l in ignore], (
+        "this repository's .gitignore does not cover .env. The public export has "
+        "its own, and it needed the line too — the source tree gaining it is not "
+        "the same as the published copy having it.")
