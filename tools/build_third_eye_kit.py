@@ -60,7 +60,7 @@ INCLUDE = [
      "the confirmatory run's own report"),
     # --- the numbers, as generated
     ("docs/tables", "04_tables", "all seven numbered tables, generated from data/"),
-    ("docs/figures", "05_figures", "the three figures, generated from data/"),
+    ("docs/figures", "05_figures", "the four figures, generated from data/"),
     # --- machine outputs a reviewer may want to check a number against
     ("data/analysis/panels/P1_battery.json", "06_machine_output",
      "panel P1: all conditions, event study, validation outcomes, H-SHARED"),
@@ -106,7 +106,7 @@ INCLUDE = [
      "the single PDF an editor actually receives — the editor lens should read "
      "this rather than the Markdown, because layout is part of the ninety seconds"),
     ("docs/PAPER_SUPPLEMENT_v1.md", "01_manuscript",
-     "the eight-section supplement the manuscript cross-references"),
+     "the ten-section supplement the manuscript cross-references"),
     ("data/analysis/rq1_decomposition.json", "06_machine_output",
      "the corpus-selection decomposition behind the title's second claim"),
     ("data/meta/imf_access_probe.json", "06_machine_output",
@@ -148,6 +148,20 @@ INCLUDE = [
     ("data/analysis/stage_a_exposure_sensitivity.json", "06_machine_output",
      "S10.2: the panels rerun without every Stage-A-inspected document"),
     ("tools/stage_a_exposure_sensitivity.py", "07_code", "what reruns them"),
+    ("data/analysis/ar_component_inventory.json", "06_machine_output",
+     "Table 3d: the decline under three corpus definitions — narrative-only "
+     "-58.8%, frozen -42.5%, full family -35.4%"),
+    ("tools/ar_component_inventory.py", "07_code", "the component inventory"),
+    ("data/analysis/tier2_period_fairness.json", "06_machine_output",
+     "S10.6: the Tier-2 ratio is 28x on all terms and 11x on the terms that "
+     "existed in 1946-65; 22 of 35 are absent from the early window"),
+    ("tools/tier2_period_fairness.py", "07_code", "the period-fairness split"),
+    ("data/analysis/imf_cadence_balance.json", "06_machine_output",
+     "S10.5: the post window is LESS delayed than the pre window (56.8% vs "
+     "61.7%), and balancing moves the p-value not the estimate"),
+    ("tools/imf_cadence_balance.py", "07_code", "the cadence diagnostic and rerun"),
+    ("tools/check_stated_counts.py", "07_code",
+     "refuses if a count stated in prose disagrees with the filesystem"),
     ("data/analysis/companion_volume_adjudication.json", "06_machine_output",
      "Table 3d: four of the five records excluded as duplicates are distinct "
      "components sharing a metadata key; restoring them moves the headline "

@@ -16,13 +16,13 @@ and extend the assembled Annual Report series to fiscal 2024.
 
 The trajectories reproduce: mean temporal anchoring falls from 39.96 per
 thousand tokens in 1946–65 to 22.97 in 2020–24, and a broader bureaucratic
-register rises from 0.252 to 7.631 — a thirtyfold ratio but an absolute rise
-of 7.38.
+register rises from 0.252 to 7.631 — thirtyfold, but 11-fold on the terms that
+existed in 1946–65 at all.
 
 A second result concerns measurement, not the Bank. Over the same fiscal years
 the same archive gives a 43% or a 14% decline, and **all** of that gap is which
 files count as Annual Reports: the 195 excluded
-sibling volumes (94% of them) rise 64% while the Bank's own fall 35–43%. Concatenating
+sibling volumes rise 64% while the Bank's own fall 35–59% across corpus definitions. Concatenating
 volumes into fiscal-year units contributes nothing: for a token-normalised rate
 it is arithmetically identical to a token-weighted mean.
 
@@ -305,6 +305,15 @@ references), management vocabulary, acronym density, and function-word share.
 **Two-tier lexical markers.** *Tier-1* is the LLM-associated set (`delve`,
 `underscore`, `showcase`, `pivotal`, `intricate`, `meticulous`, `boast`,
 `commendable`, `realm`, `testament`, `tapestry`, `seamless`, `multifaceted`).
+A frequency is not a measure of spread, and the two literatures that say so are
+worth separating from the count-model sense of "dispersion" used in §6.2 and
+S9–S10: Gries (2008) on dispersion and adjusted frequencies in corpora, and
+Egbert & Biber (2019) on incorporating text dispersion into keyword analysis.
+Neither bears on the negative-binomial variance function; both bear on whether an
+aggregate rate is carried by a few documents. Supplement S10.6 reports the
+document-level picture for Tier-2, and §6.2's concentration guard is the Tier-1
+counterpart fixed in advance.
+
 **Its provenance is mixed and we state it rather than round it up.** Ten of the
 thirteen appear in Kobak et al.'s published excess-vocabulary list; `boast`,
 `testament` and `tapestry` do not, and the frozen configuration attributes the
@@ -559,20 +568,38 @@ statements product, 42,404 and 94,717 tokens — a 2024 executive summary, and a
 2008 lending table. Excluding them removed 137,121 tokens from fiscal 2023 alone,
 against the 43,795 that were kept.
 
-**Table 3d — the corpus-boundary result with the companions restored.**
+This raises a second and larger question, because the assembled unit is not the
+same publication across the span. Fiscal 2020 and 2021 are three-document units
+of 217,404 and 184,775 tokens; fiscal 2022 is a single document of 44,574. If
+financial statements and lending appendixes left the bound volume after 2021, the
+endpoint decline would be a packaging change rather than a change in the Bank's
+prose. So we inventoried the family by component
+(`tools/ar_component_inventory.py`) and ran the two corpora that bracket the
+question: the **narrative volume only**, which is the like-for-like series, and
+the **full family**, which is every component the archive returns.
 
-| series | 1946–65 | 2020–24 | change |
-|---|---:|---:|---:|
-| as assembled (frozen) | 39.96 | 22.97 | **−42.5%** |
-| companions restored | 39.96 | 25.82 | **−35.4%** |
+**Table 3d — the result under three corpus definitions.**
 
-Fiscal 2023 carries it: 15.89 per thousand on 43,795 tokens as assembled, 30.01
-on 180,916 with the companions. **The magnitude was overstated by seven
-percentage points and the direction is unchanged**; the corrected −35.4% still
-sits far from the −13.8% the whole document pool gives, so the corpus-boundary
-conclusion holds and its size does not. We report the frozen figure and the
-corrected one together rather than replacing one with the other, and a study
-building on this should use a content-identity rule rather than a metadata key. Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
+| corpus | files | 1946–65 | 2020–24 | change |
+|---|---:|---:|---:|---:|
+| as assembled (frozen) | 134 | 39.96 | 22.97 | **−42.5%** |
+| narrative volume only | 97 | 39.96 | 16.46 | **−58.8%** |
+| full family, every component | 139 | 39.96 | 25.82 | **−35.4%** |
+
+**The decline survives every definition, and is steepest on the cleanest one.**
+Restricting to the narrative volume — the only construction that compares the
+same kind of text across eight decades — gives −58.8%, sixteen points steeper
+than the frozen series. The full family gives −35.4%. So the endpoint is not a
+packaging artefact: the packaging was concealing part of the decline, not
+manufacturing it.
+
+The per-year inventory also relocates the anomaly. Fiscal 2016 through 2021 and
+fiscal 2023 all carry a narrative volume, financial statements and appendixes.
+**Fiscal 2022 is the thin year** — a narrative volume alone — and fiscal 2024 adds
+only an executive summary. The frozen series' 22.97 sits between the two bracket
+corpora because it mixes components unevenly across years, which is a reason to
+report the range rather than a single figure. **We report all three and claim the
+range −35% to −59%, not the point −42.5%.** Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
 1946–65 against 33.53 in 2020–24 — rising — while the Bank's own volumes fall from
 39.96 to 22.97. (Both are unweighted means of per-year token-weighted rates,
 matched to the same years, which is the aggregation Table 3b and Figure 1 use.
@@ -716,7 +743,12 @@ and 9,999 Monte Carlo draws sample that support with replacement rather than
 adding information. That a sign bootstrap over *G* units has only 2^*G* attainable
 values, and what it costs when *G* is small, is Webb's (2023) result; we derived
 the count independently here and cite it as the standard the design is measured
-against.
+against. The neighbouring literature on wild bootstrap inference with few
+clusters is MacKinnon & Webb (2017); their diagnosis is unequal cluster sizes,
+which is not this design's problem — nine three-year blocks are exactly balanced
+— and their small-treated-cluster result predicts under-rejection where we
+measure the opposite, so we cite them to mark the boundary rather than to claim
+their coverage.
 
 **And the post window is exactly one of the nine blocks.** At the preregistered
 origin the ninth block is [2023, 2024, 2025] — the whole post period, and nothing
@@ -1295,8 +1327,8 @@ World Bank content is public disclosure under its Access to Information Policy.
 
 ## References
 
-*Audited by `tools/audit_citations.py` on 2026-08-30: all 31 entries parsed,
-28 resolved against Crossref with matching first author and year, three
+*Audited by `tools/audit_citations.py` on 2026-08-30: all 34 entries parsed,
+31 resolved against Crossref with matching first author and year, three
 conference papers carry stable proceedings URLs in place of a DOI, and every
 entry is cited in the body with no in-text citation missing from the list.
 The Lopez Bernal (2017) Crossref record is the online-first one and carries no
@@ -1333,6 +1365,16 @@ https://proceedings.mlr.press/v202/mitchell23a.html · Liang, W. et al. (2023). 
 Journal for Educational Integrity* 19:26. DOI 10.1007/s40979-023-00146-z. · Wu,
 J. et al. (2025). *Computational Linguistics* 51(1):275–338. DOI
 10.1162/coli_a_00549.
+
+**Cluster and block bootstrap inference.** MacKinnon, J. G. & Webb, M. D. (2017).
+Wild bootstrap inference for wildly different cluster sizes. *Journal of Applied
+Econometrics* 32(2):233–254. DOI 10.1002/jae.2508.
+
+**Lexical dispersion.** Gries, S. Th. (2008). Dispersions and adjusted
+frequencies in corpora. *International Journal of Corpus Linguistics*
+13(4):403–437. DOI 10.1075/ijcl.13.4.02gri. · Egbert, J. & Biber, D. (2019).
+Incorporating text dispersion into keyword analyses. *Corpora* 14(1):77–104.
+DOI 10.3366/cor.2019.0162.
 
 **Interrupted time series and structural breaks.** Linden, A. (2015). Conducting
 interrupted time-series analysis for single- and multiple-group comparisons. *The

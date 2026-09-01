@@ -33,6 +33,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from bootstrap_engine import build_design, _fit, two_pass, SEED    # noqa: E402
 
+RHO, SIGMA_DELTA = 0.5, 0.3205      # PREREG / mde_sim; SIGMA_DELTA is the innovation sd
+
 PANELS = {"P1": ROOT / "data/analysis/panels/cells_P1.csv",
           "P2": ROOT / "data/analysis/panels/cells_P2.csv"}
 ALPHA_CORRECTED = {"P1": 0.0520, "P2": 0.0425}      # from S10.1
@@ -55,15 +57,30 @@ def main(reps: int = 200, B: int = 299) -> int:
             b[j] = true_beta
             eta = X @ b + off
             mu = np.exp(eta)
-            for null, a in (("poisson", 0.0), ("nb2_corrected", ALPHA_CORRECTED[panel])):
+            # An i.i.d. arm cannot test intervals produced by a block procedure,
+            # which is the same defect S10.4 found in the size studies. The AR(1)
+            # arm is the preregistered differential shock, initialised BEFORE the
+            # recursion.
+            for null, a in (("poisson", 0.0),
+                            ("nb2_corrected", ALPHA_CORRECTED[panel]),
+                            ("ar1", 0.0),
+                            ("ar1_nb2", ALPHA_CORRECTED[panel])):
                 rng = np.random.default_rng(SEED + int(true_beta * 1000) + len(null))
                 cov = n_ok = 0
+                wb = (df["institution"] == "WB").astype(float).to_numpy()
+                yrs = np.array(sorted(df["year"].unique()))
+                pos = {yy: i for i, yy in enumerate(yrs)}
                 for _ in range(reps):
-                    if a <= 0:
-                        ysim = rng.poisson(mu).astype(float)
-                    else:
-                        lam = rng.gamma(shape=1.0 / a, scale=a * mu)
-                        ysim = rng.poisson(lam).astype(float)
+                    lam = mu.copy()
+                    if null.startswith("ar1"):
+                        dlt = np.empty(len(yrs))
+                        dlt[0] = rng.normal(0, SIGMA_DELTA / np.sqrt(1 - RHO ** 2))
+                        for t in range(1, len(yrs)):
+                            dlt[t] = RHO * dlt[t - 1] + rng.normal(0, SIGMA_DELTA)
+                        lam = lam * np.exp(wb * np.array([dlt[pos[v]] for v in df["year"]]))
+                    if a > 0:
+                        lam = rng.gamma(shape=1.0 / a, scale=a * lam)
+                    ysim = rng.poisson(lam).astype(float)
                     sim = df.copy()
                     sim["count"] = ysim
                     try:

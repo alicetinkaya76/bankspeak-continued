@@ -309,8 +309,12 @@ retain all 27 common years, so nothing is lost to the common-year rule.
 **Removing the exposed documents strengthens both estimates.** If prior exposure
 had manufactured the effect, dropping it would shrink the coefficient; it grows
 on P1 and the *p*-values fall on both panels. Condition 1 is unchanged either
-way. This does not make the design outcome-naïve — it was not — but it rules out
-the specific worry that Stage-A inspection produced the Stage-B contrast.
+way. **This does not rule out selection**, and an earlier version of this
+sentence said it did. Selection can move an estimate either way, and the check
+covers only the identified World Bank Stage-A files — not IMF selection, source
+availability, the report-family rules, or the wider set of analytic choices. What
+it establishes is narrower and still worth having: **the estimate did not
+attenuate when the Stage-A-inspected files were removed.**
 
 Reproduce with `python tools/dispersion_robust_inference.py 3000` and
 `python tools/stage_a_exposure_sensitivity.py`.
@@ -412,3 +416,90 @@ panel on other grounds; this says the ground it *did* pass was softer than it
 looked.
 
 Reproduce with `python tools/ar1_null_calibration.py 3000 999`.
+
+### S10.5 Is the post-window comparator a catch-up cohort?
+
+Article IV consultations lapsed widely through 2020–21, so a 2023–25 roster could
+be substantially delayed reports — different in subject, urgency and length from a
+routine cycle even within the same country. Country and year effects absorb level
+differences, not a change in what kind of document a country-year contains. An
+external review raised this as a live alternative explanation and it is a fair
+one.
+
+**The screen needs a baseline, and with one it does not fire.** Measuring, for
+every country-year in the index, the gap since that country's previous sampled
+observation:
+
+| window | country-years | gap ≥ 3 years or first appearance |
+|---|---:|---:|
+| pre-2023 | 934 | **61.7%** |
+| 2023–25 | 118 | **56.8%** |
+
+The post window is *less* delayed than the pre-period, not more. Our comparator
+samples about forty documents a year across roughly forty countries, so a
+multi-year gap is the normal condition throughout the span rather than a
+post-2020 anomaly. A screen reporting 56.8% in the post window looks alarming
+until the 61.7% baseline is put beside it.
+
+**The estimate is robust to balancing anyway; its *p* is not.** Restricting the
+comparator to countries with at least one routine post observation (gap under
+three years) drops 793 of 1,064 IMF documents:
+
+| panel | β full | β balanced | *p* full | *p* balanced |
+|---|---:|---:|---:|---:|
+| P1 | +0.5856 | +0.5807 | 0.0127 | 0.0310 |
+| P2 | +0.3319 | +0.4050 | 0.0913 | 0.2383 |
+
+β moves by 0.005 on P1. The *p*-value rises because the balanced comparator is a
+quarter of the size, which is a precision loss rather than evidence of bias — and
+on P1 it is enough to cross the Holm threshold, so condition 1 would not pass on
+the balanced comparator. Neither panel passed the full rule regardless.
+
+Reproduce with `python tools/imf_cadence_balance.py`.
+
+### S10.6 Is the Tier-2 register measurable across eight decades?
+
+A fixed contemporary word list is not automatically a period-neutral instrument
+against a 1946–65 baseline: a word form existing early does not mean its
+institutional sense, or the occasion for using it, existed too. An external
+review raised this, and its examples were wrong — `alignment`, `augment`,
+`calibrate`, `chatbot`, `corpus`, `digital` and `hallucination` were named and
+none is in the list — but the objection itself is right, so it is measured here
+on the actual 35 terms.
+
+The split is a judgement and is made in the open. **Modern register** is
+development-and-management vocabulary whose current sense postdates the early
+window: stakeholder, sustainable, governance in the Bank's own later sense,
+empower, leverage as a verb, holistic, transformative, resilience as policy,
+scalable, unlock, vibrant, landscape as metaphor, innovative, harness.
+**Period-plausible** is ordinary English with a stable institutional sense:
+accelerate, bold, crucial, foster, robust, strengthen, vital.
+
+Counts are from the assembled World Bank fiscal-year texts, which are public
+disclosure. No IMF text is involved.
+
+| subset | terms | 1946–65 | 2020–24 | ratio |
+|---|---:|---:|---:|---:|
+| all Tier-2 | 35 | 0.204 | 5.797 | **28.4×** |
+| period-plausible only | 12 | 0.192 | 2.083 | **10.9×** |
+| modern register only | 23 | 0.013 | 3.714 | 295× |
+
+**The thirtyfold headline is substantially a modern-vocabulary effect.** On the
+period-plausible subset the rise is **10.9×** — still large, still real, and about
+a third of the headline. The modern subset rises from 0.013 per thousand, which
+is a base so near zero that its ratio is a statement about absence rather than
+about growth.
+
+**22 of the 35 terms do not occur at all in 1946–65.** Not rare: absent. For those
+terms the early-window measurement is structurally zero, so the comparison is
+between a register that existed and one that had not yet been coined in this
+sense.
+
+The honest description of Tier-2 is therefore **a prespecified contemporary
+institutional register**, not a timeless measure of bureaucratic style, and §6.1's
+thirtyfold figure should be read with the 10.9× period-plausible figure beside it.
+The Tier-1/Tier-2 separation the design turns on is unaffected: Tier-2 exists to
+show that a register can rise for reasons having nothing to do with language
+models, and it does that whichever subset is used.
+
+Reproduce with `python tools/tier2_period_fairness.py`.
