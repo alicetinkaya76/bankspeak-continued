@@ -15,16 +15,15 @@ an unreleased corpus. We reconstruct it from primary documents and extend the
 Annual Report series to fiscal 2024.
 
 The trajectories recover qualitatively — a reconstruction, not a replication.
-Mean temporal anchoring falls from 39.96 per thousand tokens in 1946–65 to 22.97
-in 2020–24, and a bureaucratic register rises from 0.25 to 7.6: thirtyfold, but
-9- to 11-fold on the terms that existed in 1946–65.
+Temporal anchoring falls from 39.96 per thousand tokens in 1946–65 to 22.97 in
+2020–24, and a bureaucratic register rises from 0.25 to 7.6: thirtyfold, but 9- to 11-fold on the twelve terms whose sense predates 1965.
 
-The second result concerns measurement. The same archive over the same fiscal
-years gives a 43% or a 14% decline, and within these two reconstructed corpora
-that difference is attributable to the included document series: the 195 excluded sibling volumes rise 64% while the Bank's own fall
+The second result concerns measurement. On one weighting the same archive over
+the same fiscal years gives a 43% or a 14% decline, and within these two corpora
+that difference is attributable to the included document series: the 184 excluded sibling volumes rise 64% while the Bank's own fall
 24–59% across corpus definitions and weightings — 58% on the one series that
-is the same publication object throughout. Institution, genre and period change together
-there, so the design does not isolate organisational authorship.
+is the same publication object throughout. Institution, genre and period change together there, so organisational
+authorship is not isolated.
 
 Under a plan sealed and timestamped before the comparison was computed, we test
 whether large-language-model vocabulary shows a post-2022 World Bank
@@ -32,9 +31,7 @@ discontinuity against an International Monetary Fund comparator. **No panel sati
 reaches *p* = 0.0142, then fails the concentration guard (dropping one word family
 sends the coefficient to −0.067, interval spanning zero),
 leave-one-post-year-out, both secondary routes, and a pre-period event-study
-bin above the estimate. The comparator also rose; ex ante power is
-0.16–0.22, and the rule's family error rate lies between 0.037 and 0.094
-under different nulls.
+bin above the estimate. The comparator also rose; ex ante power is 0.16–0.22, and the rule's family error rate runs 0.028 to 0.121 across the nulls examined.
 
 The result bounds what a three-post-year, single-comparator design can
 establish; it is not evidence of absence. A nominally significant
@@ -70,13 +67,14 @@ journal abstracts are not — is an open and testable question.
 **First, that the *Bankspeak* trajectory is real and continues.** Rebuilt from
 primary documents and extended through fiscal 2024, the pamphlet's qualitative
 claim survives independent re-measurement: temporal anchoring declines while
-nominalisation, acronym density and management vocabulary rise. In ratio terms the fastest-growing register — a
-broader bureaucratese vocabulary, rising thirtyfold — is not among the five
+nominalisation, acronym density and management vocabulary rise. In ratio terms the fastest-growing register — a broader bureaucratese vocabulary, rising thirtyfold on the equal-year mean of
+the production match rule and 24-fold token-weighted (S10.8) — is not among the five
 features the pamphlet named, though acronym density supplies the largest
 *absolute* rise.
 
 **Second, that the size of that finding is hostage to a decision almost nobody
-reports.** Measured over the same fiscal years, the same archive gives a 43% decline in temporal anchoring or a 14% decline, and
+reports.** Measured over the same fiscal years on the equal-year mean, the same archive
+gives a 43% decline in temporal anchoring or a 14% decline, and
 the difference between them is attributable to *which document series are
 included* — the excluded sibling-organisation volumes trend upward while the
 Bank's own volumes fall. Institution, genre, period coverage and extraction
@@ -342,9 +340,15 @@ blanket attribution for all thirteen families and no per-word field — and
 at all — so the set has no item-level provenance and we do not claim one. Nothing about the frozen
 list changes — it was sealed at Stage-A and is the list the confirmatory run
 used — only the description of where
-it came from. *Tier-2* is shared bureaucratese, which an
-institution can drift toward with no LLM involvement at all. Keeping them
-separate is what allows §6.1's thirtyfold Tier-2 rise and §6.2's failure to
+it came from. *Tier-2* is shared bureaucratese, which an institution can drift toward with no
+LLM involvement at all. It has no per-term provenance in this repository and we
+do not claim one, and its matching rule was never frozen: the production
+pipeline counts exact token membership while the period-fairness study used
+boundary-anchored regex, which moves the headline ratio from 24.4× to 28.4× —
+almost entirely through the denominator, not the matching. S10.8 publishes the
+per-term table under both rules and does not choose between them. Keeping them
+separate is what allows §6.1's Tier-2 rise — thirtyfold on the equal-year mean,
+24-fold token-weighted — and §6.2's failure to
 establish a Tier-1 differential to be stated as different facts rather than
 averaged into one.
 
@@ -531,7 +535,11 @@ seven to two** (supplement S8).
 **The composition result, decomposed — and it is not the result we first
 claimed.** Measured over the same fiscal years, the assembled series falls
 42.5% (39.96 → 22.97 per thousand) while the whole Annual-Report document pool
-falls only 13.8% (35.70 → 30.76). A factor of three. The natural explanation is
+falls only 13.8% (35.70 → 30.76). A factor of three. Both are equal-year means, which is the convention every figure in this section
+uses. Table 3b step 4 and Table 3d give the token-weighted contrast for the
+assembled series and its two bracket corpora; no token-weighted figure for the
+329-file pool is reported anywhere, because the pool is not a corpus this paper
+analyses. The natural explanation is
 *unit definition* — whether volumes are concatenated into fiscal-year units.
 **It is not the explanation, and decomposing the gap produces a sharper one.**
 
@@ -540,10 +548,16 @@ previous step's output, over the assembled series' own fiscal years.
 
 | Step | 1946–65 → 2020–24 | change | contribution |
 |---|---|---|---|
-| 1. whole document pool, token-weighted | 35.70 → 30.76 | −13.8% | — |
+| 1. whole document pool | 35.70 → 30.76 | −13.8% | — |
 | 2. + restrict to files that enter assembly | 39.96 → 22.97 | −42.5% | **−28.7 pp** |
 | 3. + concatenate into fiscal-year units | 39.96 → 22.97 | −42.5% | **−0.0 pp** |
 | 4. + weight eras by tokens, not by year | 38.45 → 27.77 | −27.8% | +14.7 pp |
+
+Steps 1 to 3 collapse documents to a year rate by tokens and then average the
+years equally, so nothing about weighting changes between them and step 2's
+−28.7 pp is file inclusion alone. Step 4 changes the era average and nothing
+else. An earlier version of this table labelled step 1 "token-weighted" and the
+others not, which invited exactly the confound the ladder exists to rule out.
 
 **Concatenation contributes nothing at all.** For a token-normalised rate,
 assembling documents and taking a token-weighted mean of their individual rates
@@ -580,7 +594,11 @@ the exclusions, and the six remaining rulings have no late-period observation.
 **The five records excluded as duplicates are a defect, and correcting it moves
 the headline.** The frozen rule drops a record whose (report number, volume
 number) key has already been seen, which is content-blind. Adjudicated by title
-(`tools/companion_volume_adjudication.py`), **only one of the five is a duplicate.**
+(`tools/companion_volume_adjudication.py`), **only one of the five is a
+duplicate** — on a test the tool itself calls weak, since two files can share a
+title and differ. It is strictly stronger than the metadata key that produced
+the original misclassification, and it is not strong enough to be called
+settled.
 The other four are distinct components sharing a key with the main volume: two
 2023 companions — an appendixes product and a management-discussion-and-financial-
 statements product, 42,404 and 94,717 tokens — a 2024 executive summary, and a
@@ -613,9 +631,9 @@ was the equal-year mean, and it never said so. The second axis was added after
 external review asked for both weightings side by side. It matters here more
 than anywhere else in the paper because the late window is not a balanced set of
 years — fiscal 2020 and 2021 carry three components and about 200,000 tokens
-each, fiscal 2022 through 2024 carry one and 29,000 to 45,000 — so equal-year
-weighting gives the three thin years the same say as the two fat ones and token
-weighting gives them about a seventh of it.
+each, fiscal 2022 through 2024 carry one and 29,000 to 45,000 — so equal-year weighting gives the three thin years the same say as the two fat
+ones and token weighting gives them about a fifth of it (39,132 against 201,090
+tokens on average; the extreme pair, fiscal 2024 against 2020, is a seventh).
 
 **The decline survives every definition and every weighting, and the cleanest
 construction is both the steepest and the only stable one.** Restricting to the
@@ -852,7 +870,7 @@ had already recorded before the calibration script reintroduced it.
 Asked the question the frozen design never asked itself, the answer is worse and
 it is against us. The frozen dispersion estimator carries no degrees-of-freedom
 correction and is applied to 54 cells fitted with 30 parameters, and it recovers
-between a seventh and a twentieth of a dispersion that is really there
+between a seventh and a twenty-third of a dispersion that is really there
 (supplement S9, `tools/dispersion_calibration.py`, 1,000 replicates). **At the
 dispersion our own data are consistent with, PASS-P's size at a nominal 0.05 is
 0.107 on P1 and 0.075 on P2** — double on one panel and half again on the
@@ -905,12 +923,15 @@ Drawing the panels jointly *lowers* the family error, from 0.114 to **0.086**,
 because a shared comparator makes the two *p*-values positively dependent and
 Holm's worst case over two hypotheses is independence. What the repair exposes
 is that the answer turns almost entirely on a choice nobody preregistered.
-Under the process the preregistration actually names, the family error is
-**0.037** — the figure the design's own power run recorded at θ = 0 in August,
-and the figure an external reviewer's independent implementation reproduced.
+Under the process the preregistration actually names, the family error is **0.037**, and the design's own power run put the same
+quantity at 0.039 at θ = 0 in August while an external reviewer's independent
+implementation returned 0.0335 ± 0.0040. Three estimates of one number, from
+three implementations, none of them ours alone.
 Under means fitted to the observed series it is **0.086**, and 0.094 when ρ and
 σ_δ are redrawn from intervals rather than held at their point estimates. Both
-nulls are defensible. The design specified neither for this purpose.
+nulls are defensible. The design specified neither for this purpose. Across all
+twenty nulls in S10.4, including alternative dependence structures, the rate
+runs from 0.028 to 0.121.
 
 Two mechanisms were tested for that gap and both are refuted by the diagnostics
 in S10.4 — neither the shock-to-noise ratio nor the leverage of the ninth block
@@ -1226,20 +1247,25 @@ cover at their nominal rate. §6.2 and supplement S9 report that PASS-P holds no
 when the counts are Poisson and **loses it under mild overdispersion** — 0.107
 against a nominal 0.05 on P1 at the dispersion the data are consistent with —
 because the frozen dispersion estimator recovers roughly an eighth of what is
-there at 30 parameters on 54 cells. The PASS-E intervals are measured at
-**0.705–0.910 against a nominal 0.95** (supplement S10.3), falling monotonically
-as the null moves from i.i.d. toward the preregistered serial dependence, so
-Table 4 labels them nominal and gives the measured range. They are too narrow, which is permissive rather than lenient
-where they gate anything — and both conditions that use them failed on the
-coefficient, not on the width. A reader treating the
+there at 30 parameters on 54 cells. The PASS-E intervals are measured at **0.705–0.910 against a nominal 0.95**
+(supplement S10.3), worst under the preregistered serial null, so Table 4 labels
+them nominal and gives the measured range. Being too narrow makes it *easier* to
+exclude zero, so the error is permissive rather than conservative where the
+intervals gate anything — and both conditions that use them failed on the
+coefficient's sign and magnitude, not on the width. A reader treating the
 apparatus as reusable should establish both first, and should note that the null
-*p*-value distribution is not uniform. **A degrees-of-freedom correction to the
-dispersion estimator is not the fix**: supplement S10.1 applies one and the size
-does not move. Nor is dispersion the problem — under the differential AR(1) shock
-the preregistration specifies, size reaches **0.121** (S10.4),
-against 0.054 under an i.i.d. null. The fault is serial dependence and the nine-block construction
-that was meant to absorb it. The design-level remedy is more blocks, and more
-blocks means more years.
+*p*-value distribution is not uniform. **A degrees-of-freedom correction to the dispersion estimator is not the fix**:
+supplement S10.1 applies one and the size does not move. What the joint
+calibration adds is that no single fault is the fix either. Under means fitted
+to the observed series the family error is **0.086** against a nominal 0.05, but
+**0.045 with no shock at all and 0.063 with an i.i.d. one** — so most of the
+excess is unmodelled overdispersion in one arm rather than serial dependence,
+and under the preregistered mean structure the same rule sits at **0.037**,
+below nominal. An earlier version of this paragraph named serial dependence and
+the nine-block construction as the fault. Neither survives the measurement
+(§6.2, S10.4), and the design-level remedy is still more years — not because the
+blocks are broken but because three post-period observations cannot separate the
+mean structures that decide the answer.
 
 **Provenance and access.** 748 of 2,738 documents (27.3%) in the Stage-B World
 Bank sample had their outcomes inspected at Stage-A. The IMF half of the contrast
@@ -1276,7 +1302,7 @@ was found by measurement rather than suspicion:
 
 - **Document selection triples a diachronic magnitude; the unit of analysis
   changes nothing.** Assembled and pool Annual-Report series give a 43% and a 14% decline over the
-same fiscal years, and the difference is attributable to which document series
+same fiscal years on the equal-year mean, 28% and 14% token-weighted, and the difference is attributable to which document series
 are included — the excluded sibling-organisation volumes trend *upward* while
 the Bank's own volumes fall. Those series differ in institution, genre, period
 coverage and extraction route at once, so the design cannot assign the effect to

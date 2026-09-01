@@ -54,9 +54,33 @@ OUT = ROOT.parent / "bankspeak-public"
 # clause is one thing; scattering them across a public git history is another,
 # and the benefit is nil because nobody can rerun the pipeline without the
 # corpus anyway. So data/ stays out and the README says where it lives.
-INCLUDE = ["src", "tools", "tests", "config", "docs", "Makefile",
-           "requirements.txt", "requirements-ppl.txt",
-           "data/meta/imf_document_index.csv"]
+# The derived machine output the manuscript quotes by number. Without it the
+# published repository holds the code that produces every figure in supplement
+# S10 and none of the figures, so a reader can rerun but cannot check. These are
+# counts, coefficients and hashes; the leak scan below reads every byte of them
+# and refuses on an IMF report number, DOI, URL or title, so inclusion is
+# verified rather than asserted. Named one at a time rather than by directory:
+# data/analysis/panels/ carries per-document identifiers and must not travel.
+ANALYSIS = ["ar1_null_calibration", "ar_component_inventory",
+            "ar_exclusion_classes", "block_origin_enumeration",
+            "citation_audit", "companion_volume_adjudication",
+            "dispersion_calibration", "dispersion_robust_inference",
+            "hshared_draw_diagnostics", "imf_cadence_balance",
+            "joint_holm_calibration", "passe_coverage", "passp_calibration",
+            "prereg_sensitivities", "retrieval_route_tally",
+            "rq1_decomposition", "stage_a_exposure_sensitivity",
+            "tier2_item_provenance", "tier2_period_fairness",
+            "trend_analysis", "branch_decision", "g1_scores_not_evaluated",
+            "mde_p0_not_evaluated"]
+
+INCLUDE = (["src", "tools", "tests", "config", "docs", "Makefile",
+            "requirements.txt", "requirements-ppl.txt",
+            "data/meta/imf_document_index.csv"]
+           + [f"data/analysis/{n}.json" for n in ANALYSIS]
+           + ["data/analysis/imf_frame_publication.json",
+              "data/analysis/imf_frame_publication.csv",
+              "data/analysis/tier2_item_provenance.csv",
+              "data/analysis/its_results.csv", "data/analysis/power.csv"])
 
 # Never, whatever else matches.
 DENY = [
@@ -106,6 +130,13 @@ PATH_EXEMPT = {
     "docs/IMF_RETRIEVAL_20260820.md",       # cited by §3 of the manuscript
     "docs/IMF_ACCESS_COMPLIANCE_20260820.md",   # cited by §3 of the manuscript
     "docs/IMF_QUERY_DRAFT_archive_route.md",
+    # The supplement tells readers to run both of these ("Reproduce with
+    # python tools/imf_cadence_balance.py", and the same for the frame
+    # publication). The basename rule was dropping them from the export, so the
+    # published repository did not contain two tools the published paper cites.
+    # Neither reads document text; both work on metadata and counts.
+    "tools/imf_cadence_balance.py",
+    "tools/imf_frame_publication.py",
 }
 
 # One deliberate exception, and it is an exception rather than a raised
@@ -234,6 +265,24 @@ def main(argv: list[str] | None = None) -> int:
     total = sum(f.stat().st_size for f, _ in staged)
     print(f"[public] {len(staged)} files, {total/1e6:.2f} MB -> {OUT}")
     print("[public] leak scan clean: no IMF report number, DOI, URL or title")
+
+    # README.md is PRESERVEd rather than generated, so its test counts drift and
+    # nothing here was reading them: it advertised 394 collected and 367 passing
+    # against an export that collects 420. Collection is cheap and it is the one
+    # number in that file this build can check without running the suite.
+    readme = OUT / "README.md"
+    if readme.exists():
+        r = subprocess.run([sys.executable, "-m", "pytest", "tests/", "-q",
+                            "--collect-only"], cwd=OUT, capture_output=True,
+                           text=True)
+        m = re.search(r"(\d+) tests? collected", r.stdout)
+        said = re.search(r"\((\d+) tests;", readme.read_text(encoding="utf-8"))
+        if m and said and int(m.group(1)) != int(said.group(1)):
+            print(f"[public] REFUSING: README says {said.group(1)} tests, the "
+                  f"export collects {m.group(1)}")
+            return 1
+        if m and said:
+            print(f"[public] README test count matches the export ({m.group(1)})")
     return 0
 
 

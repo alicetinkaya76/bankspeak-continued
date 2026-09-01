@@ -56,9 +56,24 @@ BUILT_PDF = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
 # to be repaired for ("De\nFrancesco" read as an uncited entry): a hand-wrapped
 # Markdown file has no obligation to keep a construct on one line, and a scanner
 # that assumes it will is looking at a different document than the reader is.
-PAT = re.compile(r"\[[^\]]{0,200}?(?:TBD|TO BE|to be |DOI …|DOI \.\.\.|XXX|"
-                 r"AFFILIATION|ORCID|Name,|Funding|insert|INSERT|"
-                 r"to be completed|to be inserted)[^\]]{0,200}?\]", re.S)
+# Two patterns, because the failure modes are different. The keyword list
+# catches the wordings this package actually uses. The shape rule catches the
+# ones nobody thought to list -- [FIXME], [TK], [PENDING FINAL RUN] all printed
+# "MANUSCRIPT: no placeholders" until round 18 -- by looking for a bracket whose
+# content is an all-caps token or two rather than prose or a number.
+#
+# What must NOT match: this manuscript is full of intervals like [−0.732, 0.239]
+# and [0.267, 0.921], and a scanner that flags those is one nobody runs twice.
+# The shape rule therefore requires at least one ASCII letter run of two or more
+# capitals and forbids a digit-leading bracket outright.
+KEYWORDS = (r"TBD|TO BE|to be |DOI …|DOI \.\.\.|XXX|AFFILIATION|ORCID|Name,|"
+            r"Funding|insert|INSERT|to be completed|to be inserted")
+PAT = re.compile(r"\[[^\]]{0,200}?(?:" + KEYWORDS + r")[^\]]{0,200}?\]", re.S)
+SHAPE = re.compile(r"\[(?![\s\-−+.]*\d)"          # not an interval or a number
+                   r"[^\]\n]{0,80}?"
+                   r"\b(?:FIXME|TK|TODO|PENDING|PLACEHOLDER|DRAFT|CHECK|"
+                   r"REVISE|CITE|REF|UNKNOWN|NUMBER|VALUE|DATE)\b"
+                   r"[^\]\n]{0,80}?\]")
 
 
 def scan(paths: list[Path]) -> list[tuple[str, int, str]]:
@@ -67,7 +82,11 @@ def scan(paths: list[Path]) -> list[tuple[str, int, str]]:
         if not p.exists():
             continue
         text = p.read_text(encoding="utf-8")
-        for m in PAT.finditer(text):
+        spans = {(m.start(), m.end()) for m in PAT.finditer(text)}
+        spans |= {(m.start(), m.end()) for m in SHAPE.finditer(text)}
+        for a, b in sorted(spans):
+            m = type("M", (), {"start": lambda s, a=a: a,
+                               "group": lambda s, _=0, a=a, b=b: text[a:b]})()
             line = text.count("\n", 0, m.start()) + 1
             flat = " ".join(m.group(0).split())
             try:
@@ -79,6 +98,9 @@ def scan(paths: list[Path]) -> list[tuple[str, int, str]]:
 
 
 def scan_pdf(path: Path) -> list[tuple[str, int, str]]:
+    """Note: the caller decides what a MISSING artifact means, not this. A
+    "clean" verdict for a file that is not there is the shape of defect that
+    lets a package pass by having less in it."""
     """The same patterns, against the rendered pages rather than the source.
 
     Read the artifact, not the input to it: the brackets are injected by
@@ -105,7 +127,13 @@ def scan_pdf(path: Path) -> list[tuple[str, int, str]]:
 def main() -> int:
     in_paper = scan(MANUSCRIPT)
     in_forms = scan(FORMS)
-    in_built = scan(([BUILT_MD] if BUILT_MD.exists() else [])) + scan_pdf(BUILT_PDF)
+    # Deleting the built PDF used to turn this from exit 2 into exit 0 and
+    # "BUILT SUBMISSION ARTIFACT: clean" -- absence read as success, which is the
+    # most dangerous verdict a guard can give. The public export legitimately has
+    # no build/ tree, so the distinction is between "not built here" and "built
+    # and clean", and both are reported by name.
+    built_exists = BUILT_PDF.exists() or BUILT_MD.exists()
+    in_built = (scan([BUILT_MD]) if BUILT_MD.exists() else []) + scan_pdf(BUILT_PDF)
 
     if in_forms:
         print("FORM FIELDS still to fill before submitting "
@@ -124,6 +152,11 @@ def main() -> int:
     print("MANUSCRIPT: no placeholders")
 
     print()
+    if not built_exists:
+        print("BUILT SUBMISSION ARTIFACT: NOT CHECKED — no build/submission "
+              "artifact in this tree (expected in the public export; run "
+              "tools/build_submission_pdf.py --both here)")
+        return 0
     if in_built:
         print("BUILT SUBMISSION ARTIFACT — visible on the file that gets "
               "uploaded (page numbers for the PDF, line numbers otherwise):")

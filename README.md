@@ -26,7 +26,7 @@ than trusted.
 ```
 src/      the analysis pipeline and the frozen inference engine
 tools/    retrieval, corpus repair, table and figure generators, sensitivity studies
-tests/    the suite that pins the frozen contracts (394 tests; 27 need
+tests/    the suite that pins the frozen contracts (432 tests; 32 need
           permission-gated or deposited inputs and skip here, naming the file)
 config/   pinned configuration, marker family definitions, alias maps
 docs/     preregistration drafts and amendments, the frozen SAP and its freeze
@@ -73,7 +73,7 @@ be checked from this repository alone:
 
 ```bash
 pip install -r requirements.txt
-python -m pytest tests/ -q                 # 367 pass, 27 skip without the
+python -m pytest tests/ -q                 # 400 pass, 32 skip without the
                                            # permission-gated inputs
 python tools/plos_compliance.py            # manuscript against the venue's stated limits
 python tools/make_vancouver_refs.py        # numbered reference list, built from Crossref

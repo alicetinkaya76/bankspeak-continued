@@ -40,21 +40,27 @@ def main() -> int:
         "supplement": ({m.group(1) for m in re.finditer(r"^## S(\d+)\.", supp, re.M)}
                        | {m.group(1) for m in re.finditer(r"^### S(\d+\.\d+)", supp, re.M)}),
     }
+    # Round 18 made the supplement counter read both documents and left the
+    # other three reading `paper` only, so "See §17.3, Table 99 and Figure 9"
+    # inserted into the supplement still passed clean. The supplement points into
+    # the paper's numbering constantly and legitimately, which is exactly why it
+    # has to be scanned: a reference there to a section that does not exist is a
+    # dangling reference in the published package.
+    both = paper + "\n" + supp
     want = {
         "section": collections.Counter(
-            m.group(1) for m in re.finditer(EXTERNAL + r"§(\d+(?:\.\d+)?)", paper)),
+            m.group(1) for m in re.finditer(EXTERNAL + r"§(\d+(?:\.\d+)?)", both)),
         "table": collections.Counter(
-            m.group(1) for m in re.finditer(r"\bTable (\d+[a-z]?)\b", paper)),
+            m.group(1) for m in re.finditer(r"\bTable (\d+[a-z]?)\b", both)),
         "figure": collections.Counter(
-            m.group(1) for m in re.finditer(r"\bFigure (\d+)\b", paper)),
+            m.group(1) for m in re.finditer(r"\bFigure (\d+)\b", both)),
         # The supplement's own cross references were invisible until round 18:
         # this counter read `paper` only, so a dangling "S6.3" INSIDE the
         # supplement passed every check while the reader following it found
         # nothing. Both documents point into the supplement's numbering, so
         # both have to be scanned.
         "supplement": collections.Counter(
-            m.group(1) for m in re.finditer(r"\bS(\d+(?:\.\d+)?)\b",
-                                           paper + "\n" + supp)),
+            m.group(1) for m in re.finditer(r"\bS(\d+(?:\.\d+)?)\b", both)),
     }
 
     bad = []

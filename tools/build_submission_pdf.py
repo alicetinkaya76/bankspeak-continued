@@ -27,6 +27,7 @@ import argparse
 import re
 import shutil
 import subprocess
+import unicodedata
 import sys
 from pathlib import Path
 
@@ -45,12 +46,14 @@ ORCID = "[ORCID — to be completed before submission]"
 # Fonts are tried in order; the first one fontspec can load wins. Times New Roman
 # and Helvetica ship with macOS; the two Latin Modern entries are the TeX
 # fallbacks so the build still runs on a machine without them.
-FONT_CANDIDATES = ["Times New Roman", "Latin Modern Roman", "TeX Gyre Termes"]
+FONT_CANDIDATES = ["TeX Gyre Termes", "Charter", "Georgia",
+                   "Latin Modern Roman", "Times New Roman"]
 # The model equation is written in a code span, so it is set in the MONO font,
 # and the default (Latin Modern Mono) has no Greek. That silently deleted the
 # three coefficients from the one line that defines the estimand:
 #   "log E[count_it] = year FE + γ·WB + τ·(WB × centred year) + β·(WB × post)"
 # became "= year FE + ·WB + ·(WB × centred year) + ·(WB × post)".
+ARROW = "\u2192"
 MONO_CANDIDATES = ["Menlo", "DejaVu Sans Mono", "Courier New", "Latin Modern Mono"]
 
 SUPER = {"⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4",
@@ -72,6 +75,11 @@ def scripts_to_math(md: str) -> str:
                 lambda m: "$^{" + "".join(SUPER[c] for c in m.group(0)) + "}$", md)
     md = re.sub("[" + "".join(SUB) + "]+",
                 lambda m: "$_{" + "".join(SUB[c] for c in m.group(0)) + "}$", md)
+    # Same device for the arrow. Every era contrast in the manuscript is written
+    # "39.96 → 22.97", and the serif faces whose text layer records punctuation
+    # correctly do not all carry U+2192. Setting it as maths removes the
+    # dependency rather than constraining the font choice to fonts that have it.
+    md = md.replace(ARROW, "$\\rightarrow$")
     return md
 
 
@@ -145,15 +153,54 @@ def probe_font(name: str, setter: str, sample: str) -> bool:
     if not out.exists():
         return False
     text = "".join(pg.get_text() for pg in fitz.open(out))
-    return "\ufffd" not in text and "\uffff" not in text
+    if "\ufffd" in text or "\uffff" in text:
+        return False
+    # Drawing the right glyph is not the same as recording the right character.
+    # macOS Times New Roman sets a perfectly ordinary semicolon and then maps it
+    # in ToUnicode to U+037E GREEK QUESTION MARK, which is canonically
+    # equivalent to U+003B and therefore invisible to a notdef scan and to any
+    # reader who normalises. Every semicolon in both submission PDFs was U+037E
+    # for eighteen rounds. So the probe now reads the sample back character by
+    # character and rejects a font that changes one.
+    for ch in sample:
+        if ch.isspace():
+            continue
+        if ch not in text:
+            return False
+    return True
 
 
 GREEK_SAMPLE = "β τ γ θ α σ δ π ≥ × − §"
+# Ordinary punctuation, in the probe for the reason above: these are the
+# characters a font is most likely to draw correctly and record wrongly.
+# No quotes or apostrophes: LaTeX turns those into directional forms on
+# purpose, so their absence would be a false failure rather than a font defect.
+PUNCT_SAMPLE = "; : , . ( ) [ ] ? ! -"
+
+
+def manuscript_sample() -> str:
+    """Every non-ASCII character the two source documents actually contain.
+
+    A hand-written sample tests what the author remembered. This tests what the
+    manuscript holds, which is the only list that matters. It would have caught
+    both of round 18's font defects: Charter has no U+2192 RIGHTWARDS ARROW and
+    the manuscript uses it in every era contrast, and macOS Times New Roman
+    records a semicolon as U+037E.
+    """
+    chars = set()
+    for f in (PAPER, SUPP):
+        if f.exists():
+            chars |= {c for c in f.read_text(encoding="utf-8") if ord(c) > 127}
+    chars -= {"\u201c", "\u201d", "\u2018", "\u2019"}   # LaTeX makes these itself
+    chars -= set(SUPER) | set(SUB) | {ARROW}   # rewritten as maths before typesetting
+    return " ".join(sorted(chars))
 
 
 def pick_fonts() -> tuple[str, str]:
+    sample = (GREEK_SAMPLE + " θ̂ " + PUNCT_SAMPLE + " "
+              + manuscript_sample())
     main = next((f for f in FONT_CANDIDATES
-                 if probe_font(f, "setmainfont", GREEK_SAMPLE + " θ̂")), None)
+                 if probe_font(f, "setmainfont", sample)), None)
     mono = next((f for f in MONO_CANDIDATES
                  if probe_font(f, "setmonofont", GREEK_SAMPLE)), None)
     if not main or not mono:
@@ -203,6 +250,17 @@ def main(supplement: bool = False) -> int:
         "urlcolor: black\n"
         "linkcolor: black\n"
         "header-includes:\n"
+        # Five lines ran past the right edge of the page and the characters past
+        # it were not drawn at all -- the title page printed 62 of the deposit's
+        # 64 sha256 hex digits, and the last sentence of S10.8 stopped mid-word.
+        # seqsplit lets a long path break anywhere rather than overrun; sloppy
+        # and emergencystretch handle the prose lines. verify() now refuses if
+        # anything still overflows.
+        "  - \\usepackage{seqsplit}\n"
+        "  - \\let\\origtexttt\\texttt\n"
+        "  - \\renewcommand{\\texttt}[1]{\\origtexttt{\\seqsplit{#1}}}\n"
+        "  - \\sloppy\n"
+        "  - \\setlength{\\emergencystretch}{3em}\n"
         "  - \\usepackage{longtable}\n"
         "  - \\usepackage{booktabs}\n"
         "  - \\AtBeginEnvironment{longtable}{\\footnotesize}\n"
@@ -249,6 +307,33 @@ def verify(source_md: str, out_path: Path = OUT,
 
     doc = fitz.open(out_path)
     text = "".join(page.get_text() for page in doc)
+
+    over = []
+    for i, page in enumerate(doc, start=1):
+        limit = page.rect.width - 1.0
+        for blk in page.get_text("dict")["blocks"]:
+            for line in blk.get("lines", []):
+                if line["bbox"][2] > limit:
+                    tail = "".join(sp["text"] for sp in line["spans"])[-60:]
+                    over.append((i, line["bbox"][2], tail))
+    if over:
+        sys.stderr.write(f"[pdf] REFUSING: {len(over)} line(s) typeset past the "
+                         "page edge; the characters past it are not drawn:\n")
+        for i, x1, tail in over[:8]:
+            sys.stderr.write(f"    p{i} x1={x1:.1f} ...{tail}\n")
+        return 1
+
+    # U+037E is canonically equivalent to a semicolon, so it survives a notdef
+    # scan and a normalising reader, and is wrong in the text layer regardless.
+    # pick_fonts should have excluded any font that does this; check the built
+    # artifact anyway, because the probe tests a sample and this tests the page.
+    strays = {c for c in text if unicodedata.normalize("NFC", c) != c}
+    if strays:
+        sys.stderr.write("[pdf] REFUSING: the text layer records characters "
+                         "that are canonically equivalent to, but not, what the "
+                         f"source holds: {sorted(hex(ord(c)) for c in strays)}\n")
+        return 1
+
     bad = text.count("\ufffd") + text.count("\uffff")
     if bad:
         ctx = [text[max(0, i - 30):i + 30].replace("\n", " ")

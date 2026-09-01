@@ -183,7 +183,7 @@ ride that integration — see below.
 python tools/build_submission_pdf.py --both
 ```
 
-Builds `build/submission/PLOS_ONE_submission.pdf` — 32 pages — and, with
+Builds `build/submission/PLOS_ONE_submission.pdf` — 34 pages — and, with
 `--both`, `build/submission/PLOS_ONE_supplement.pdf` at 16 pages. The
 supplement went through seventeen rounds as raw Markdown. PLOS publishes
 supporting information in whatever format it is given, so that would have
@@ -214,9 +214,10 @@ math, fonts are chosen by rendering a Greek sample and reading it back rather
 than by loading successfully, and the finished PDF is scanned for notdefs and for
 seven load-bearing strings before the build reports success.
 
-The title page carries the author name from a constant in the generator —
-there is no `CITATION.cff` in this repository and an earlier version of this
-sentence said there was — and leaves the **affiliation and ORCID as visible
+The title page carries the author name from a constant in the generator. An
+earlier version of this sentence said it came from `CITATION.cff`; there is no
+such file in this tree — the public export writes one, and the PDF builder reads
+neither. The build leaves the **affiliation and ORCID as visible
 placeholders**. They are not invented, and they are visible so they cannot be
 uploaded unnoticed.
 

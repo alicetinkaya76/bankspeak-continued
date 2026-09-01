@@ -55,7 +55,17 @@ def main() -> int:
     if AUDIT.exists():
         a = json.loads(AUDIT.read_text(encoding="utf-8"))
         n_entries = a["n_entries"]
-        n_doi = sum(1 for e in a["entries"] if e.get("doi"))
+        # "Resolved from Crossref" is a claim about a lookup, and this counted
+        # entries that merely carried a doi field -- a DOI that 404s counted as
+        # resolved. The audit records a per-entry verdict; use it, and fall back
+        # to the field only when no verdict was stored, so an older audit object
+        # still checks rather than silently passing.
+        def resolved(e):
+            v = (e.get("check") or {}).get("verdict")
+            if v is None:
+                return bool(e.get("doi"))
+            return bool(e.get("doi")) and "NOT" not in str(v).upper()
+        n_doi = sum(1 for e in a["entries"] if resolved(e))
         m = re.search(r"all (\d+) entries parsed,\s*\n?(\d+) resolved", paper)
         if not m:
             bad.append("the reference-audit footer is missing or reworded; "
@@ -85,6 +95,9 @@ def main() -> int:
     if CHECKLIST.exists():
         cl = CHECKLIST.read_text(encoding="utf-8")
         pages = pdf_pages(PDF)
+        if pages is None and PDF.exists():
+            bad.append("the submission PDF exists but could not be opened; its "
+                       "page count is unchecked")
         m = re.search(r"PLOS_ONE_submission\.pdf`?\s*(?:—|--)\s*(\d+) pages", cl)
         if m and pages is not None:
             if int(m.group(1)) != pages:
@@ -110,7 +123,12 @@ def main() -> int:
                        "count in a form this can read")
 
     # --- the kit manifest's own file count, against the bundle it describes ---
+    # A missing manifest used to drop the check silently and still exit 0.
+    # The public export has no kit, so absence is reported by name rather than
+    # treated either as success or as failure.
     man = KIT / "MANIFEST.md"
+    if not man.exists():
+        print("  kit files          NOT CHECKED (no third_eye_kit/ in this tree)")
     if man.exists():
         txt = man.read_text(encoding="utf-8")
         actual = sum(1 for f in KIT.rglob("*") if f.is_file())

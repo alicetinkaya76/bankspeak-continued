@@ -67,9 +67,10 @@ constructed `observed_rates_flat` reproduces at 0.031.
 
 **Two mechanisms were tried and both are refuted by the tool's own
 diagnostics**, which is why neither is asserted. Shock-to-noise runs the wrong
-way — the flat null has a *higher* ratio and less than half the error. Block-nine
-leverage runs the wrong way too: 0.33–0.37 in the inflated scenarios against
-0.44–0.48 in the well-behaved ones, where an equal split is 0.111. It runs the
+way — the flat null has a *higher* ratio and less than half the error. Block-nine leverage runs the wrong way too: every inflated scenario sits at
+0.334–0.371, below the well-behaved ones (0.297–0.477), where an equal split is
+0.111; the rank correlation across the ladder is −0.73. The lowest-leverage
+scenario of all is correctly sized, so this is a tendency and not a law. It runs the
 wrong way for a reason: when one block dominates the studentised denominator,
 almost every sign pattern counts as a hit and the test goes conservative.
 
@@ -86,8 +87,10 @@ one. Under neither does it approach the 0.025 the Holm step demanded.
 because it is computable from the same cells: adding it takes the joint rate
 0.086 → 0.064 and the independent-panel rate 0.114 → 0.086.
 
-S10.4 is retitled and rewritten; §6.2 rewritten; the abstract now reports the
-0.037–0.094 range.
+S10.4 is retitled and rewritten; §6.2 rewritten. Across all twenty nulls the
+rate runs 0.028 to 0.121; holding the preregistered dependence parameters and
+varying only the mean structure it runs 0.037 to 0.094, and both brackets are
+stated.
 
 ---
 
@@ -111,7 +114,8 @@ publishes it (S10.7) and **recomputes rather than asserts**:
 **Three limits the reviewer did not ask about and would have found.**
 
 *Fiscal 2020 is a compositional outlier and it is inside the pre-period* — 44
-eligible units against 99–129 in neighbouring years, inclusion probability 0.909.
+eligible units against 103–129 in the surrounding years, inclusion probability
+0.909.
 The catch-up disturbance S10.5 looked for on the post side shows up here on the
 pre side.
 
@@ -158,7 +162,8 @@ from each other**: "thirtyfold" is the equal-year production rule, "11-fold" was
 the token-weighted boundary rule. Matched, they are 24.4× and 9.4×, or 28.4× and
 10.9×. The abstract now says 9- to 11-fold.
 
-**The early window rests on very few occurrences**: 130 hits against 3,303.
+**The early window rests on very few occurrences**: 130 hits against 3,301
+(production rule) or 3,303 (boundary).
 `vital` alone carries 26.2% and the top three carry 61.5%, which is why removing
 `vital` takes the ratio *up*, to 32.8×. Three of the twelve period-plausible
 terms have no attested early occurrences at all.
@@ -244,13 +249,77 @@ path.
 
 ---
 
+## 6b. What a second adversarial pass found, after all of the above
+
+The round was verified again once the repairs were in. It found nineteen more
+defects, four of them in the artifact that actually gets uploaded, and none of
+them reported by the external reviewer.
+
+**The submission PDF was losing characters off the right edge of the page.** The
+title page printed **62 of the deposit's 64 sha256 hex digits**, so a reader
+verifying the deposit against the printed hash would have got a mismatch. Four
+more lines were clipped the same way, including the last sentence of S10.8 and a
+reproduction command in S10.5. XeLaTeX reports an overfull box in its log and
+draws the text anyway; nothing was reading either.
+
+**Every semicolon in both PDFs was U+037E GREEK QUESTION MARK.** macOS Times New
+Roman draws an ordinary semicolon and records it in ToUnicode as U+037E, which is
+canonically equivalent to U+003B and therefore survives a notdef scan and any
+reader that normalises. Eighty-five in the manuscript, thirty-two in the
+supplement. The font probe now reads its sample back character by character and
+rejects a font that changes one, and the probe's sample is **derived from the
+manuscript's own non-ASCII inventory** rather than hand-written — which is what
+would have caught this and the missing arrow glyph in the same pass. The
+manuscript is now set in Charter; Times New Roman fails the probe.
+
+**§7 asserted the two causal claims §6.2 had just withdrawn.** It still said
+dispersion was not the problem and that the fault was serial dependence plus the
+nine-block construction, quoting a 0.121 that is the family error at ρ = 0.7
+rather than size at the preregistered ρ = 0.5. Rewritten.
+
+**S10.3's sixteen-row coverage table was never regenerated** after the reseeded
+rerun: fifteen of sixteen cells disagreed with the file, and the summary
+paragraph four lines below it — which was updated — contradicted its own table.
+Regenerated from the JSON.
+
+**The 0.037–0.094 bracket was contradicted by two rows of its own table.**
+Independent World Bank shocks give 0.119 and the corrected NB2 dispersion 0.102.
+The paper now states both ranges: 0.028–0.121 across every null examined, and
+0.037–0.094 across mean structures at the preregistered dependence parameters.
+
+**A fourth seed collision.** A class-level test written for the three the
+reviewer found located a fourth, in `dispersion_calibration.py`.
+
+**Five guards failed their own negative controls.** A dangling reference inside
+the *supplement* passed, because three of four counters read only the paper. The
+placeholder scanner's keyword whitelist missed `[FIXME]`, `[TK]` and `[PENDING
+FINAL RUN]`. Two guards reported a *cleaner* verdict when the artifact they check
+was missing than when it was present — absence read as success. "Resolved from
+Crossref" was checked against entries carrying a DOI field, so a 404 counted as
+resolved. And `tools/audit_citations.py --offline` had no offline mode at all:
+the flag was accepted by the shell, ignored by the program, and thirty-one live
+requests went to Crossref during what was meant to be a read-only audit. All five
+are fixed and all five now have the control that broke them as a test.
+
+**Four packaging defects.** The four figure pages embedded a **Type 3 font**,
+matplotlib's default and a rejection in several journal production pipelines.
+`data/analysis/panels_country/P*_battery.json`, from which S5 quotes twelve
+numbers, were still unreachable — negating a file inside an excluded directory
+does nothing, because git does not descend into one. The public export was
+dropping two tools the supplement tells readers to run. And the review kit had
+drifted from the repository in four files with nothing able to see it, since the
+kit is gitignored; the builder now records a sha256 per staged file and
+`tools/check_kit_freshness.py` compares them.
+
+Suite 432.
+
 ## 7. Package state
 
 | item | state |
 |---|---|
-| manuscript | 32 pages, 34 references, 31 Crossref-resolved |
-| supplement | 16 pages, S1–S10.8, built PDF |
-| tests | **420 passing** |
+| manuscript | 34 pages, 34 references, 31 Crossref-resolved |
+| supplement | 17 pages, S1–S10.8, built PDF |
+| tests | **432 passing** |
 | PLOS compliance | **0 blockers**, 2 accept-stage items |
 | stated counts | every one derived and checked |
 | cross-references | all resolve |

@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+5b81d7f  2026-09-01  Table 3b's step-1 label invited the confound the ladder rules out
+ff426fb  2026-09-01  S10.4 measured a per-panel raw threshold and called it the governing test
 b75f45a  2026-09-01  The new coverage test had no data guard and failed in the export
 418556a  2026-09-01  The intervals cover at 0.74 under the null the design was preregistered against
 9efaba9  2026-09-01  Answer the v5 review's four required repairs, and two come out our way

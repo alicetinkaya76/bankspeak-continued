@@ -21,6 +21,7 @@ from __future__ import annotations
 import importlib.util
 import itertools
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -165,12 +166,25 @@ def test_the_ladder_spans_the_range_the_paper_claims():
     assert by["prereg_literal"]["holm_familywise_error_rate"] < 0.05
     assert by["fitted_joint"]["holm_familywise_error_rate"] > 0.06
     # and the paper's stated range must bracket what the file holds
+    # Two brackets, and the paper must state both. The narrow one ranges over
+    # mean structures at the preregistered dependence parameters; the wide one
+    # over every null in the file. An earlier draft printed only the narrow one,
+    # and two rows of its own table sat above it.
     rates = [s["holm_familywise_error_rate"] for s in d["scenarios"]]
     paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
-    assert "0.037" in paper and "0.094" in paper, \
-        "the manuscript no longer states the family error range"
-    assert min(rates) <= 0.037 + 1e-9 and max(rates) >= 0.094 - 1e-9, \
-        (min(rates), max(rates))
+    supp = (ROOT / "docs" / "PAPER_SUPPLEMENT_v1.md").read_text(encoding="utf-8")
+    both = paper + supp
+    for n in ("0.037", "0.094", "0.028", "0.121"):
+        assert n in both, f"the manuscript no longer states {n}"
+    # Half a printed unit; Python's %.3f rounds half to even on the binary
+    # value, so string equality is the wrong test for a figure like 0.02775.
+    tol = 0.0005 + 1e-9
+    assert abs(min(rates) - 0.028) <= tol, min(rates)
+    assert abs(max(rates) - 0.121) <= tol, max(rates)
+    narrow = [by[k]["holm_familywise_error_rate"] for k in
+              ("prereg_literal", "fitted_joint", "fitted_joint_param_uncertainty")]
+    assert abs(min(narrow) - 0.037) <= tol, min(narrow)
+    assert abs(max(narrow) - 0.094) <= tol, max(narrow)
 
 
 @pytest.mark.skipif(not JOINT_JSON.exists(),
@@ -259,8 +273,10 @@ def test_the_boundary_rule_reproduces_the_section_it_replaces():
                - old["subsets"]["all 35 terms"]["ratio"]) < 1e-9
 
 
-@pytest.mark.skipif(not TIER2_JSON.exists(),
-                    reason="run tools/tier2_item_provenance.py first")
+@pytest.mark.skipif(
+    not TIER2_JSON.exists()
+    or not (ROOT / "data" / "features" / "ar_fy_features.csv").exists(),
+    reason="needs the derived feature table, which the public export omits")
 def test_the_production_rule_agrees_with_the_production_pipeline():
     """The cross-check that the two paths compute the same quantity."""
     d = json.loads(TIER2_JSON.read_text(encoding="utf-8"))
@@ -400,3 +416,202 @@ def test_the_s9_table_matches_the_file_it_reports():
         got_s = siz["size_05"] if isinstance(siz, dict) else siz
         assert abs(float(ahat) - got_a) < 5e-5, (panel, alpha, ahat, got_a)
         assert abs(float(size) - got_s) < 5e-4, (panel, alpha, size, got_s)
+
+
+# ------------------------------------ the guards, after their own controls ---
+# Only what the guards actually open. The first version of this helper copied
+# data/ whole, which is the licensed corpus at some gigabytes, and exhausted the
+# disk mid-suite: twelve unrelated tests died with OSError. A control tree has
+# to be the size of the thing under control.
+_CONTROL_TREE = [
+    "docs/PAPER_DRAFT_v2.md",
+    "docs/PAPER_SUPPLEMENT_v1.md",
+    "docs/PLOS_SUBMISSION_CHECKLIST.md",
+    "data/analysis/citation_audit.json",
+    "third_eye_kit/MANIFEST.md",
+    "build/submission/PLOS_ONE_submission.pdf",
+    "build/submission/submission.md",
+]
+_CONTROL_TOOLS = ["check_cross_references.py", "placeholder_report.py",
+                  "check_stated_counts.py"]
+
+
+def _mutated_copy(tmp_path, mutations):
+    """A throwaway tree holding only the files the guards read, plus a defect.
+
+    The controls have to run somewhere other than the repository, and the guards
+    resolve ROOT from __file__, so a copied tree is enough.
+    """
+    import shutil
+    for rel in _CONTROL_TREE:
+        src = ROOT / rel
+        if src.exists():
+            dst = tmp_path / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+    (tmp_path / "tools").mkdir(exist_ok=True)
+    for name in _CONTROL_TOOLS:
+        shutil.copy2(ROOT / "tools" / name, tmp_path / "tools" / name)
+    # the manifest's file count has to match what the copy actually holds
+    man = tmp_path / "third_eye_kit" / "MANIFEST.md"
+    if man.exists():
+        n = sum(1 for f in (tmp_path / "third_eye_kit").rglob("*") if f.is_file())
+        t = man.read_text(encoding="utf-8")
+        man.write_text(re.sub(r"^\d+ files", f"{n} files", t, count=1, flags=re.M),
+                       encoding="utf-8")
+    for rel, fn in mutations.items():
+        f = tmp_path / rel
+        f.write_text(fn(f.read_text(encoding="utf-8")), encoding="utf-8")
+    return tmp_path
+
+
+def _run(tmp_path, tool):
+    return subprocess.run([sys.executable, str(tmp_path / "tools" / tool)],
+                          capture_output=True, text=True)
+
+
+def test_a_dangling_reference_inside_the_supplement_is_caught(tmp_path):
+    """It was not: three of the four counters read the paper only, so a bad
+    reference in the supplement passed for two rounds."""
+    t = _mutated_copy(tmp_path, {
+        "docs/PAPER_SUPPLEMENT_v1.md":
+            lambda s: s + "\n\nSee §17.3, Table 99 and Figure 9.\n"})
+    r = _run(t, "check_cross_references.py")
+    assert r.returncode == 1, r.stdout
+    for want in ("section 17.3", "table 99", "figure 9"):
+        assert want in r.stdout, (want, r.stdout)
+
+
+def test_an_unlisted_placeholder_keyword_is_caught(tmp_path):
+    """[FIXME], [TK] and [PENDING] printed 'no placeholders' until round 18."""
+    t = _mutated_copy(tmp_path, {
+        "docs/PAPER_DRAFT_v2.md":
+            lambda s: s + "\n\nThe coefficient is [FIXME], the CI is [TK], "
+                          "see [PENDING FINAL RUN].\n"})
+    r = _run(t, "placeholder_report.py")
+    assert r.returncode == 1, r.stdout
+    assert "[FIXME]" in r.stdout and "[TK]" in r.stdout
+
+
+def test_numeric_intervals_are_never_reported_as_placeholders():
+    """The manuscript is full of them; a guard that flags them is one nobody
+    runs twice. Positive control on the real tree."""
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "placeholder_report.py")],
+                       capture_output=True, text=True, cwd=ROOT)
+    body = r.stdout.split("MANUSCRIPT")[1] if "MANUSCRIPT" in r.stdout else r.stdout
+    assert "no placeholders" in body, r.stdout
+
+
+def test_a_missing_artifact_does_not_read_as_clean(tmp_path):
+    """Deleting the built PDF used to turn exit 2 into exit 0 and print
+    'BUILT SUBMISSION ARTIFACT: clean'."""
+    t = _mutated_copy(tmp_path, {})
+    for f in ("PLOS_ONE_submission.pdf", "submission.md"):
+        p = t / "build" / "submission" / f
+        if p.exists():
+            p.unlink()
+    r = _run(t, "placeholder_report.py")
+    assert "clean" not in r.stdout.split("BUILT SUBMISSION ARTIFACT")[-1]
+    assert "NOT CHECKED" in r.stdout, r.stdout
+
+
+def test_a_missing_kit_manifest_does_not_read_as_checked(tmp_path):
+    t = _mutated_copy(tmp_path, {})
+    man = t / "third_eye_kit" / "MANIFEST.md"
+    if man.exists():
+        man.unlink()
+    r = _run(t, "check_stated_counts.py")
+    assert "NOT CHECKED" in r.stdout, r.stdout
+
+
+def test_a_doi_that_does_not_resolve_stops_counting_as_resolved(tmp_path):
+    """'Resolved from Crossref' was checked against entries that merely carried
+    a doi field, so a 404 counted as a resolution."""
+    import json as _json
+
+    def break_one(s):
+        d = _json.loads(s)
+        for e in d["entries"]:
+            if e.get("doi"):
+                e.setdefault("check", {})["verdict"] = "DOI DOES NOT RESOLVE"
+                break
+        return _json.dumps(d)
+
+    if not (ROOT / "data" / "analysis" / "citation_audit.json").exists():
+        pytest.skip("no citation audit in this tree")
+    t = _mutated_copy(tmp_path, {"data/analysis/citation_audit.json": break_one})
+    r = _run(t, "check_stated_counts.py")
+    assert r.returncode == 1, r.stdout
+    assert "30 of 34" in r.stdout or "actual 30/34" in r.stdout, r.stdout
+
+
+def test_the_citation_audit_has_a_real_offline_mode_and_rejects_unknown_flags():
+    """--offline was accepted by the shell and ignored by the program: it made
+    31 live HTTP requests and rewrote a tracked file during a read-only audit."""
+    src = (ROOT / "tools" / "audit_citations.py").read_text(encoding="utf-8")
+    assert "--offline" in src and "argparse" in src
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "audit_citations.py"),
+                        "--not-a-flag"], capture_output=True, text=True, cwd=ROOT)
+    assert r.returncode != 0 and "unrecognized" in r.stderr
+
+
+@pytest.mark.skipif(not (ROOT / "third_eye_kit" / "SHA256SUMS.json").exists(),
+                    reason="no review kit in this tree")
+def test_the_kit_records_a_digest_per_staged_file_and_matches_the_repo():
+    """third_eye_kit/ is gitignored, so nothing could see it drift, and it had."""
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "check_kit_freshness.py")],
+                       capture_output=True, text=True, cwd=ROOT)
+    assert r.returncode == 0, r.stdout
+
+
+def test_no_type_3_font_reaches_the_submission_pdf():
+    """matplotlib's default; several journal pipelines reject it outright."""
+    pdf = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
+    if not pdf.exists():
+        pytest.skip("no built PDF in this tree")
+    import fitz
+    d = fitz.open(pdf)
+    bad = [(i + 1, f) for i in range(d.page_count)
+           for f in d.get_page_fonts(i, full=True) if "Type3" in str(f)]
+    assert not bad, bad
+
+
+def test_the_pdf_text_layer_records_what_the_source_holds():
+    """Every semicolon in both PDFs was U+037E GREEK QUESTION MARK, which is
+    canonically equivalent to U+003B and therefore invisible to a notdef scan."""
+    import unicodedata
+    for name in ("PLOS_ONE_submission.pdf", "PLOS_ONE_supplement.pdf"):
+        pdf = ROOT / "build" / "submission" / name
+        if not pdf.exists():
+            pytest.skip("no built PDF in this tree")
+        import fitz
+        text = "".join(p.get_text() for p in fitz.open(pdf))
+        strays = sorted({hex(ord(c)) for c in text
+                         if unicodedata.normalize("NFC", c) != c})
+        assert not strays, (name, strays)
+
+
+def test_nothing_is_typeset_past_the_page_edge():
+    """The title page printed 62 of the deposit's 64 sha256 hex digits."""
+    for name in ("PLOS_ONE_submission.pdf", "PLOS_ONE_supplement.pdf"):
+        pdf = ROOT / "build" / "submission" / name
+        if not pdf.exists():
+            pytest.skip("no built PDF in this tree")
+        import fitz
+        d = fitz.open(pdf)
+        over = [(i + 1, l["bbox"][2]) for i, p in enumerate(d)
+                for b in p.get_text("dict")["blocks"]
+                for l in b.get("lines", []) if l["bbox"][2] > p.rect.width - 1]
+        assert not over, (name, over[:5])
+
+
+def test_the_deposit_hash_survives_typesetting_in_full():
+    pdf = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
+    if not pdf.exists():
+        pytest.skip("no built PDF in this tree")
+    import fitz
+    import re as _re
+    text = "".join(p.get_text() for p in fitz.open(pdf)).replace("\n", "")
+    m = _re.search(r"sha256\s*([0-9a-f]{40,80})", text)
+    assert m, "the provenance hash is not in the built PDF"
+    assert len(m.group(1)) == 64, len(m.group(1))

@@ -99,8 +99,12 @@ def main() -> int:
     print(f"  document pool {len(docs)}, of which {len(kept)} enter the "
           f"assembled series ({len(asm)} fiscal-year units)\n")
 
-    add("1. all pool documents, token-weighted", year_rates(docs, True),
-        "the document-level figure the manuscript quotes")
+    # "token-weighted" here means within a year, and steps 2 and 3 do the
+    # same, so it does not belong in a label that distinguishes them. The
+    # era average is unweighted in steps 1-3 and that is what step 4 changes.
+    add("1. all pool documents", year_rates(docs, True),
+        "the document-level figure the manuscript quotes; documents are "
+        "collapsed to a year rate by tokens, eras averaged equally")
     add("2. + restrict to files that enter assembly", year_rates(kept, True),
         "isolates FILE INCLUSION (siblings, duplicates, exclusions)")
     add("3. + concatenate into fiscal-year units", asm_rates,

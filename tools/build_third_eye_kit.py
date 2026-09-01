@@ -24,6 +24,8 @@ outputs that carry the numbers. Everything else is reachable from those.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 import shutil
 import sys
@@ -33,6 +35,21 @@ ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "third_eye_kit"
 
 # (source, destination subdir, why it is in the kit)
+def _cite_summary() -> str:
+    f = ROOT / "data" / "analysis" / "citation_audit.json"
+    if not f.exists():
+        return "its output (not present at build time)"
+    d = json.loads(f.read_text(encoding="utf-8"))
+    ok = sum(1 for e in d["entries"]
+             if e.get("doi")
+             and "NOT" not in str((e.get("check") or {}).get("verdict", "")).upper())
+    unc = len(d.get("uncited_entries", []))
+    return (f"its output: {d['n_entries']} entries, {ok} Crossref-resolved, "
+            f"{unc or 'no'} uncited entr" + ("y" if unc == 1 else "ies"))
+
+
+CITE_SUMMARY = _cite_summary()
+
 INCLUDE = [
     # --- what is being reviewed
     ("docs/PAPER_DRAFT_v2.md", "01_manuscript",
@@ -220,8 +237,12 @@ INCLUDE = [
     ("tools/audit_citations.py", "07_code",
      "the mechanical half of the citation audit — DOI resolution and the two-way"
      " in-text cross-check; the claim-support check is the reviewer's"),
-    ("data/analysis/citation_audit.json", "06_machine_output",
-     "its output: 25 entries, 22 Crossref-resolved, no uncited entry"),
+    # Derived, not typed: this line said "25 entries, 22 Crossref-resolved"
+    # while the file in the same bundle held 34 and 31, and the count guard
+    # read only the manifest's opening file total. It is the one entry whose
+    # description is a claim about its own file's contents, so it is the one
+    # entry that computes it.
+    ("data/analysis/citation_audit.json", "06_machine_output", CITE_SUMMARY),
     ("docs/VENUE_FINAL_20260828.md", "08_venue_research",
      "THE CURRENT RECOMMENDATION: PLOS ONE, with the Article-in-Press finding "
      "that eliminated the previous favourite"),
@@ -288,6 +309,7 @@ def scan(path: Path) -> list[str]:
 
 def main() -> int:
     files = list(staged_files())
+    digests: dict[str, str] = {}
     # A path staged twice is copied once and listed twice, so the manifest's
     # count says one more file than the bundle holds. That is how a duplicate
     # got in: the count and the listing disagreed and only the external count
@@ -322,13 +344,15 @@ def main() -> int:
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(f, dest)
         total += f.stat().st_size
+        digests[f"{sub}/{f.name}"] = hashlib.sha256(f.read_bytes()).hexdigest()
         manifest.append(f"| `{sub}/{f.name}` | {why} |")
 
-    # +1 for MANIFEST.md itself. `files` is fixed before this line and the
-    # manifest is written after it, so the count shipped inside the bundle was
-    # one short of what an unzip actually produced -- 91 against 92. Off by one
-    # in a file whose whole job is to say what is in the bundle.
-    n_shipped = len(files) + 1
+    # +2 for the two files written after `files` is fixed: MANIFEST.md itself
+    # and SHA256SUMS.json. The count shipped inside the bundle was one short of
+    # what an unzip produced -- 91 against 92 -- in a file whose whole job is to
+    # say what is in the bundle, and adding the digest record made it two short
+    # until this line was corrected with it.
+    n_shipped = len(files) + 2
     (KIT / "MANIFEST.md").write_text(
         "# Third-eye review kit\n\n"
         f"{n_shipped} files (this manifest included), {total/1e6:.2f} MB. "
@@ -341,6 +365,14 @@ def main() -> int:
         "documents or extracted text. Counts, hashes, column names and log lines "
         "are permitted derived outputs and are what travels here.\n\n"
         + "\n".join(manifest) + "\n", encoding="utf-8")
+
+    # The kit is gitignored, so git cannot see it go stale, and it did: four
+    # files in the bundle differed from their repository originals while the
+    # bundle claimed to be a copy of them. Recording the digests lets
+    # check_kit_freshness answer the question without rebuilding.
+    (KIT / "SHA256SUMS.json").write_text(
+        json.dumps({"built_from": str(ROOT), "files": digests}, indent=1),
+        encoding="utf-8")
 
     print(f"[kit] {n_shipped} files, {total/1e6:.2f} MB -> "
           f"{KIT.relative_to(ROOT)}")

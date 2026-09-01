@@ -1,7 +1,6 @@
 # Supplementary material
 
-Companion to *Reconstructing Bankspeak: Eight Decades of World Bank Language, a
-Corpus-Selection Effect, and an Unconfirmed Post-2022 Break*. Everything here was in the main text of an earlier draft
+Companion to *Reconstructing Bankspeak: Eight Decades of World Bank Language, a Corpus-Selection Effect, and an Unconfirmed 2023-2025 Differential Shift*. Everything here was in the main text of an earlier draft
 and was moved rather than cut: the material is evidence, but it is procedural
 evidence, and a reader evaluating the claims does not need it inline.
 
@@ -114,7 +113,7 @@ Because the gates are conjunctive, G1's blind audit and the P0 minimum detectabl
 effect were recorded `evaluated: false` and **must not be read as
 tested-and-failed** (SAP addendum A5.7). G3 returned 1.0 for all three.
 
-Decision D-1 records the consequence. The §11.5 fallback is triggered by literal
+Decision D-1 records the consequence. The PREREG §11.5 fallback is triggered by literal
 text that was not met; the purposive reading under which the family had "not
 survived the Stage-B gates" was rejected. The confirmatory analysis ran as
 preregistered on the default family — and §6.3 reports that the same design's own
@@ -235,7 +234,7 @@ Bold marks a size more than two Monte Carlo standard errors above nominal
 Two readings, and the second is the one that matters.
 
 **The estimator cannot see dispersion that is there.** At every non-zero α it
-returns between a seventh and a twentieth of the truth. On the real data it
+returns between a seventh and a twenty-third of the truth. On the real data it
 returns α̂ = 0.0121 (P1) and 0.0005 (P2), which on this evidence is what a true α of
 roughly 0.10 looks like after the design has absorbed it. Condition 2's NB2 arm
 therefore fits a model barely distinguishable from the Poisson primary; its pass
@@ -338,7 +337,8 @@ Reproduce with `python tools/dispersion_robust_inference.py 3000` and
 ### S10.3 What the PASS-E intervals actually cover
 
 Table 4 labelled them nominal because no coverage study existed. They are still
-read — §6.3 turns on a lower bound clearing zero by 0.0029 — so this measures it.
+read — §6.2's H-SHARED paragraph turns on a lower bound clearing zero by 0.0029
+— so this measures it.
 Simulate at a known β from the real design, run the frozen PASS-E, count how often
 the interval contains the truth. Four nulls, because S10.4 showed that an i.i.d.
 null cannot test a block procedure: Poisson, NB2 at the corrected dispersion, the
@@ -347,28 +347,30 @@ replicates, B reduced to 299 from the frozen 9,999 to make the study feasible.
 
 | panel | truth | null | coverage (nominal 0.95) |
 |---|---|---|---:|
-| P1 | β = 0 | i.i.d. Poisson | 0.895 ± 0.022 |
-| P1 | β = 0 | i.i.d. NB2 at the corrected α | 0.860 ± 0.025 |
-| P1 | β = 0 | preregistered AR(1) | 0.825 ± 0.027 |
-| P1 | β = 0 | AR(1) + corrected α | 0.795 ± 0.029 |
-| P1 | β = observed | i.i.d. Poisson | 0.795 ± 0.029 |
+| P1 | β = 0 | i.i.d. Poisson | 0.875 ± 0.023 |
+| P1 | β = 0 | i.i.d. NB2 at the corrected α | 0.845 ± 0.026 |
+| P1 | β = 0 | preregistered AR(1) | 0.770 ± 0.030 |
+| P1 | β = 0 | AR(1) + corrected α | 0.760 ± 0.030 |
+| P1 | β = observed | i.i.d. Poisson | 0.860 ± 0.025 |
 | P1 | β = observed | i.i.d. NB2 at the corrected α | 0.780 ± 0.029 |
-| P1 | β = observed | preregistered AR(1) | 0.755 ± 0.030 |
-| P1 | β = observed | AR(1) + corrected α | 0.740 ± 0.031 |
-| P2 | β = 0 | i.i.d. Poisson | 0.855 ± 0.025 |
-| P2 | β = 0 | i.i.d. NB2 at the corrected α | 0.820 ± 0.027 |
-| P2 | β = 0 | preregistered AR(1) | 0.820 ± 0.027 |
-| P2 | β = 0 | AR(1) + corrected α | 0.815 ± 0.027 |
-| P2 | β = observed | i.i.d. Poisson | 0.870 ± 0.024 |
-| P2 | β = observed | i.i.d. NB2 at the corrected α | 0.800 ± 0.028 |
-| P2 | β = observed | preregistered AR(1) | 0.800 ± 0.028 |
-| P2 | β = observed | AR(1) + corrected α | 0.770 ± 0.030 |
+| P1 | β = observed | preregistered AR(1) | 0.705 ± 0.032 |
+| P1 | β = observed | AR(1) + corrected α | 0.750 ± 0.031 |
+| P2 | β = 0 | i.i.d. Poisson | 0.910 ± 0.020 |
+| P2 | β = 0 | i.i.d. NB2 at the corrected α | 0.815 ± 0.027 |
+| P2 | β = 0 | preregistered AR(1) | 0.745 ± 0.031 |
+| P2 | β = 0 | AR(1) + corrected α | 0.765 ± 0.030 |
+| P2 | β = observed | i.i.d. Poisson | 0.890 ± 0.022 |
+| P2 | β = observed | i.i.d. NB2 at the corrected α | 0.825 ± 0.027 |
+| P2 | β = observed | preregistered AR(1) | 0.790 ± 0.029 |
+| P2 | β = observed | AR(1) + corrected α | 0.745 ± 0.031 |
 
-**They under-cover under every null, and worst under the realistic one.** Coverage
-falls monotonically as the null gets closer to the process the design was
-preregistered against: 0.860–0.910 under i.i.d. Poisson, 0.780–0.845 with the
-corrected dispersion, **0.705–0.790 under the AR(1) shock**, and 0.745–0.765 with
-both. Against a nominal 0.95 that is a shortfall of four to twenty-five points,
+**They under-cover under every null, and worst under the preregistered
+one.** 0.860–0.910 under i.i.d. Poisson, 0.780–0.845 with the corrected
+dispersion, **0.705–0.790 under the AR(1) shock**, and 0.745–0.765 with both.
+An earlier version of this paragraph called that fall monotonic. It is not: mean
+coverage runs 0.884, 0.816, 0.753, 0.755, so the fourth step rises slightly, and
+the AR(1) arm alone is the worst of the four. Adding dispersion on top of the
+serial shock does not compound it. Against a nominal 0.95 that is a shortfall of four to twenty-five points,
 and the ordering is the whole point: the closer the null gets to the process the
 design was preregistered against, the worse the intervals cover.
 
@@ -376,9 +378,11 @@ Which way it cuts, precisely. Narrow intervals make it *easier* to exclude zero,
 and exclusion of zero is a conjunct of conditions 2 and 3 — so the error is
 permissive, and both conditions failed anyway on the refitted coefficient's sign
 and magnitude rather than on width. What does not survive is any reading that
-treats a barely-clearing bound as evidence: §6.3's H-SHARED interval is narrower
-than a 95% interval would be, on draws §6.3 shows are not a neutral subsample,
-and both facts point the same way.
+treats a barely-clearing bound as evidence: §6.2's H-SHARED interval rests on
+draws that are not a neutral subsample — 1,607 of 9,999 were discarded and every
+one failed the same way. That much is measured. Whether the H-SHARED bootstrap
+under-covers as the PASS-E procedure does is not: it is a different bootstrap,
+on the comparator series alone, and no coverage study of it exists.
 
 Reproduce with `python tools/passe_coverage.py 200 299`.
 
@@ -459,14 +463,23 @@ That is true and it is reported per scenario, but it does not track the ladder �
 the flat-means null carries a *higher* ratio than the fitted-means null and less
 than half the family error.
 
-The second was leverage: the joint fit gives the Bank arm a differential trend of
-about 5.7 log points a year, so its mean roughly quadruples across the window and
-the score's variance should concentrate in the last block, which is exactly the
-post window. The share is measured, and it runs the wrong way — 0.33 to 0.37 in
-the inflated scenarios against 0.44 to 0.48 in the well-behaved ones, where an
-equal split would be 0.111. It runs the wrong way for a reason: when one block
-dominates the studentised denominator, nearly every sign pattern produces a
-statistic as large as the observed one, and the test goes *conservative*.
+The second was leverage: the joint fit gives the Bank arm a differential trend
+of about 5.7 log points a year, so its mean roughly quadruples across the window
+and the score's variance should concentrate in the last block, which is exactly
+the post window. The share is measured and it runs the wrong way — every
+inflated scenario sits at 0.334 to 0.371, below the well-behaved ones, where an
+equal split would be 0.111. The rank correlation across the ladder is −0.73 (*p*
+= 0.005): more leverage, *less* size. It runs that way for a reason. When one
+block dominates the studentised denominator, nearly every sign pattern produces
+a statistic as large as the observed one, and the test goes *conservative*.
+
+One well-behaved scenario is a genuine counterexample and is reported as one.
+`fitted_joint_poisson_only` carries the lowest leverage in the whole study,
+0.297, and is nonetheless correctly sized at 0.045 — so the well-behaved range
+is 0.297 to 0.477, not the tight 0.44 to 0.48 an earlier version of this
+paragraph quoted by silently dropping it. The inverse relation is the tendency
+across the ladder, not a law, and the row that breaks it is the row with no
+serial shock in it at all.
 
 No third explanation is offered here. What can be stated is bounded and
 measured:
@@ -478,8 +491,7 @@ measured:
   giving 0.063 against 0.045. So *"serial dependence is the cause"* is too
   strong, and the earlier version of this section said it. Unmodelled
   one-armed overdispersion does a large part of the work.
-- Under flat means the same shock at the same ρ and σ produces 0.028, below
-  nominal.
+- With both the year profile and the differential trend removed, the same shock at the same ρ and σ produces 0.028, below nominal — and the independently constructed flat-rate null reproduces that at 0.031.
 - The error rate is sensitive to ρ in the direction expected: 0.063 at ρ = 0,
   0.077 at 0.3, 0.086 at 0.5, 0.121 at 0.7. Redrawing ρ ~ U(0.2, 0.8) and
   σ ~ U(0.20, 0.45) every replicate — the frozen pair is a point estimate that
@@ -504,10 +516,14 @@ conjunct, which is what a conjunctive rule is for.
 **What follows for the manuscript.** The claim that the governing test rejects
 twice as often as it claims is withdrawn: it rested on a per-panel raw threshold
 under one fitted null. The claim that survives is weaker and better supported —
-the preregistered rule's family error rate lies somewhere between 0.037 and 0.094
-depending on a null nobody specified, it is above nominal under every null fitted
-to the observed series, and P1's *p* is worth less than its face value under all
-of them. §6.2's block-construction sentence is narrowed accordingly: blocks fail
+across the twenty nulls examined the preregistered rule's family error rate runs
+from 0.028 to 0.121, it is above nominal under every null fitted to the observed
+series, and P1's *p* is worth less than its face value under all of them.
+Holding the preregistered dependence parameters and varying only the mean
+structure — the axis this section is about — the range is 0.037 to 0.094. Both
+brackets are stated because the wider one is what a reader checking the table
+will compute, and two rows of that table (independent World Bank shocks at
+0.119, the corrected NB2 dispersion at 0.102) sit above the narrower one. §6.2's block-construction sentence is narrowed accordingly: blocks fail
 to absorb the dependence under the fitted means and absorb it more than
 adequately under the preregistered ones, and this study cannot say which is the
 right null to hold the design to.
@@ -596,7 +612,9 @@ sense.
 
 The honest description of Tier-2 is therefore **a prespecified contemporary
 institutional register**, not a timeless measure of bureaucratic style, and §6.1's
-thirtyfold figure should be read with the 10.9× period-plausible figure beside it.
+Tier-2 rise should be read with the period-plausible figure beside it and with
+the convention named: thirtyfold is the equal-year production rule, 10.9× the
+token-weighted boundary rule.
 The Tier-1/Tier-2 separation the design turns on is unaffected: Tier-2 exists to
 show that a register can rise for reasons having nothing to do with language
 models, and it does that whichever subset is used.
@@ -631,7 +649,7 @@ carries a disposition. 2,788 survive as eligible units across 1999–2025, and
 | 2021 | 229 | 103 | 40 | 0.388 | yes |
 | 2022 | 244 | 113 | 40 | 0.354 | yes |
 | 2023 | 266 | 117 | 40 | 0.342 | yes |
-| 2024 | 287 | 128 | 40 | 0.313 | yes |
+| 2024 | 287 | 128 | 40 | 0.312 | yes |
 | 2025 | 276 | 129 | 40 | 0.310 | yes |
 
 Every year 1999–2025 is in `data/analysis/imf_frame_publication.csv` with its
@@ -641,6 +659,14 @@ cell seed. Three things in that table matter.
 the only year in the window below 40 and every eligible unit was taken. The cap
 binds in the other twenty-six.
 
+**Whether 1999 is a design boundary or a coverage limit is not settled here.**
+The frame builder's declared window is 1994–2025 and the data begin in 1999; 137
+listing hits dated before 1999 exist and all 137 were excluded at the
+country-name step. Those are different claims — the Fund publishing no Article
+IV staff reports before the April 1999 pilot, and this pipeline being unable to
+place the earlier ones — and nothing in the repository decides between them. The
+tool flags it `needs_human_review` and this supplement leaves it flagged.
+
 **Inclusion probabilities run from 0.310 to 1.000, so the design weights years
 by cap rather than by the Fund's output.** A year with 129 eligible documents
 and a year with 44 contribute the same 40. Nothing in the analysis reweights for
@@ -648,8 +674,8 @@ this, and any pooled comparator statistic should be read as "40 documents a
 year", not "the Fund's Article IV output".
 
 **Fiscal 2020 is the outlier and it sits inside the pre-period.** Only 44
-eligible units against 99 to 129 in neighbouring years — the Fund published far
-fewer Article IV consultations that year — so 2020's inclusion probability is
+eligible units against 103 to 129 in the surrounding years — the Fund published
+far fewer Article IV consultations that year — so 2020's inclusion probability is
 0.909 where its neighbours are near 0.33. S10.5 tests the post window for a
 catch-up cohort and finds the pre-window more delayed than the post; this is the
 same disturbance seen from the frame side, and it is on the pre side of the cut.
@@ -774,15 +800,15 @@ rules. The early window is 19 fiscal-year units, not 20: the assembled corpus
 has no fiscal-1946 file, and none for 2000 or 2010 either. The late window is 5.
 Both denominators are in the output rather than left implicit.
 
-**The unit counts in that table are fiscal-year units, not documents.** An
-assembled unit concatenates several volumes — the assembly log records 135
-included documents behind these 76 units — so the columns are named
+**The unit counts in that table are fiscal-year units, not documents.** An assembled unit concatenates several volumes — 134 documents sit behind these
+76 units; the assembly log has 135 include rows and one of them carries no text
+— so the columns are named
 `n_fy_units_*`. A genuine per-term document count is one of the things below
 that cannot be produced.
 
 **The early window rests on very few occurrences, and that is what the
-leave-one-out column is really measuring.** There are 130 Tier-2 hits in the
-whole early window against 3,303 in the late one. `vital` alone carries 34 of
+leave-one-out column is really measuring.** There are 130 Tier-2 hits in the whole early window against 3,301 in the late
+one under the production rule, 3,303 under the boundary rule. `vital` alone carries 34 of
 those 130 — 26.2% — and `vital`, `strengthen` and `strengthening` together carry
 80, or 61.5%. So removing `vital` takes the all-35 ratio *up*, from 24.4× to
 32.8× (production) and 28.4× to 38.1× (boundary), because it shrinks the base

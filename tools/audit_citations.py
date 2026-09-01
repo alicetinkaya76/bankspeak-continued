@@ -22,6 +22,7 @@ that is left to the reviewer and named as their task in the third-eye brief.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -33,6 +34,21 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "docs" / "PAPER_DRAFT_v2.md"
 OUT = ROOT / "data" / "analysis" / "citation_audit.json"
+
+
+def _cache() -> dict:
+    """Per-DOI Crossref results from the last online run, for --offline."""
+    if not OUT.exists():
+        return {}
+    try:
+        prev = json.loads(OUT.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return {e["doi"]: e.get("check", {})
+            for e in prev.get("entries", []) if e.get("doi")}
+
+
+CACHE = _cache()
 API = "https://api.crossref.org/works/"
 MAIL = "kapsul.yonetim@gmail.com"          # Crossref's polite pool
 
@@ -116,7 +132,15 @@ def crossref(doi: str) -> dict:
         return {"status": None, "error": type(e).__name__}
 
 
-def main() -> int:
+def main(offline: bool = False) -> int:
+    """offline reuses the stored per-entry verdicts instead of asking Crossref.
+
+    Added after an external reading found that an invocation with --offline made
+    thirty-one live HTTP requests and rewrote a git-tracked file during what the
+    caller believed was a read-only audit: argparse was never wired up, so the
+    flag was accepted by the shell and ignored by the program. Silently ignoring
+    an argument is worse than rejecting it, and both are now impossible.
+    """
     body, refs = split_paper()
     entries = parse_entries(refs)
     print(f"Reference list: {len(entries)} entries parsed\n")
@@ -127,8 +151,17 @@ def main() -> int:
             e["check"] = {"verdict": "no DOI — verify by hand"}
             problems.append(f"{e['first_author']} {e['year']}: no DOI in entry")
             continue
-        cr = crossref(e["doi"])
-        time.sleep(0.3)                       # be polite to Crossref
+        if offline:
+            cached = CACHE.get(e["doi"])
+            if cached is None:
+                e["check"] = {"verdict": "not in the cached audit"}
+                problems.append(f"{e['first_author']} {e['year']}: no cached "
+                                "Crossref result; rerun without --offline")
+                continue
+            cr = {k: v for k, v in cached.items() if k != "verdict"}
+        else:
+            cr = crossref(e["doi"])
+            time.sleep(0.3)                   # be polite to Crossref
         if cr.get("status") != 200:
             e["check"] = {"verdict": "DOI DOES NOT RESOLVE", **cr}
             problems.append(f"{e['first_author']} {e['year']}: DOI "
@@ -172,6 +205,12 @@ def main() -> int:
     problems += [f"uncited entry: {n}" for n in uncited]
     problems += [f"in-text citation with no reference entry: {n}" for n in unlisted]
 
+    if offline:
+        # An offline audit reports; it does not overwrite the record it read.
+        print(f"\n[cite] {len(problems)} problem(s); offline, "
+              f"{OUT.relative_to(ROOT)} not rewritten")
+        return 1 if problems else 0
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"n_entries": len(entries), "entries": entries,
                                "uncited_entries": uncited,
@@ -183,4 +222,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--offline", action="store_true",
+                    help="reuse the stored Crossref verdicts and write nothing")
+    sys.exit(main(ap.parse_args().offline))

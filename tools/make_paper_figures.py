@@ -23,6 +23,13 @@ from collections import defaultdict
 from pathlib import Path
 
 import matplotlib
+
+# Type 42 (TrueType), not matplotlib's Type 3 default. Type 3 embeds each
+# glyph as a CharProc rather than a font program, which several journal
+# production pipelines reject outright, and the four figure pages of the
+# submission PDF were shipping it.
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
