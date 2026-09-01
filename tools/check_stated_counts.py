@@ -6,6 +6,13 @@ DOI resolutions when the audit object held 31 and 28; the kit manifest described
 three figures when four exist and an eight-section supplement when it runs to
 S10. Each was true when written and none was regenerated afterwards.
 
+Round 18 found three more, all of the same shape and none of them visible to
+the first version of this file, whose inputs were fixed to the two manuscript
+Markdown files: the submission checklist said 25 pages against a 30-page PDF and
+"23 of 25 entries resolved" against 34 entries with 31 resolved, and the kit
+manifest said 91 files against 92 in the bundle. So the checklist, the built PDF
+and the manifest's own file count are now inputs too.
+
 Every count checked here is derived, never typed. A prose number that cannot be
 derived is one that will be wrong eventually.
 """
@@ -21,6 +28,19 @@ PAPER = ROOT / "docs" / "PAPER_DRAFT_v2.md"
 SUPP = ROOT / "docs" / "PAPER_SUPPLEMENT_v1.md"
 AUDIT = ROOT / "data" / "analysis" / "citation_audit.json"
 KIT = ROOT / "third_eye_kit"
+CHECKLIST = ROOT / "docs" / "PLOS_SUBMISSION_CHECKLIST.md"
+PDF = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
+
+
+def pdf_pages(path: Path) -> int | None:
+    if not path.exists():
+        return None
+    try:
+        import fitz
+    except ImportError:
+        return None
+    with fitz.open(path) as d:
+        return d.page_count
 
 
 def main() -> int:
@@ -31,6 +51,7 @@ def main() -> int:
     n_fig = len(re.findall(r"\*\*Figure \d+\*\* —", paper))
     n_sup = len(re.findall(r"^## S\d+\.", supp, re.M))
 
+    n_entries = n_doi = None
     if AUDIT.exists():
         a = json.loads(AUDIT.read_text(encoding="utf-8"))
         n_entries = a["n_entries"]
@@ -59,6 +80,48 @@ def main() -> int:
                     bad.append(f"{label}: prose says {mm.group(1)} ({said}), "
                                f"there are {n}")
         print(f"  {label:18s} actual {n}")
+
+    # --- the checklist's own numbers, against the artifacts they describe ---
+    if CHECKLIST.exists():
+        cl = CHECKLIST.read_text(encoding="utf-8")
+        pages = pdf_pages(PDF)
+        m = re.search(r"PLOS_ONE_submission\.pdf`?\s*(?:—|--)\s*(\d+) pages", cl)
+        if m and pages is not None:
+            if int(m.group(1)) != pages:
+                bad.append(f"checklist says the PDF is {m.group(1)} pages; "
+                           f"it is {pages}")
+            print(f"  PDF pages          stated {m.group(1)}   actual {pages}")
+        elif pages is None:
+            print("  PDF pages          not checked (no PDF, or PyMuPDF absent)")
+        else:
+            bad.append("the checklist no longer states a page count in a form "
+                       "this can read; it cannot be checked")
+
+        m = re.search(r"\*\*(\d+) of (\d+) entries resolved from Crossref\*\*", cl)
+        if m and AUDIT.exists():
+            if int(m.group(2)) != n_entries or int(m.group(1)) != n_doi:
+                bad.append(f"checklist says {m.group(1)} of {m.group(2)} "
+                           f"references resolved; the audit has {n_doi} of "
+                           f"{n_entries}")
+            print(f"  checklist refs     stated {m.group(1)}/{m.group(2)}   "
+                  f"actual {n_doi}/{n_entries}")
+        elif AUDIT.exists():
+            bad.append("the checklist no longer states a resolved-reference "
+                       "count in a form this can read")
+
+    # --- the kit manifest's own file count, against the bundle it describes ---
+    man = KIT / "MANIFEST.md"
+    if man.exists():
+        txt = man.read_text(encoding="utf-8")
+        actual = sum(1 for f in KIT.rglob("*") if f.is_file())
+        m = re.search(r"^(\d+) files", txt, re.M)
+        if m:
+            if int(m.group(1)) != actual:
+                bad.append(f"kit manifest says {m.group(1)} files; the bundle "
+                           f"holds {actual}")
+            print(f"  kit files          stated {m.group(1)}   actual {actual}")
+        else:
+            bad.append("the kit manifest no longer opens with a file count")
 
     if bad:
         print("\n[counts] REFUSING: stated counts disagree with the filesystem")

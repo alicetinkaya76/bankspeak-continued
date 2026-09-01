@@ -169,11 +169,35 @@ INCLUDE = [
     ("tools/companion_volume_adjudication.py", "07_code",
      "what adjudicates them, by title rather than by key"),
     ("data/analysis/ar1_null_calibration.json", "06_machine_output",
-     "S10.4: size under the preregistered differential AR(1) shock — 0.139 and "
-     "0.101 against a nominal 0.05, where the i.i.d. nulls gave 0.064 and 0.048"),
+     "per-panel PASS-P size under the preregistered differential AR(1) shock. "
+     "This is the study S10.4 was built on and it measures a per-panel raw "
+     "threshold, NOT the governing rule — see joint_holm_calibration"),
     ("tools/ar1_null_calibration.py", "07_code",
-     "the calibration run against the null the design was preregistered against, "
-     "after an external reading found every earlier one used i.i.d. noise"),
+     "the per-panel calibration, kept because it is what the earlier claim "
+     "rested on; its streams are now hashed rather than derived from a label's "
+     "length, which had given both panels one stream"),
+    ("data/analysis/joint_holm_calibration.json", "06_machine_output",
+     "S10.4 rebuilt: both panels drawn together with one shared comparator "
+     "arm, the preregistered Holm step-down applied every replicate, the inner "
+     "p enumerated over all 512 sign patterns. The family error runs 0.037 "
+     "under the preregistered null to 0.094 under fitted means"),
+    ("tools/joint_holm_calibration.py", "07_code",
+     "the joint calibration, including two candidate mechanisms its own "
+     "diagnostics refute"),
+    ("data/analysis/tier2_item_provenance.csv", "06_machine_output",
+     "S10.8: the per-term Tier-2 table. The source columns read 'not recorded "
+     "in repository' because that is what the repository holds"),
+    ("data/analysis/tier2_item_provenance.json", "06_machine_output",
+     "the same, with both match rules and the denominator decomposition"),
+    ("tools/tier2_item_provenance.py", "07_code",
+     "the per-term table, World Bank assembled text only"),
+    ("data/analysis/imf_frame_publication.csv", "06_machine_output",
+     "S10.7: the comparator's per-year eligible frame, inclusion probabilities "
+     "and per-cell seeds"),
+    ("data/analysis/imf_frame_publication.json", "06_machine_output",
+     "the draw replay, the within-cell fragility probe and the limitations"),
+    ("tools/imf_frame_publication.py", "07_code",
+     "the frame publication; metadata and counts only, no document text"),
     ("data/analysis/passe_coverage.json", "06_machine_output",
      "S10.3: measured PASS-E interval coverage against a nominal 0.95"),
     ("tools/passe_coverage.py", "07_code", "the coverage study"),
@@ -264,6 +288,18 @@ def scan(path: Path) -> list[str]:
 
 def main() -> int:
     files = list(staged_files())
+    # A path staged twice is copied once and listed twice, so the manifest's
+    # count says one more file than the bundle holds. That is how a duplicate
+    # got in: the count and the listing disagreed and only the external count
+    # guard noticed. Refuse instead.
+    seen, dupes = set(), []
+    for f, sub, _why in files:
+        key = (sub, f.resolve())
+        if key in seen:
+            dupes.append(f"{sub}/{f.name}")
+        seen.add(key)
+    if dupes:
+        raise SystemExit(f"[kit] REFUSING: staged more than once: {dupes}")
     problems = {}
     for f, _, _ in files:
         h = scan(f)
@@ -288,9 +324,15 @@ def main() -> int:
         total += f.stat().st_size
         manifest.append(f"| `{sub}/{f.name}` | {why} |")
 
+    # +1 for MANIFEST.md itself. `files` is fixed before this line and the
+    # manifest is written after it, so the count shipped inside the bundle was
+    # one short of what an unzip actually produced -- 91 against 92. Off by one
+    # in a file whose whole job is to say what is in the bundle.
+    n_shipped = len(files) + 1
     (KIT / "MANIFEST.md").write_text(
         "# Third-eye review kit\n\n"
-        f"{len(files)} files, {total/1e6:.2f} MB. Assembled by "
+        f"{n_shipped} files (this manifest included), {total/1e6:.2f} MB. "
+        "Assembled by "
         "`tools/build_third_eye_kit.py`, which refuses to build if any staged "
         "file lies under an IMF text or PDF tree or looks like pasted document "
         "text.\n\n"
@@ -300,7 +342,7 @@ def main() -> int:
         "are permitted derived outputs and are what travels here.\n\n"
         + "\n".join(manifest) + "\n", encoding="utf-8")
 
-    print(f"[kit] {len(files)} files, {total/1e6:.2f} MB -> "
+    print(f"[kit] {n_shipped} files, {total/1e6:.2f} MB -> "
           f"{KIT.relative_to(ROOT)}")
     print("[kit] leak scan clean: no forbidden path, no document-text signature")
     return 0

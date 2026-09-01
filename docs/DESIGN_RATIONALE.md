@@ -45,8 +45,14 @@ failed internal replication is a stop-and-diagnose event, not a footnote.
 **Decision.** Tier-1 = strong LLM-associated words (delve, underscore, showcase, pivotal,
 intricate, meticulous, boast, commendable, realm, testament, tapestry, seamless...);
 Tier-2 = bureaucratese shared by Bankspeak and LLM style (foster, leverage, harness,
-robust, resilient, transformative, unlock, bold...). Lists live in config with a source
-tag per word; edits require provenance.
+robust, resilient, transformative, unlock, bold...). Lists live in config.
+
+**Correction, round 18.** This entry said "with a source tag per word; edits
+require provenance". No such field exists, for either tier. `config/config.yaml`
+carries exactly one end-of-line comment per list — line 69 for Tier-1, line 76
+for Tier-2 — attributing all of the terms collectively. The manuscript already
+states the Tier-1 gap (§4); supplement S10.8 now states the Tier-2 one and
+publishes what per-term facts the corpus can actually supply.
 **Why.** Bankspeak was inflating Tier-2 long before 2022 (that is Moretti & Pestre's
 finding). Only the tier split lets us separate "more Bankspeak" from "LLM fingerprint".
 Tier-1 list follows the excess-word literature (Kousha & Thelwall's 12-term tracking;

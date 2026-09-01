@@ -8,6 +8,7 @@ actually different, or a Stage-A sensitivity that drops nothing.
 """
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -112,14 +113,31 @@ COV_JSON = ROOT / "data" / "analysis" / "passe_coverage.json"
 
 
 @pytest.mark.skipif(not COV_JSON.exists(), reason="run tools/passe_coverage.py first")
-def test_the_intervals_under_cover_and_the_paper_says_the_measured_range():
-    """Nominal 0.95, measured 0.805-0.907. If a future change made them cover,
-    the supplement's claim would be stale and this fails."""
+def test_the_intervals_under_cover_and_the_paper_states_the_measured_range():
+    """Nominal 0.95, and the paper must state the range the file actually holds.
+
+    This used to assert hardcoded bounds and carry a docstring naming a range
+    (0.805-0.907) that had not been in the manuscript for two rounds. Hardcoded
+    bounds are exactly the thing that goes stale: they passed while the stored
+    minimum drifted from 0.805 to 0.740 to 0.705. So bind the test to the
+    manuscript's own sentence instead. A rerun that moves the coverage now fails
+    until the prose is updated with the new numbers, which is the only version
+    of this check that is worth having.
+    """
     d = json.loads(COV_JSON.read_text())
     vals = [v["coverage"] for panel in d["panels"].values() for v in panel.values()]
     assert vals, d
     assert max(vals) < 0.95, vals
-    assert min(vals) > 0.7, vals
+
+    paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
+    stated = re.search(r"measured coverage (\d\.\d\d)[–-](\d\.\d\d)", paper)
+    assert stated, "the manuscript no longer states a measured coverage range"
+    lo, hi = float(stated.group(1)), float(stated.group(2))
+    # Half a printed unit, plus slack for the float: the prose rounds to two
+    # decimals and 0.71 - 0.705 evaluates to 0.005000000000000004.
+    tol = 0.005 + 1e-9
+    assert abs(lo - min(vals)) <= tol, (lo, min(vals))
+    assert abs(hi - max(vals)) <= tol, (hi, max(vals))
 
 
 @pytest.mark.skipif(not COV_JSON.exists(), reason="run tools/passe_coverage.py first")

@@ -31,6 +31,7 @@ import statsmodels.api as sm
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+from percell_seed import stream_seed              # noqa: E402
 from bootstrap_engine import build_design, _fit, two_pass, SEED    # noqa: E402
 
 RHO, SIGMA_DELTA = 0.5, 0.3205      # PREREG / mde_sim; SIGMA_DELTA is the innovation sd
@@ -65,7 +66,9 @@ def main(reps: int = 200, B: int = 299) -> int:
                             ("nb2_corrected", ALPHA_CORRECTED[panel]),
                             ("ar1", 0.0),
                             ("ar1_nb2", ALPHA_CORRECTED[panel])):
-                rng = np.random.default_rng(SEED + int(true_beta * 1000) + len(null))
+                # The old seed was SEED + int(true_beta*1000) + len(null): the panel
+                # was absent from it entirely, and len("poisson") == len("ar1_nb2").
+                rng = np.random.default_rng(stream_seed("passe_cov", panel, label, null))
                 cov = n_ok = 0
                 wb = (df["institution"] == "WB").astype(float).to_numpy()
                 yrs = np.array(sorted(df["year"].unique()))

@@ -68,11 +68,33 @@ def era(feat, ids, years):
         per[int(r["year"])][1] += tok
     rates = {y: a[0] / a[1] for y, a in per.items() if a[1] > 0}
 
-    def m(lo, hi):
-        v = [rates[y] for y in rates if lo <= y <= hi and y in years]
-        return sum(v) / len(v) if v else float("nan")
-    a, b = m(*EARLY), m(*LATE)
-    return a, b, (100 * (b / a - 1) if a else float("nan")), rates
+    def m(lo, hi, weighted):
+        """Equal-year mean, or a token-weighted one.
+
+        The manuscript's -42.5% is the equal-year mean, and it never said so.
+        Which weighting is used matters more here than anywhere else in the
+        paper, because the late window is not a balanced set of years: fiscal
+        2020 and 2021 carry three components and about 200,000 tokens each,
+        2022-24 carry one and 29,000-45,000. Equal-year weighting gives the
+        three thin single-volume years the same say as the two fat ones;
+        token weighting gives them a seventh of it. A reviewer asked for both
+        and both belong in print.
+        """
+        ys = [y for y in rates if lo <= y <= hi and y in years]
+        if not ys:
+            return float("nan")
+        if not weighted:
+            return sum(rates[y] for y in ys) / len(ys)
+        num = sum(rates[y] * per[y][1] for y in ys)
+        den = sum(per[y][1] for y in ys)
+        return num / den if den else float("nan")
+
+    out = {}
+    for tag, w in (("equal_year", False), ("token_weighted", True)):
+        a, b = m(*EARLY, w), m(*LATE, w)
+        out[tag] = {"early": a, "late": b,
+                    "pct": (100 * (b / a - 1) if a else float("nan"))}
+    return out, rates
 
 
 def main() -> int:
@@ -105,14 +127,22 @@ def main() -> int:
     for k, (n, t) in sorted(tot.items(), key=lambda kv: -kv[1][1]):
         print(f"  {k:34s} {n:6d} {t:10,d}")
 
-    print(f"\n{'corpus':34s} {'1946-65':>8s} {'2020-24':>8s} {'change':>9s}")
+    print(f"\n{'corpus':32s} {'weighting':>15s} {'1946-65':>8s} "
+          f"{'2020-24':>8s} {'change':>9s}")
     res = {}
     for label, ids in (("as assembled (frozen)", assembled),
                        ("MAIN narrative volume only", main_only),
                        ("FAMILY, every component", family)):
-        a, b, p, rates = era(feat, ids, years)
-        res[label] = {"early": a, "late": b, "pct": p, "n_files": len(ids)}
-        print(f"  {label:32s} {a:8.2f} {b:8.2f} {p:+8.1f}%")
+        both, rates = era(feat, ids, years)
+        res[label] = dict(both, n_files=len(ids),
+                          # the frozen headline is the equal-year figure
+                          early=both["equal_year"]["early"],
+                          late=both["equal_year"]["late"],
+                          pct=both["equal_year"]["pct"])
+        for tag in ("equal_year", "token_weighted"):
+            e = both[tag]
+            print(f"  {label:30s} {tag:>15s} {e['early']:8.2f} "
+                  f"{e['late']:8.2f} {e['pct']:+8.1f}%")
 
     print(f"\n{'fiscal year':>12s}  {'components in the family':<44s} {'tokens':>9s}")
     per_year = {}

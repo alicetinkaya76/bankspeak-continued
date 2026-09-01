@@ -18,7 +18,9 @@ a World-Bank-specific differential AR(1) shock, rho = 0.5, sigma_delta = 0.3205 
 which the SAP calls the binding constraint on power. Blocks exist to absorb
 exactly that. So this runs the same size study under it.
 
-Three arms, same design, same seeds, so the comparison is like for like:
+Three arms, same design, same cells; the streams are distinct per arm and
+panel, because the arms draw different numbers of variates and a shared seed
+would not have coupled them anyway:
   poisson    i.i.d. per cell, no dependence  (what S9 and S10.1 used)
   ar1        the preregistered differential AR(1) shock
   ar1_nb2    that shock plus the corrected dispersion
@@ -40,6 +42,7 @@ import statsmodels.api as sm
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+from percell_seed import stream_seed              # noqa: E402
 from bootstrap_engine import (build_design, _fit, _pair_index,      # noqa: E402
                               wild_score_p, SEED, BLOCK_LEN)
 
@@ -96,7 +99,16 @@ def main(reps: int = 1500, B: int = 999) -> int:
         wb = (df["institution"] == "WB").astype(float).to_numpy()
         res["panels"][panel] = {}
         for arm in ("poisson", "ar1", "ar1_nb2"):
-            rng = np.random.default_rng(SEED + 97 + len(arm) + len(panel))
+            # The docstring above says "same seeds, so the comparison is like
+            # for like". Under the old SEED + 97 + len(arm) + len(panel) that
+            # was false exactly where it mattered: len("poisson") ==
+            # len("ar1_nb2") coupled those two, while the poisson-vs-ar1
+            # contrast the conclusion rests on was the uncoupled pair, and
+            # both panels shared a stream throughout. Coupling could not have
+            # survived anyway -- the arms consume different numbers of
+            # variates -- so the claim is dropped and the streams are simply
+            # made distinct.
+            rng = np.random.default_rng(stream_seed("ar1_null", panel, arm))
             ps = []
             for r in range(reps):
                 ysim = draw(rng, mu0, df, wb, arm, ALPHA_CORRECTED[panel])

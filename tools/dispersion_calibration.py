@@ -33,6 +33,7 @@ import statsmodels.api as sm
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+from percell_seed import stream_seed              # noqa: E402
 from bootstrap_engine import (build_design, _fit, _pair_index,      # noqa: E402
                               wild_score_p, mom_alpha, SEED, BLOCK_LEN)
 
@@ -70,7 +71,11 @@ def main(reps: int = 1000, b_inner: int = 999) -> int:
                  "recovery": {}, "size": {}}
 
         for a in ALPHAS:
-            rng = np.random.default_rng(SEED + int(a * 1000) + len(panel))
+            # len('P1') == len('P2'): both panels ran this recovery study on
+            # one stream. Found by the round-18 class-level check, after an
+            # external reading had found the same defect in three other
+            # tools and missed this one.
+            rng = np.random.default_rng(stream_seed('disp_recovery', panel, a))
             ests = []
             for _ in range(reps):
                 ysim = nb2_draw(rng, mu_full, a)
@@ -85,7 +90,7 @@ def main(reps: int = 1000, b_inner: int = 999) -> int:
                                          "median": float(np.median(e)),
                                          "n": int(e.size)}
 
-            rng = np.random.default_rng(SEED + 7_000 + int(a * 1000) + len(panel))
+            rng = np.random.default_rng(stream_seed('disp_size', panel, a))
             ps = []
             for r in range(reps):
                 ysim = nb2_draw(rng, mu_null, a)

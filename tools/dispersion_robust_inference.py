@@ -39,6 +39,7 @@ import statsmodels.api as sm
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+from percell_seed import stream_seed              # noqa: E402
 from bootstrap_engine import (build_design, _fit, _pair_index,      # noqa: E402
                               mom_alpha, SEED, BLOCK_LEN)
 
@@ -130,7 +131,10 @@ def main(reps: int = 600) -> int:
         j = names.index("WB_post")
         Xr = np.delete(X, j, axis=1)
         mu_null = np.asarray(_fit(y, Xr, off, sm.families.Poisson()).fittedvalues)
-        rng = np.random.default_rng(SEED + 31 + len(panel))
+        # len("P1") == len("P2"), so the old SEED + 31 + len(panel) gave the two
+        # panels one stream and their size figures were not independent
+        # estimates. External review found it.
+        rng = np.random.default_rng(stream_seed("dispersion_size", panel))
         rej_c = rej_f = 0
         for _ in range(reps):
             if a_fixed <= 0:

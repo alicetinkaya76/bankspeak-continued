@@ -207,8 +207,10 @@ degrees of freedom, so the fitted μ absorbs most of the variation the estimator
 needs in order to see dispersion at all.
 
 Two experiments, both simulated from the real design, offsets and fitted values,
-1,000 replicates each, seeded from the frozen `SEED`
-(`tools/dispersion_calibration.py`).
+1,000 replicates each (`tools/dispersion_calibration.py`). The streams are
+hashed per panel and per α; they were previously derived by adding the panel
+label's length to the frozen seed, which gave P1 and P2 one stream, and every
+figure in this table is from the rerun (S10's opening note).
 
 **Recovery** draws NB2 data at a known α, refits, and reports what `mom_alpha`
 returns. **Size** imposes the null — the restricted fit's values as the mean —
@@ -216,16 +218,16 @@ adds NB2 noise at the same α, and runs the frozen PASS-P.
 
 | panel | true α | recovered α̂ | shrunk by | PASS-P size at nominal 0.05 |
 |---|---|---|---|---|
-| P1 | 0.00 | 0.0000 | — | 0.057 |
-| P1 | 0.05 | 0.0038 | 13.1× | **0.093** |
-| P1 | 0.10 | 0.0115 | 8.7× | **0.095** |
-| P1 | 0.25 | 0.0348 | 7.2× | **0.082** |
-| P1 | 0.50 | 0.0638 | 7.8× | **0.079** |
-| P2 | 0.00 | 0.0000 | — | 0.054 |
-| P2 | 0.05 | 0.0025 | 20.4× | **0.072** |
-| P2 | 0.10 | 0.0090 | 11.1× | **0.085** |
-| P2 | 0.25 | 0.0296 | 8.4× | **0.080** |
-| P2 | 0.50 | 0.0561 | 8.9× | **0.084** |
+| P1 | 0.00 | 0.0000 | — | 0.061 |
+| P1 | 0.05 | 0.0036 | 14.0× | **0.082** |
+| P1 | 0.10 | 0.0125 | 8.0× | **0.107** |
+| P1 | 0.25 | 0.0355 | 7.0× | **0.102** |
+| P1 | 0.50 | 0.0651 | 7.7× | **0.111** |
+| P2 | 0.00 | 0.0000 | — | 0.040 |
+| P2 | 0.05 | 0.0021 | 23.3× | **0.068** |
+| P2 | 0.10 | 0.0094 | 10.6× | **0.075** |
+| P2 | 0.25 | 0.0293 | 8.5× | 0.055 |
+| P2 | 0.50 | 0.0567 | 8.8× | **0.072** |
 
 Bold marks a size more than two Monte Carlo standard errors above nominal
 (MC SE ≈ 0.007 at 1,000 replicates).
@@ -240,8 +242,8 @@ therefore fits a model barely distinguishable from the Poisson primary; its pass
 is real but nearly assured, and it is not evidence that the counts are
 equidispersed.
 
-**PASS-P over-rejects when it is.** At α = 0 the test holds (0.057 / 0.054). At
-the dispersion the data are consistent with it reaches 0.095 (P1) and 0.085 (P2)
+**PASS-P over-rejects when it is.** At α = 0 the test holds (0.061 / 0.040). At
+the dispersion the data are consistent with it reaches 0.107 (P1) and 0.075 (P2)
 against a nominal 0.05. The single *p* that reached significance under the
 preregistered rule — P1's 0.0142 — comes from a test roughly twice as easy to
 trip as its label, so **that one result is less credible than its *p* suggests.**
@@ -257,12 +259,26 @@ Neither experiment was preregistered. Both are post-hoc measurements of a frozen
 component, prompted by external review, and neither changes any reported
 coefficient, interval or condition outcome.
 
-## S10. Two post-freeze checks the review asked for
+## S10. Post-freeze checks the review asked for
 
-Neither was preregistered. Both leave `src/bootstrap_engine.py` untouched and
-gate nothing; the confirmatory result stands as reported. They exist because a
+None was preregistered. All leave `src/bootstrap_engine.py` untouched and gate
+nothing; the confirmatory result stands as reported. They exist because a
 reviewer was right that candour about a miscalibrated procedure is not the same
 as showing the conclusion survives one.
+
+**A defect that ran through three of them, and what it moved.** Each
+post-freeze simulation derived its random stream by adding a label's *length*
+to the frozen seed. `len("P1") == len("P2")`, so S10.1's two panels ran their
+entire size studies on one stream and were never independent estimates.
+`len("poisson") == len("ar1_nb2")`, so two of S10.4's three arms were coupled
+while the pair its conclusion rested on was not — the opposite of what its own
+docstring claimed. S10.3's seed omitted the panel altogether. All three now
+hash the labels (`src/percell_seed.stream_seed`) and every figure below is from
+the rerun. The numbers moved by one to three Monte Carlo standard errors and no
+verdict changed, which is what should happen when a defect affects
+independence rather than location — but it was found by an external reading of
+the code, not by any check in this repository, and the ones that report shared
+streams as independent are the ones worth stating.
 
 ### S10.1 A dispersion estimate that respects the degrees of freedom
 
@@ -278,13 +294,13 @@ estimator itself reports, 3,000 replicates, Monte Carlo standard error 0.004.
 
 | panel | α frozen | α corrected | exact hits, frozen | exact hits, corrected | size@0.05 frozen | size@0.05 corrected |
 |---|---:|---:|---:|---:|---:|---:|
-| P1 | 0.0121 | 0.0520 | 8/512 | 8/512 | 0.081 | 0.078 |
-| P2 | 0.0005 | 0.0425 | 50/512 | 46/512 | 0.065 | 0.065 |
+| P1 | 0.0121 | 0.0520 | 8/512 | 8/512 | 0.076 | 0.078 |
+| P2 | 0.0005 | 0.0425 | 50/512 | 46/512 | 0.064 | 0.066 |
 
 **The verdict is robust and the size is not repaired.** The corrected α is 4.3×
 the frozen one on P1 and 85× on P2, yet the exact *p* moves by at most four
 patterns in 512 and no condition-1 outcome changes. Meanwhile empirical size
-stays near 0.078–0.081 on P1 against a nominal 0.05 whichever estimator is used.
+stays near 0.076–0.078 on P1 against a nominal 0.05 whichever estimator is used.
 
 The inflation therefore does **not** originate in the dispersion estimator, and
 the remedy a referee would naturally prescribe does not deliver a correctly sized
@@ -350,82 +366,155 @@ replicates, B reduced to 299 from the frozen 9,999 to make the study feasible.
 
 **They under-cover under every null, and worst under the realistic one.** Coverage
 falls monotonically as the null gets closer to the process the design was
-preregistered against: 0.795–0.895 under i.i.d. Poisson, **0.740–0.825 under the AR(1)
-shock**, and 0.740 at its worst with dispersion added. Against a nominal 0.95 that
-is a shortfall of thirteen to twenty-one points.
+preregistered against: 0.860–0.910 under i.i.d. Poisson, 0.780–0.845 with the
+corrected dispersion, **0.705–0.790 under the AR(1) shock**, and 0.745–0.765 with
+both. Against a nominal 0.95 that is a shortfall of four to twenty-five points,
+and the ordering is the whole point: the closer the null gets to the process the
+design was preregistered against, the worse the intervals cover.
 
 Which way it cuts, precisely. Narrow intervals make it *easier* to exclude zero,
 and exclusion of zero is a conjunct of conditions 2 and 3 — so the error is
 permissive, and both conditions failed anyway on the refitted coefficient's sign
 and magnitude rather than on width. What does not survive is any reading that
 treats a barely-clearing bound as evidence: §6.3's H-SHARED interval is narrower
-than a 95% interval would be, on draws S6.3 shows are not a neutral subsample,
+than a 95% interval would be, on draws §6.3 shows are not a neutral subsample,
 and both facts point the same way.
 
 Reproduce with `python tools/passe_coverage.py 200 299`.
 
-### S10.4 The calibrations were run under the wrong null
+### S10.4 What the governing rule's error rate is, and what it turns on
 
-S9 and S10.1 measure size under i.i.d. per-cell noise — Poisson, or gamma-mixed
-Poisson for overdispersion. Neither carries any serial dependence. **That is a
-defect in those studies, and it was found by an external reading rather than
-here.**
+An earlier version of this section reported that "the governing test rejects
+about twice as often as it claims". It did not measure the governing test, and
+the sentence has been withdrawn. This section reports what was measured, what
+the governing rule's error rate actually is, and — the part that matters most —
+how much that answer depends on a choice nobody preregistered.
 
-It matters because of what the blocks are for. Under an i.i.d. null a three-year
-block has nothing to absorb, so S10.1's conclusion — that the residual inflation
-must live in the block construction — was a diagnosis by elimination that could
-not perform the elimination. It could not separate *blocking is failing* from
-*blocking is unnecessary against this null*.
+**What the earlier study did.** `tools/ar1_null_calibration.py` simulated P1 and
+P2 in separate loops, each under its own restricted fit, and counted how often
+each panel's raw two-sided *p* fell below 0.05. External review named three ways
+that differs from the preregistered rule.
 
-The preregistration names a different process, and `src/mde_sim.py` implements it
-for the power analysis: a World-Bank-specific **differential AR(1) shock**,
-δ_t = ρ·δ_{t−1} + N(0, σ_δ) with ρ = 0.5 and σ_δ = 0.3205, which the analysis plan
-identifies as the binding constraint on power. Differential rather than common,
-because a shock hitting both institutions in a year is absorbed by the saturated
-year dummies — a fact the preregistration had itself recorded, and the reason it
-replaced the common shock. Blocks exist to absorb exactly this. So the same size
-study, run under it: 3,000 replicates, Monte Carlo standard error 0.004.
+*The panels are not independent.* P1 is ICR against the Fund and P2 is PAD
+against the Fund, and the comparator arm is not merely similar across the two —
+it is the same twenty-seven cells, the same counts, the same token totals. Half
+of every panel is shared. Separate loops replace a strongly dependent pair with
+an independent one.
 
-**One correction, from a second external reading.** The first version of this
-study assigned the AR(1) starting value *after* running the recursion, so the
-series began from zero and its opening value was then overwritten — not a
-stationary AR(1), and its first transition disconnected from the rest. It
-reported 0.139 on P1. Initialised correctly the figure is 0.121. σ_δ is the
-**innovation** standard deviation, as `src/mde_sim.py` uses it, so the stationary
-marginal standard deviation is σ_δ/√(1−ρ²); the two readings give materially
-different sizes and the convention is stated because of it.
+*The rule is not a raw threshold.* PREREG §5, as `holm_family` implements it,
+sorts the two *p*-values and rejects the smaller only at α/2 = 0.025 and the
+larger only at α = 0.05, and confirms the family only if some panel clears Holm
+*and* C2 *and* C3 *and* C4.
 
-| panel | null | size at nominal 0.05 | median null *p* |
-|---|---|---:|---:|
-| P1 | i.i.d. Poisson (what S9 and S10.1 used) | **0.054** | 0.324 |
-| P1 | preregistered differential AR(1) | **0.121** | 0.276 |
-| P1 | AR(1) plus the corrected dispersion | **0.106** | 0.292 |
-| P2 | i.i.d. Poisson (what S9 and S10.1 used) | **0.056** | 0.322 |
-| P2 | preregistered differential AR(1) | **0.098** | 0.282 |
-| P2 | AR(1) plus the corrected dispersion | **0.097** | 0.277 |
+*The inner p does not need sampling.* Twenty-seven years give nine blocks, so
+the support is exactly 512 and the *p*-value is a count. The study drew 999
+signs from a set of 512.
 
-**Under the process the design was preregistered against, the governing test
-rejects about twice as often as it claims.** 0.121 on P1 and
-0.098 on P2, against a nominal 0.05 — where the i.i.d. nulls
-gave 0.054 and 0.056.
+All three are correct. `tools/joint_holm_calibration.py` repairs all three and
+adds the rungs between, because the result is not one number.
 
-Three things follow.
+| null | P1 raw .05 | P2 raw .05 | family error | MC SE |
+|---|---:|---:|---:|---:|
+| **S10.4 as built** — separate loops, sampled inner *p*, no Holm | 0.113 | 0.095 | 0.103 | 0.005 |
+| + inner *p* enumerated over all 512 | 0.113 | 0.088 | 0.107 | 0.005 |
+| + the preregistered Holm step-down | 0.115 | 0.100 | 0.114 | 0.005 |
+| **+ drawn jointly**: one comparator draw, one shared shock | 0.118 | 0.093 | **0.086** | 0.004 |
+| the same, with independent World Bank shocks | 0.116 | 0.100 | 0.119 | 0.005 |
+| the same, with the corrected NB2 dispersion | 0.110 | 0.104 | 0.102 | 0.005 |
+| **no serial shock at all**, same fitted means | 0.051 | 0.055 | 0.045 | 0.003 |
+| fitted means, differential trend removed | 0.068 | 0.058 | 0.049 | 0.003 |
+| fitted means, year profile flattened | 0.089 | 0.077 | 0.074 | 0.004 |
+| both removed | 0.045 | 0.032 | 0.028 | 0.003 |
+| **flat means**: each series at its own pooled rate | 0.041 | 0.037 | 0.031 | 0.003 |
+| PREREG §8's parity rate on observed tokens | 0.046 | 0.046 | 0.036 | 0.003 |
+| **PREREG §8 literally**, as `src/mde_sim.py` runs it | 0.046 | 0.049 | **0.037** | 0.003 |
 
-The **size problem is driven by serial dependence, not by overdispersion**. The
-i.i.d. NB2 arms of S9 and S10.1 were measuring a smaller, different thing.
+4,000 replicates each, exact 512-point inner *p*, Holm applied every replicate.
+Family error is the probability that the rule confirms at least one panel.
 
-The **block-construction diagnosis survives**, and now on evidence that can carry
-it: nine three-year blocks exist to absorb serial dependence, and against the
-dependence the preregistration specified they do not absorb enough. That the post
-window is exactly block nine (§6.2) is the sharp end of the same problem.
+**None of the three defects is what moves the number.** Enumerating the inner
+*p* changes nothing at all — 0.113 either way — so that criticism is correct and
+empirically inert here. Applying Holm to *jointly* drawn panels *lowers* the
+family error, from 0.114 to 0.086, because a shared comparator arm makes the two
+*p*-values positively dependent and for two hypotheses Holm's worst case is
+independence, not dependence. Correcting the construction made the governing
+rule look better, not worse.
 
-And **P1's *p* = 0.0142 is weaker still** than S9 and S10.1 made it. A test that
-rejects 12% of the time under its own preregistered null does not
-support a nominal 0.0142 at face value. The preregistered rule declined to confirm that
-panel on other grounds; this says the ground it *did* pass was softer than it
-looked.
+**What moves it is the null's mean structure, by a factor of three.** The
+preregistered process gives a family error of 0.037; the same rule, the same
+shock, the same ρ and σ, under means fitted to the observed series, gives 0.086.
+Both are defensible nulls and the design specified neither for this purpose. The
+preregistered power run recorded 0.039 for exactly this quantity in August
+(`docs/MDE_P1P2_20260820.md`, θ = 0); an external reviewer's independent
+implementation returned 0.0335 ± 0.0040; this one returns 0.0365 ± 0.0030. Three
+implementations, one number. The disagreement is not about arithmetic.
 
-Reproduce with `python tools/ar1_null_calibration.py 3000 999`.
+**Two explanations were tried and both are refuted by the tool's own
+diagnostics**, which is why neither appears above as a mechanism.
+
+The first was a signal-to-noise account: the preregistered simulation put the
+Fund arm at parity with the Bank's rate, about 27 marker counts a year, where it
+actually carries about 110, and Poisson noise on the log scale falls as 1/√μ.
+That is true and it is reported per scenario, but it does not track the ladder —
+the flat-means null carries a *higher* ratio than the fitted-means null and less
+than half the family error.
+
+The second was leverage: the joint fit gives the Bank arm a differential trend of
+about 5.7 log points a year, so its mean roughly quadruples across the window and
+the score's variance should concentrate in the last block, which is exactly the
+post window. The share is measured, and it runs the wrong way — 0.33 to 0.37 in
+the inflated scenarios against 0.44 to 0.48 in the well-behaved ones, where an
+equal split would be 0.111. It runs the wrong way for a reason: when one block
+dominates the studentised denominator, nearly every sign pattern produces a
+statistic as large as the observed one, and the test goes *conservative*.
+
+No third explanation is offered here. What can be stated is bounded and
+measured:
+
+- Under the fitted means the test is correctly sized with no shock at all
+  (0.045) and anti-conservative with one.
+- **Roughly two fifths of the excess survives at ρ = 0** — an i.i.d.
+  multiplicative World Bank overdispersion with no serial dependence anywhere,
+  giving 0.063 against 0.045. So *"serial dependence is the cause"* is too
+  strong, and the earlier version of this section said it. Unmodelled
+  one-armed overdispersion does a large part of the work.
+- Under flat means the same shock at the same ρ and σ produces 0.028, below
+  nominal.
+- The error rate is sensitive to ρ in the direction expected: 0.063 at ρ = 0,
+  0.077 at 0.3, 0.086 at 0.5, 0.121 at 0.7. Redrawing ρ ~ U(0.2, 0.8) and
+  σ ~ U(0.20, 0.45) every replicate — the frozen pair is a point estimate that
+  was never given an interval — gives 0.094.
+
+**What this does to P1's *p*.** The useful quantity is not a size but a
+calibrated tail probability: how often a null replicate produces a *p* at least
+as extreme as the one observed. P1's exact *p* is 8/512 = 0.0156. Under the
+preregistered null that tail is 0.014; under the fitted-means joint null it is
+0.042. The nominal figure sits between them, closer to the preregistered end.
+Read either way it is a weaker number than 0.0156 suggests, and under neither
+does it approach the 0.025 the Holm step demanded of it.
+
+**C2 and C3 are not simulated, and every family rate above is therefore an upper
+bound.** C2 needs a standardized document-level redraw and C3 needs the guard
+count series; inventing null processes for those would be modelling, not
+calibration. C4 *is* computable from the same cells and is simulated: adding it
+takes the joint family rate from 0.086 to 0.064 and the independent-panel rate
+from 0.114 to 0.086. The conjunction is genuinely tighter than its first
+conjunct, which is what a conjunctive rule is for.
+
+**What follows for the manuscript.** The claim that the governing test rejects
+twice as often as it claims is withdrawn: it rested on a per-panel raw threshold
+under one fitted null. The claim that survives is weaker and better supported —
+the preregistered rule's family error rate lies somewhere between 0.037 and 0.094
+depending on a null nobody specified, it is above nominal under every null fitted
+to the observed series, and P1's *p* is worth less than its face value under all
+of them. §6.2's block-construction sentence is narrowed accordingly: blocks fail
+to absorb the dependence under the fitted means and absorb it more than
+adequately under the preregistered ones, and this study cannot say which is the
+right null to hold the design to.
+
+Reproduce with `python tools/joint_holm_calibration.py 4000 4000`; the per-panel
+study it replaces is still runnable as `python tools/ar1_null_calibration.py
+3000 999`.
 
 ### S10.5 Is the post-window comparator a catch-up cohort?
 
@@ -513,3 +602,209 @@ show that a register can rise for reasons having nothing to do with language
 models, and it does that whichever subset is used.
 
 Reproduce with `python tools/tier2_period_fairness.py`.
+
+### S10.7 The comparator's sampling frame, published
+
+The comparator is not an annual census of Article IV staff reports and the
+manuscript never said what it was instead. It is a **capped annual
+cross-section**: a preregistered ceiling of 40 documents per year-genre cell
+(PREREG §7, `docs/PREREG_DRAFT_v0.5.md:548`; the literal constant is the CLI
+default at `src/s09_frame_sampler.py:39`), applied by equal-probability simple
+random sampling without replacement inside each cell.
+
+**Every piece of that is in the repository and none of it was in the paper.**
+
+The Fund's own listing returned 7,451 hits, a number the harvester logs and then
+enforces: the per-year windows must sum to the global `totalCount` or the build
+refuses (`src/s09a_imf_articleiv_frame.py:612-620`). Every one of the 7,451
+carries a disposition. 2,788 survive as eligible units across 1999–2025, and
+1,064 are drawn.
+
+| fiscal year | listing hits | eligible | sampled | inclusion probability | cap binds |
+|---|---:|---:|---:|---:|---|
+| 1999 | 151 | 24 | 24 | 1.000 | no |
+| 2000 | 158 | 49 | 40 | 0.816 | yes |
+| 2005 | 296 | 111 | 40 | 0.360 | yes |
+| 2010 | 322 | 126 | 40 | 0.317 | yes |
+| 2015 | 258 | 113 | 40 | 0.354 | yes |
+| **2020** | 99 | **44** | 40 | **0.909** | yes |
+| 2021 | 229 | 103 | 40 | 0.388 | yes |
+| 2022 | 244 | 113 | 40 | 0.354 | yes |
+| 2023 | 266 | 117 | 40 | 0.342 | yes |
+| 2024 | 287 | 128 | 40 | 0.313 | yes |
+| 2025 | 276 | 129 | 40 | 0.310 | yes |
+
+Every year 1999–2025 is in `data/analysis/imf_frame_publication.csv` with its
+cell seed. Three things in that table matter.
+
+**1999 is short because the universe was short, not because of the cap.** It is
+the only year in the window below 40 and every eligible unit was taken. The cap
+binds in the other twenty-six.
+
+**Inclusion probabilities run from 0.310 to 1.000, so the design weights years
+by cap rather than by the Fund's output.** A year with 129 eligible documents
+and a year with 44 contribute the same 40. Nothing in the analysis reweights for
+this, and any pooled comparator statistic should be read as "40 documents a
+year", not "the Fund's Article IV output".
+
+**Fiscal 2020 is the outlier and it sits inside the pre-period.** Only 44
+eligible units against 99 to 129 in neighbouring years — the Fund published far
+fewer Article IV consultations that year — so 2020's inclusion probability is
+0.909 where its neighbours are near 0.33. S10.5 tests the post window for a
+catch-up cohort and finds the pre-window more delayed than the post; this is the
+same disturbance seen from the frame side, and it is on the pre side of the cut.
+
+**The draw is exactly reproducible from the published code and frame, and this
+is checked rather than asserted.** Replaying `sample_frame` on the eligible frame
+at cap 40 returns the frozen 1,064 ids exactly: zero in the replay and not in the
+frozen file, zero the other way, in every one of the twenty-seven years. Selection
+order comes from a lexicographic sort of Country Report numbers, which are
+unique, so there are no ties in the draw; ties are broken earlier, when
+`resolve_revisions` keeps one unit per report number by latest publication date,
+then a corrigendum or revised title, then the smallest URL. The seed is per cell,
+`sha256("20260806|imf|article_iv|<year>")`, published per year in the CSV.
+
+**Reproducible from this frame is not the same as reproducible from a refreshed
+one, and the difference is large.** The per-cell seed protects a cell against
+changes in *other* cells; it does nothing against a change in the cell's own
+population, because `random.Random.sample` draws positional indices and the
+positions move when the population does. Deleting one eligible row that was
+never selected, and redrawing, leaves on average 18.4 of that year's 40
+selections in place if the deleted row sorts first, 29.6 if it sorts mid-order
+and 35.8 if it sorts last — measured across all twenty-six capped cells. An
+independent redraw would retain 16.4. **It is the frozen CSV, not the seed, that
+makes this sample recoverable.**
+
+**1,064 is documents drawn.** The frozen sample carries an `analysis_eligible`
+column and it is blank in all 1,064 rows — the sampler writes the column and
+nothing backfills it. What closes the gap is the retrieval record, not the
+column: `docs/IMF_RETRIEVAL_20260820.md` logs 1,064 sampled, 1,064 downloaded,
+1,064 verified.
+
+**What the frame does not carry.** Both CSVs record report number, country, ISO3
+code, publication date, title and URL. Region, income group and programme status
+are not columns of either; region and a single-vintage income classification are
+reachable only by joining `data/meta/country_ontology.csv`, and programme status
+is not in the repository at all. So the standardisations an external reader might
+ask for — region, income group, programme — cannot be run from the deposited
+artifacts as they stand, and the income vintage would be anachronistic for the
+early years even if they could.
+
+**And 2,788 is a lower bound, not the universe.** 2,341 listing hits are
+labelled `unmapped_country`: the title's country prefix did not match the alias
+table. Those are not established non-Article-IV documents; they are documents
+the pipeline could not place. The share depends on which denominator is meant,
+and the wide one flatters us: 31.4% of all 7,451 hits, but **42.2% of the 5,542
+rows that actually reached the alias lookup**, because the classifier returns on
+its first failure. The narrower figure is the one the sentence is about.
+Whether extending the alias table would raise the eligible frame, and by how
+much, is not settled here and is flagged `needs_human_review` in the tool's
+output. The disposition counts are ordered-first-failure labels throughout, so
+they partition the hits rather than tally independent reasons — and one of them
+partitions nothing: `excluded_language` reads 0, but the Fund's listing CSV has
+no language column at all and every row is defaulted to English, so that test
+can never fire. A zero there is not evidence that every listed document is in
+English, and the tool now says so in the same breath as the count.
+
+Reproduce with `python tools/imf_frame_publication.py`.
+
+### S10.8 The Tier-2 word list, term by term
+
+A reviewer asked for item-level provenance of the 35 Tier-2 terms: source,
+location in that source, match rule, early and late counts, document counts and
+a leave-one-out effect. Most of that is now published. **The source columns are
+not, and the honest reason is that they do not exist.**
+
+**Tier-2 has no per-term provenance in this repository and none is invented
+here.** The entire record is one end-of-line comment, `config/config.yaml:76`:
+"bureaucratese shared by Bankspeak and LLM style; provenance: Pamphlet 9
+vocabulary + WB usage". That names two sources collectively for all 35 terms,
+with no location in either, and no file anywhere maps a term to a source. Nothing
+verifies that any of the 35 appears in Moretti and Pestre at all — the equivalent
+check *was* run for Tier-1 against Kobak et al., which is how we know three of
+those thirteen are not in the published list. The `source` and
+`source_location` columns of `data/analysis/tier2_item_provenance.csv` therefore
+read "not recorded in repository" for every term. Tier-1's attributions do not
+transfer: `config/config.yaml:69` attributes Tier-1 to the excess-word
+literature, and no comparable claim is made for Tier-2 by the repository or by
+us. `docs/DESIGN_RATIONALE.md` said these lists carry "a source tag per word";
+they never did, for either tier, and that entry is corrected.
+
+**Two match rules were in use and nobody had noticed.** The production pipeline
+tokenises with `[A-Za-z']+` on lowercased text and counts exact set membership,
+with that token count as the denominator (`src/textstats.py:14-23`). S10.6's
+period-fairness study used case-insensitive `\b`-anchored regex on raw text with
+a whitespace-split denominator (`tools/tier2_period_fairness.py:70,75`). The
+frozen spec at `config/families.yaml:5-9` fixes exact-token membership and says
+in as many words that `\b` matching is not used — but that block is declared for
+the Tier-1 outcome, so Tier-2's rule is genuinely unspecified.
+
+**The two rules disagree by four hits in 14,986, across two terms** —
+`stakeholders` and `sustainable`. The matching is not where they differ. Where
+they differ is the **denominator**: `txt.split()` inflates the early window's
+token count by 27.4% and the late window's by only 9.7%, because early Bank text
+is far more tabular and numeric, and a whitespace split counts figures and rule
+characters that the `[A-Za-z']+` tokeniser does not. Decomposed, **99.6% of the
+16.2% gap between the two rules' headline ratios is the denominator definition
+and 0.4% is the matching.** So the boundary rule's 28.4× exceeds the production
+rule's 24.4× for a reason that is a fact about tabular layout in 1950s annual
+reports, not about the Bank's prose. Both are reported below; which rule is
+normative for Tier-2 is a human call the repository never made, and this
+supplement does not make it either.
+
+| subset | terms | rule | 1946–65 | 2020–24 | ratio |
+|---|---:|---|---:|---:|---:|
+| all Tier-2 | 35 | production | 0.260 | 6.353 | **24.4×** |
+| all Tier-2 | 35 | boundary (S10.6) | 0.204 | 5.797 | 28.4× |
+| period-plausible | 12 | production | 0.244 | 2.285 | **9.4×** |
+| period-plausible | 12 | boundary (S10.6) | 0.192 | 2.083 | 10.9× |
+| modern-register | 23 | production | 0.016 | 4.069 | 254× |
+| modern-register | 23 | boundary (S10.6) | 0.013 | 3.714 | 295× |
+
+**The abstract's two headline figures were computed under different conventions
+from each other.** "Thirtyfold" is the equal-year mean of the production rule
+(0.252 → 7.631, 30.2×); "11-fold" is the token-weighted boundary rule. Matched
+conventions give 24.4× and 9.4×, or 28.4× and 10.9×. The abstract now reports the
+subset figure as a 9- to 11-fold range for that reason. The tool's production-rule
+aggregate reproduces `data/features/ar_fy_features.csv` to four decimal places,
+which is the cross-check that the two paths are computing the same quantity.
+
+**22 of the 35 terms do not occur at all in 1946–65** — the same 22 under both
+rules. The early window is 19 fiscal-year units, not 20: the assembled corpus
+has no fiscal-1946 file, and none for 2000 or 2010 either. The late window is 5.
+Both denominators are in the output rather than left implicit.
+
+**The unit counts in that table are fiscal-year units, not documents.** An
+assembled unit concatenates several volumes — the assembly log records 135
+included documents behind these 76 units — so the columns are named
+`n_fy_units_*`. A genuine per-term document count is one of the things below
+that cannot be produced.
+
+**The early window rests on very few occurrences, and that is what the
+leave-one-out column is really measuring.** There are 130 Tier-2 hits in the
+whole early window against 3,303 in the late one. `vital` alone carries 34 of
+those 130 — 26.2% — and `vital`, `strengthen` and `strengthening` together carry
+80, or 61.5%. So removing `vital` takes the all-35 ratio *up*, from 24.4× to
+32.8× (production) and 28.4× to 38.1× (boundary), because it shrinks the base
+rather than the endpoint. The largest move the other way is `sustainable`, which
+takes the boundary ratio down to 22.9×. One term, `harnesses`, has zero hits in
+both windows and a leave-one-out delta of exactly zero; it appears in 2 of the
+76 units corpus-wide.
+
+**Three of the twelve period-plausible terms have no attested early
+occurrences at all** — `fosters`, `robust` and `strengthens`. The
+period-plausible flag is a judgement about whether a *sense* was available before
+1965, not about whether the word is *attested*, so the 9.4× is not carried by
+twelve terms evenly and the subset is not a clean historical control.
+
+**What is still missing, and what it would cost.** Per-term document-level
+prevalence across all four strata is not computable from any derived file: no
+document-level artifact holds a per-term Tier-2 count, only an aggregate rate per
+document. Producing one means re-reading 6,143 corpus files, one stratum of which
+is IMF Article IV — so it needs a permission decision before it can be run at
+all, and this tool is deliberately scoped to the 76 World Bank assembled
+fiscal-year units, which are public under the Bank's Access to Information
+Policy. No IMF text is read by it.
+
+Reproduce with `python tools/tier2_item_provenance.py`; the per-term table is
+`data/analysis/tier2_item_provenance.csv`.

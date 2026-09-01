@@ -47,8 +47,14 @@ def main() -> int:
             m.group(1) for m in re.finditer(r"\bTable (\d+[a-z]?)\b", paper)),
         "figure": collections.Counter(
             m.group(1) for m in re.finditer(r"\bFigure (\d+)\b", paper)),
+        # The supplement's own cross references were invisible until round 18:
+        # this counter read `paper` only, so a dangling "S6.3" INSIDE the
+        # supplement passed every check while the reader following it found
+        # nothing. Both documents point into the supplement's numbering, so
+        # both have to be scanned.
         "supplement": collections.Counter(
-            m.group(1) for m in re.finditer(r"\bS(\d+(?:\.\d+)?)\b", paper)),
+            m.group(1) for m in re.finditer(r"\bS(\d+(?:\.\d+)?)\b",
+                                           paper + "\n" + supp)),
     }
 
     bad = []

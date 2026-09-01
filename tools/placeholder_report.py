@@ -17,6 +17,17 @@ Two severities, because they are genuinely different:
                 legitimately unfilled until the author submits and the deposit
                 is minted. Listing them is the point; failing on them would train
                 whoever runs this to ignore it.
+  BUILT PDF   — the title page deliberately shows the affiliation and ORCID as
+                visible brackets, because a made-up affiliation is worse than an
+                obvious gap. But "deliberate" is not "ready": those brackets are
+                on page one of the file that gets uploaded. Exit 2, which is a
+                distinct code meaning "correct as built, not submittable yet".
+
+Round 18 added the third category after external review pointed at two visible
+"[… to be completed before submission]" brackets on the submission PDF's first
+page while this tool printed "MANUSCRIPT: no placeholders". It was reading two
+Markdown files and the artifact was a PDF; the scan was clean and the package
+was not.
 """
 from __future__ import annotations
 
@@ -30,6 +41,8 @@ MANUSCRIPT = [ROOT / "docs" / "PAPER_DRAFT_v2.md",
 FORMS = [ROOT / "docs" / "SUBMISSION_COVER_LETTER.md",
          ROOT / "docs" / "SUBMISSION_DATA_AVAILABILITY.md",
          ROOT / "docs" / "SUBMISSION_DAS_AUTHOR_NOTE.md"]
+BUILT_MD = ROOT / "build" / "submission" / "submission.md"
+BUILT_PDF = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
 
 # A bracket holding an instruction, not a citation or an interval. Numbers,
 # maths and reference-style brackets are excluded deliberately: the manuscript is
@@ -65,9 +78,34 @@ def scan(paths: list[Path]) -> list[tuple[str, int, str]]:
     return out
 
 
+def scan_pdf(path: Path) -> list[tuple[str, int, str]]:
+    """The same patterns, against the rendered pages rather than the source.
+
+    Read the artifact, not the input to it: the brackets are injected by
+    tools/build_submission_pdf.py and never appear in either Markdown file the
+    manuscript scan covers.
+    """
+    if not path.exists():
+        return []
+    try:
+        import fitz
+    except ImportError:
+        return [(path.relative_to(ROOT).as_posix(), 0,
+                 "PDF NOT SCANNED — PyMuPDF is not installed")]
+    out = []
+    with fitz.open(path) as doc:
+        for i, page in enumerate(doc, start=1):
+            text = page.get_text()
+            for m in PAT.finditer(text):
+                out.append((path.relative_to(ROOT).as_posix(), i,
+                            " ".join(m.group(0).split())))
+    return out
+
+
 def main() -> int:
     in_paper = scan(MANUSCRIPT)
     in_forms = scan(FORMS)
+    in_built = scan(([BUILT_MD] if BUILT_MD.exists() else [])) + scan_pdf(BUILT_PDF)
 
     if in_forms:
         print("FORM FIELDS still to fill before submitting "
@@ -84,6 +122,17 @@ def main() -> int:
             print(f"   {f}:{i}  {t}")
         return 1
     print("MANUSCRIPT: no placeholders")
+
+    print()
+    if in_built:
+        print("BUILT SUBMISSION ARTIFACT — visible on the file that gets "
+              "uploaded (page numbers for the PDF, line numbers otherwise):")
+        for f, i, t in in_built:
+            print(f"   {f}:{i}  {t}")
+        print("\n[placeholders] the package is correct as built and NOT "
+              "submittable: fill these, rebuild, rerun.")
+        return 2
+    print("BUILT SUBMISSION ARTIFACT: clean")
     return 0
 
 

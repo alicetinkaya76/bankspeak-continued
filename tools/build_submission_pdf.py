@@ -23,6 +23,7 @@ Three things it does that a plain `pandoc paper.md -o paper.pdf` does not:
 """
 from __future__ import annotations
 
+import argparse
 import re
 import shutil
 import subprocess
@@ -34,6 +35,8 @@ PAPER = ROOT / "docs" / "PAPER_DRAFT_v2.md"
 FIGDIR = ROOT / "docs" / "figures"
 BUILD = ROOT / "build" / "submission"
 OUT = BUILD / "PLOS_ONE_submission.pdf"
+SUPP = ROOT / "docs" / "PAPER_SUPPLEMENT_v1.md"
+SUPP_OUT = BUILD / "PLOS_ONE_supplement.pdf"
 
 AUTHOR = "Ali Çetinkaya"
 AFFIL = "[AFFILIATION — to be completed before submission]"
@@ -160,13 +163,27 @@ def pick_fonts() -> tuple[str, str]:
     return main, mono
 
 
-def main() -> int:
+def main(supplement: bool = False) -> int:
+    """Build the manuscript, or the supporting information, through one path.
+
+    The supplement shipped as raw Markdown for seventeen rounds. PLOS publishes
+    supporting information in the format it is given, so that would have gone
+    out as a .md file with no typesetting and no font embedding — and, more to
+    the point, with none of the glyph checking below, which is the only reason
+    the manuscript's "2^9 = 512" and its Greek coefficients survived at all.
+    The supplement is full of both. So it is built here rather than beside here.
+    """
     if not shutil.which("xelatex") or not shutil.which("pandoc"):
         raise SystemExit("[pdf] needs pandoc and xelatex on PATH")
     BUILD.mkdir(parents=True, exist_ok=True)
 
-    md = PAPER.read_text(encoding="utf-8")
-    title, rest = title_page(embed_figures(md))
+    src_path, out_path = (SUPP, SUPP_OUT) if supplement else (PAPER, OUT)
+    md = src_path.read_text(encoding="utf-8")
+    if supplement:
+        title = md.split("\n", 1)[0].lstrip("# ").strip()
+        rest = md.split("\n", 1)[1]
+    else:
+        title, rest = title_page(embed_figures(md))
     font, mono = pick_fonts()
     print(f"[pdf] fonts: text {font}, code {mono}")
 
@@ -174,7 +191,8 @@ def main() -> int:
         "---\n"
         f'title: "{title}"\n'
         f'author: "{AUTHOR}"\n'
-        f'date: "{AFFIL}\\\\newline {ORCID}"\n'
+        + ("" if supplement else f'date: "{AFFIL}\\\\newline {ORCID}"\n')
+        +
         "geometry: margin=2.4cm\n"
         f'mainfont: "{font}"\n'
         f'monofont: "{mono}"\n'
@@ -198,21 +216,25 @@ def main() -> int:
     # horizontal rule and renders identically.
     rest = re.sub(r"^---$", "* * *", rest, flags=re.M)
     rest = scripts_to_math(rest)
-    src = BUILD / "submission.md"
+    src = BUILD / ("supplement.md" if supplement else "submission.md")
     src.write_text(header + rest, encoding="utf-8")
 
-    cmd = ["pandoc", str(src), "-o", str(OUT), "--pdf-engine=xelatex",
-           "--from", "markdown+pipe_tables+tex_math_dollars",
-           "--toc", "--toc-depth=2", "-V", "toc-title=Contents"]
+    # No --toc. A contents list on page one reads as a thesis or a technical
+    # report rather than a journal article, and PLOS does not ask for one.
+    # The PDF still carries a bookmark outline, which is navigation without
+    # spending a page on it.
+    cmd = ["pandoc", str(src), "-o", str(out_path), "--pdf-engine=xelatex",
+           "--from", "markdown+pipe_tables+tex_math_dollars"]
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=BUILD)
     if r.returncode != 0:
         sys.stderr.write(r.stdout + r.stderr)
         raise SystemExit("[pdf] pandoc failed")
 
-    return verify(md)
+    return verify(md, out_path, supplement)
 
 
-def verify(source_md: str) -> int:
+def verify(source_md: str, out_path: Path = OUT,
+           supplement: bool = False) -> int:
     """Read the built PDF back and refuse to call it done if a glyph is missing.
 
     XeLaTeX does not fail on a character the font cannot set; it writes a notdef,
@@ -225,7 +247,7 @@ def verify(source_md: str) -> int:
         print("[pdf] WARNING: PyMuPDF not available, glyph check skipped")
         return 0
 
-    doc = fitz.open(OUT)
+    doc = fitz.open(out_path)
     text = "".join(page.get_text() for page in doc)
     bad = text.count("\ufffd") + text.count("\uffff")
     if bad:
@@ -238,17 +260,28 @@ def verify(source_md: str) -> int:
 
     # A spot check that the numbers actually survived typesetting, not just that
     # nothing errored. These are the load-bearing figures of the three results.
-    must = ["39.96", "22.97", "0.0142", "512", "0.16", "Fig 1.", "Fig 4."]
+    # Load-bearing figures, per document: a spot check that the numbers
+    # survived typesetting rather than that nothing errored.
+    must = (["0.037", "0.086", "512", "24.4", "0.310", "S10.7", "S10.8"]
+            if supplement else
+            ["39.96", "22.97", "0.0142", "512", "0.16", "Fig 1.", "Fig 4."])
     missing = [m for m in must if m not in text]
     if missing:
         sys.stderr.write(f"[pdf] REFUSING: not in the built PDF: {missing}\n")
         return 1
 
-    print(f"[pdf] wrote {OUT.relative_to(ROOT)}  "
-          f"({OUT.stat().st_size/1024:.0f} KB, {doc.page_count} pages)")
+    print(f"[pdf] wrote {out_path.relative_to(ROOT)}  "
+          f"({out_path.stat().st_size/1024:.0f} KB, {doc.page_count} pages)")
     print(f"[pdf] glyph check clean; {len(must)} load-bearing strings present")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--supplement", action="store_true",
+                    help="build the supporting information instead")
+    ap.add_argument("--both", action="store_true")
+    a = ap.parse_args()
+    if a.both:
+        sys.exit(main(False) or main(True))
+    sys.exit(main(a.supplement))
