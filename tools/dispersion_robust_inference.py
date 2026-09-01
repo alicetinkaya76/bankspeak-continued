@@ -6,7 +6,7 @@ carries no degrees-of-freedom correction and recovers a seventh to a twentieth o
 a dispersion that is really there, and PASS-P's size at a nominal 0.05 reaches
 about 0.095 when that dispersion is present. An external review made the obvious
 demand: preregistration does not oblige anyone to keep privileging a method after
-showing it is miscalibrated. Add a size-controlled analysis and say whether the
+showing it is miscalibrated. Add a dispersion-corrected analysis and say whether the
 governing verdict is an artifact of the frozen one.
 
 This is a POST-FREEZE variant. `src/bootstrap_engine.py` is not touched, and the

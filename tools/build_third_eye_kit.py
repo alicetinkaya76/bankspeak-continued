@@ -144,7 +144,7 @@ INCLUDE = [
      "S10.1: the d.o.f.-corrected dispersion, the exact p under it, and the size "
      "it does NOT repair"),
     ("tools/dispersion_robust_inference.py", "07_code",
-     "the post-freeze size-controlled analysis; the frozen engine is untouched"),
+     "the post-freeze dispersion-corrected analysis -- NOT size-controlled, which is S10.4's finding; the frozen engine is untouched"),
     ("data/analysis/stage_a_exposure_sensitivity.json", "06_machine_output",
      "S10.2: the panels rerun without every Stage-A-inspected document"),
     ("tools/stage_a_exposure_sensitivity.py", "07_code", "what reruns them"),

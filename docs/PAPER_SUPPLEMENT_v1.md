@@ -321,38 +321,48 @@ Reproduce with `python tools/dispersion_robust_inference.py 3000` and
 
 ### S10.3 What the PASS-E intervals actually cover
 
-Table 4 labels them nominal because no coverage study existed. They are still
+Table 4 labelled them nominal because no coverage study existed. They are still
 read — §6.3 turns on a lower bound clearing zero by 0.0029 — so this measures it.
 Simulate at a known β from the real design, run the frozen PASS-E, count how often
-the interval contains the truth. Two nulls: Poisson, and NB2 at the dispersion
-the degrees-of-freedom-corrected estimator reports (S10.1), since S9 established
-the frozen estimator cannot see it. 400 replicates, B reduced to 499 from the
-frozen 9,999 to make the study feasible.
+the interval contains the truth. Four nulls, because S10.4 showed that an i.i.d.
+null cannot test a block procedure: Poisson, NB2 at the corrected dispersion, the
+**preregistered differential AR(1)**, and AR(1) with that dispersion. 200
+replicates, B reduced to 299 from the frozen 9,999 to make the study feasible.
 
 | panel | truth | null | coverage (nominal 0.95) |
 |---|---|---|---:|
-| P1 | β = 0 | Poisson | 0.873 ± 0.017 |
-| P1 | β = 0 | NB2 at the corrected α | 0.848 ± 0.018 |
-| P1 | β = observed | Poisson | 0.858 ± 0.017 |
-| P1 | β = observed | NB2 at the corrected α | 0.805 ± 0.020 |
-| P2 | β = 0 | Poisson | 0.890 ± 0.016 |
-| P2 | β = 0 | NB2 at the corrected α | 0.830 ± 0.019 |
-| P2 | β = observed | Poisson | 0.907 ± 0.014 |
-| P2 | β = observed | NB2 at the corrected α | 0.820 ± 0.019 |
+| P1 | β = 0 | i.i.d. Poisson | 0.895 ± 0.022 |
+| P1 | β = 0 | i.i.d. NB2 at the corrected α | 0.860 ± 0.025 |
+| P1 | β = 0 | preregistered AR(1) | 0.825 ± 0.027 |
+| P1 | β = 0 | AR(1) + corrected α | 0.795 ± 0.029 |
+| P1 | β = observed | i.i.d. Poisson | 0.795 ± 0.029 |
+| P1 | β = observed | i.i.d. NB2 at the corrected α | 0.780 ± 0.029 |
+| P1 | β = observed | preregistered AR(1) | 0.755 ± 0.030 |
+| P1 | β = observed | AR(1) + corrected α | 0.740 ± 0.031 |
+| P2 | β = 0 | i.i.d. Poisson | 0.855 ± 0.025 |
+| P2 | β = 0 | i.i.d. NB2 at the corrected α | 0.820 ± 0.027 |
+| P2 | β = 0 | preregistered AR(1) | 0.820 ± 0.027 |
+| P2 | β = 0 | AR(1) + corrected α | 0.815 ± 0.027 |
+| P2 | β = observed | i.i.d. Poisson | 0.870 ± 0.024 |
+| P2 | β = observed | i.i.d. NB2 at the corrected α | 0.800 ± 0.028 |
+| P2 | β = observed | preregistered AR(1) | 0.800 ± 0.028 |
+| P2 | β = observed | AR(1) + corrected α | 0.770 ± 0.030 |
 
-**They under-cover everywhere, by six to fifteen points.** Under a Poisson null
-coverage runs 0.858–0.907; under the dispersion the data are consistent with it
-falls to 0.805–0.848. The intervals are too narrow, not too wide.
+**They under-cover under every null, and worst under the realistic one.** Coverage
+falls monotonically as the null gets closer to the process the design was
+preregistered against: 0.795–0.895 under i.i.d. Poisson, **0.740–0.825 under the AR(1)
+shock**, and 0.740 at its worst with dispersion added. Against a nominal 0.95 that
+is a shortfall of thirteen to twenty-one points.
 
-Which way this cuts is worth stating precisely. Narrow intervals make it *easier*
-to exclude zero, and exclusion of zero is a conjunct of conditions 2 and 3 — so
-the error is permissive, and both conditions failed anyway, on the sign and
-magnitude of the refitted coefficient rather than on interval width. The reading
-that does not survive is any that treats a bound barely clearing zero as evidence:
-§6.3's H-SHARED interval is narrower than a 95% interval would be, on draws that
-S6.3 shows are not a neutral subsample, and both facts point the same way.
+Which way it cuts, precisely. Narrow intervals make it *easier* to exclude zero,
+and exclusion of zero is a conjunct of conditions 2 and 3 — so the error is
+permissive, and both conditions failed anyway on the refitted coefficient's sign
+and magnitude rather than on width. What does not survive is any reading that
+treats a barely-clearing bound as evidence: §6.3's H-SHARED interval is narrower
+than a 95% interval would be, on draws S6.3 shows are not a neutral subsample,
+and both facts point the same way.
 
-Reproduce with `python tools/passe_coverage.py 400 499`.
+Reproduce with `python tools/passe_coverage.py 200 299`.
 
 ### S10.4 The calibrations were run under the wrong null
 

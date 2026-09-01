@@ -623,13 +623,15 @@ pre-period years against three post-period ones is the whole design, and no
 amount of statistical machinery makes that asymmetry go away.
 
 **Table 4 — governing verdict** (`s13_validation_battery family`, Holm over two
-panels, α = 0.05).
+panels, α = 0.05). **P1 is the ICR stratum against the IMF Article IV comparator;
+P2 is the PAD stratum against the same comparator**, and the labels carry that
+meaning in every table below.
 
 | | P1 (ICR vs IMF) | P2 (PAD vs IMF) |
 | --- | --- | --- |
 | α_Holm | 0.025 | 0.05 |
 | θ (WB:post, log points) | 0.586 | 0.332 |
-| PASS-E percentile interval (nominal 95%; **measured coverage 0.81–0.86**, S10.3) | [0.267, 0.921] | [0.017, 0.622] |
+| PASS-E percentile interval (nominal 95%; **measured coverage 0.74–0.90**, S10.3) | [0.267, 0.921] | [0.017, 0.622] |
 | PASS-P *p*, 9,999 draws | **0.0142** | 0.0929 |
 | PASS-P *p*, exact over all 512 patterns | **8/512 = 0.0156** | 50/512 = 0.0977 |
 | C1 Holm | passes | fails |
@@ -766,7 +768,7 @@ Twenty-seven years in three-year blocks admit exactly three distinct partitions,
 and all three are given here, because reporting one of them shows only whichever
 panel that partition happens to move.
 
-**Table 5c — exact PASS-P *p* at every available block origin.** Enumeration over
+**Table 5c — exact PASS-P *p* at every available block origin** Enumeration over
 all 512 sign patterns; `tools/block_origin_enumeration.py` regenerates it.
 
 | origin offset | P1 | P2 |
@@ -991,7 +993,7 @@ post-period years, of which the design has three.
 The design preregistered two independent checks on whether the specification
 identifies 2023 in particular, and they do not agree.
 
-**Table 6 — breakpoint specificity, both checks.** `placebo_sig_frac` is the
+**Table 6 — breakpoint specificity, both checks** `placebo_sig_frac` is the
 share of false pre-2023 cuts that are also significant (lower is better); the
 rank places 2023 among all admissible cuts by |b₂| (higher percentile is better).
 **The denominator is six** — the placebo years frozen in `config/config.yaml` are
@@ -1142,9 +1144,9 @@ when the counts are Poisson and **loses it under mild overdispersion** — 0.095
 against a nominal 0.05 on P1 at the dispersion the data are consistent with —
 because the frozen dispersion estimator recovers roughly an eighth of what is
 there at 30 parameters on 54 cells. The PASS-E intervals are measured at
-**0.805–0.907 against a nominal 0.95** (supplement S10.3), lowest under the
-dispersion the data are consistent with, so Table 4 labels them nominal and gives
-the measured figure. They are too narrow, which is permissive rather than lenient
+**0.740–0.895 against a nominal 0.95** (supplement S10.3), falling monotonically
+as the null moves from i.i.d. toward the preregistered serial dependence, so
+Table 4 labels them nominal and gives the measured range. They are too narrow, which is permissive rather than lenient
 where they gate anything — and both conditions that use them failed on the
 coefficient, not on the width. A reader treating the
 apparatus as reusable should establish both first, and should note that the null

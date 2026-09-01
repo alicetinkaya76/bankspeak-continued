@@ -3,6 +3,7 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+418556a  2026-09-01  The intervals cover at 0.74 under the null the design was preregistered against
 9efaba9  2026-09-01  Answer the v5 review's four required repairs, and two come out our way
 aa32446  2026-09-01  Four of the five "duplicate" volumes are not duplicates, and the AR(1) was broken
 b48de80  2026-08-30  Every calibration in this paper was run under a null that could not test it

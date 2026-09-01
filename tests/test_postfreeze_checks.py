@@ -161,3 +161,18 @@ def test_size_is_worse_under_serial_dependence_than_under_iid():
     for panel, arms in d["panels"].items():
         assert arms["ar1"]["size_05"] > arms["poisson"]["size_05"], panel
         assert arms["ar1"]["size_05"] > 0.09, (panel, arms["ar1"])
+
+
+@pytest.mark.skipif(not COV_JSON.exists(), reason="run tools/passe_coverage.py first")
+def test_coverage_is_measured_under_the_preregistered_serial_null_too():
+    """S10.4 established that an i.i.d. null cannot test a block procedure. The
+    coverage study inherited that defect and now carries AR(1) arms; if they
+    disappear, S10.3's range is describing the wrong nulls again."""
+    d = json.loads(COV_JSON.read_text())
+    keys = {k for panel in d["panels"].values() for k in panel}
+    assert any("ar1" in k for k in keys), sorted(keys)
+    ar1 = [v["coverage"] for p in d["panels"].values() for k, v in p.items()
+           if k.endswith("/ar1")]
+    pois = [v["coverage"] for p in d["panels"].values() for k, v in p.items()
+            if k.endswith("/poisson")]
+    assert sum(ar1)/len(ar1) < sum(pois)/len(pois), (ar1, pois)
