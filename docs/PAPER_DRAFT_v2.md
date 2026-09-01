@@ -22,7 +22,7 @@ of 7.38.
 A second result concerns measurement, not the Bank. Over the same fiscal years
 the same archive gives a 43% or a 14% decline, and **all** of that gap is which
 files count as Annual Reports: the 195 excluded
-sibling volumes (94% of them) rise 64% while the Bank's own fall 43%. Concatenating
+sibling volumes (94% of them) rise 64% while the Bank's own fall 35–43%. Concatenating
 volumes into fiscal-year units contributes nothing: for a token-normalised rate
 it is arithmetically identical to a token-weighted mean.
 
@@ -543,15 +543,36 @@ years (`tools/ar_exclusion_classes.py`).
 |---|---:|---:|---:|---:|
 | assembled — the Bank's own volumes | 134 | 39.96 | 22.97 | **−42.5%** |
 | sibling organisation (IFC, MIGA, ICSID) | 184 | 21.65 | 35.60 | **+64.4%** |
-| duplicate volume record | 5 | — | 27.80 | — |
+| metadata-key collision | 5 | — | 27.80 | — |
 | other logged ruling | 6 | 28.61 | — | — |
 
 **The opposing trend is entirely the sibling organisations**, which are 94% of
-the exclusions. The five duplicates have no early-period observation at all, so
-they cannot produce an early-versus-late contrast in either direction, and the
-six remaining rulings have no late-period observation. The result is therefore a
-corpus-boundary finding about which institution's volumes count, not an artifact
-of deduplication. Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
+the exclusions, and the six remaining rulings have no late-period observation.
+
+**The five records excluded as duplicates are a defect, and correcting it moves
+the headline.** The frozen rule drops a record whose (report number, volume
+number) key has already been seen, which is content-blind. Adjudicated by title
+(`tools/companion_volume_adjudication.py`), **only one of the five is a duplicate.**
+The other four are distinct components sharing a key with the main volume: two
+2023 companions — an appendixes product and a management-discussion-and-financial-
+statements product, 42,404 and 94,717 tokens — a 2024 executive summary, and a
+2008 lending table. Excluding them removed 137,121 tokens from fiscal 2023 alone,
+against the 43,795 that were kept.
+
+**Table 3d — the corpus-boundary result with the companions restored.**
+
+| series | 1946–65 | 2020–24 | change |
+|---|---:|---:|---:|
+| as assembled (frozen) | 39.96 | 22.97 | **−42.5%** |
+| companions restored | 39.96 | 25.82 | **−35.4%** |
+
+Fiscal 2023 carries it: 15.89 per thousand on 43,795 tokens as assembled, 30.01
+on 180,916 with the companions. **The magnitude was overstated by seven
+percentage points and the direction is unchanged**; the corrected −35.4% still
+sits far from the −13.8% the whole document pool gives, so the corpus-boundary
+conclusion holds and its size does not. We report the frozen figure and the
+corrected one together rather than replacing one with the other, and a study
+building on this should use a content-identity rule rather than a metadata key. Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
 1946–65 against 33.53 in 2020–24 — rising — while the Bank's own volumes fall from
 39.96 to 22.97. (Both are unweighted means of per-year token-weighted rates,
 matched to the same years, which is the aggregation Table 3b and Figure 1 use.
@@ -783,9 +804,12 @@ not coming from the dispersion estimator.
 i.i.d. per-cell noise, which is a poor test of machinery whose blocks exist to
 absorb serial dependence — a defect an external reading found, not us. Rerun
 against the process the preregistration actually specifies, a World-Bank-specific
-differential AR(1) shock at ρ = 0.5 and σ_δ = 0.3205, the size is **0.139 on P1
-and 0.101 on P2** (supplement S10.4). Two to three times nominal, where the
-i.i.d. nulls gave 0.064 and 0.048.
+differential AR(1) shock at ρ = 0.5 and σ_δ = 0.3205, the size is
+**0.121 on P1 and 0.098 on P2**
+(supplement S10.4). About twice nominal, where the i.i.d. nulls gave
+0.054 and 0.056. An earlier
+version of that study initialised the AR(1) after the recursion rather than
+before and reported 0.139; the correction is S10.4's.
 
 So the size problem is serial dependence rather than overdispersion, the block
 construction is where it lives — nine blocks, a 512-point support, a
@@ -1095,8 +1119,8 @@ apparatus as reusable should establish both first, and should note that the null
 *p*-value distribution is not uniform. **A degrees-of-freedom correction to the
 dispersion estimator is not the fix**: supplement S10.1 applies one and the size
 does not move. Nor is dispersion the problem — under the differential AR(1) shock
-the preregistration specifies, size reaches **0.139** (S10.4), against 0.064 under
-an i.i.d. null. The fault is serial dependence and the nine-block construction
+the preregistration specifies, size reaches **0.121** (S10.4),
+against 0.054 under an i.i.d. null. The fault is serial dependence and the nine-block construction
 that was meant to absorb it. The design-level remedy is more blocks, and more
 blocks means more years.
 

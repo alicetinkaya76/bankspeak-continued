@@ -148,6 +148,12 @@ INCLUDE = [
     ("data/analysis/stage_a_exposure_sensitivity.json", "06_machine_output",
      "S10.2: the panels rerun without every Stage-A-inspected document"),
     ("tools/stage_a_exposure_sensitivity.py", "07_code", "what reruns them"),
+    ("data/analysis/companion_volume_adjudication.json", "06_machine_output",
+     "Table 3d: four of the five records excluded as duplicates are distinct "
+     "components sharing a metadata key; restoring them moves the headline "
+     "from -42.5% to -35.4%"),
+    ("tools/companion_volume_adjudication.py", "07_code",
+     "what adjudicates them, by title rather than by key"),
     ("data/analysis/ar1_null_calibration.json", "06_machine_output",
      "S10.4: size under the preregistered differential AR(1) shock — 0.139 and "
      "0.101 against a nominal 0.05, where the i.i.d. nulls gave 0.064 and 0.048"),

@@ -72,3 +72,36 @@ def test_the_duplicates_cannot_drive_the_early_to_late_contrast():
     dup_years = {int(r["year"]) for r in docs
                  if (e := led.get(r["id"])) and e["rule"] == "duplicate_repnb_volnb"}
     assert dup_years and min(dup_years) > _mod.EARLY[1], sorted(dup_years)
+
+
+# --- the duplicate class is not a duplicate class -------------------------------
+
+_adj_spec = importlib.util.spec_from_file_location(
+    "companion_volume_adjudication", ROOT / "tools" / "companion_volume_adjudication.py")
+_adj = importlib.util.module_from_spec(_adj_spec)
+_adj_spec.loader.exec_module(_adj)
+
+
+@needs_data
+def test_most_of_the_duplicate_class_is_not_duplicates():
+    """The frozen rule drops a record whose (repnb, volnb) key was already seen,
+    which is content-blind. Four of the five it dropped carry different titles --
+    two 2023 companions, a 2024 executive summary and a 2008 lending table."""
+    led = list(csv.DictReader(LEDGER.open(encoding="utf-8")))
+    real, companion = _adj.adjudicate(led)
+    assert len(real) + len(companion) == 5
+    assert len(companion) == 4, [r["display_title"][:60] for r in companion]
+
+
+@needs_data
+def test_restoring_the_companions_softens_but_does_not_reverse_the_headline():
+    """Seven percentage points, and the direction holds. If a future change made
+    the two series agree, Table 3d would be reporting a difference that no longer
+    exists."""
+    import json
+    out = ROOT / "data" / "analysis" / "companion_volume_adjudication.json"
+    if not out.exists():
+        pytest.skip("run tools/companion_volume_adjudication.py first")
+    d = json.loads(out.read_text())
+    assert d["frozen"]["pct"] < d["restored"]["pct"] < 0
+    assert abs(d["restored"]["pct"] - d["frozen"]["pct"]) > 3

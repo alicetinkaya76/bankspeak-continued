@@ -43,7 +43,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from bootstrap_engine import (build_design, _fit, _pair_index,      # noqa: E402
                               wild_score_p, SEED, BLOCK_LEN)
 
-RHO, SIGMA_DELTA = 0.5, 0.3205          # PREREG / mde_sim defaults
+RHO, SIGMA_DELTA = 0.5, 0.3205   # PREREG / mde_sim; SIGMA_DELTA is the INNOVATION sd
 PANELS = {"P1": ROOT / "data/analysis/panels/cells_P1.csv",
           "P2": ROOT / "data/analysis/panels/cells_P2.csv"}
 ALPHA_CORRECTED = {"P1": 0.0520, "P2": 0.0425}
@@ -59,10 +59,20 @@ def draw(rng, mu, df, wb_mask, arm, alpha):
     eta = np.log(mu).copy()
     if arm.startswith("ar1"):
         years = np.array(sorted(df["year"].unique()))
-        d = np.zeros(len(years))
+        # Initialise BEFORE the recursion. The first version assigned d[0] after
+        # the loop, so the recursion ran from zero and the opening value was then
+        # overwritten -- the series was not a stationary AR(1) and its first
+        # transition was disconnected from the rest. External review caught it;
+        # the reported P1 size of 0.139 came from that wrong process.
+        #
+        # SIGMA_DELTA is the INNOVATION standard deviation, which is how
+        # src/mde_sim.py uses it, so the stationary marginal SD is
+        # SIGMA_DELTA / sqrt(1 - rho^2). Stating the convention because the two
+        # readings give materially different sizes.
+        d = np.empty(len(years))
+        d[0] = rng.normal(0, SIGMA_DELTA / np.sqrt(1 - RHO ** 2))
         for t in range(1, len(years)):
             d[t] = RHO * d[t - 1] + rng.normal(0, SIGMA_DELTA)
-        d[0] = rng.normal(0, SIGMA_DELTA / np.sqrt(1 - RHO ** 2))   # stationary start
         pos = {y: i for i, y in enumerate(years)}
         eta = eta + wb_mask * np.array([d[pos[y]] for y in df["year"]])
     lam = np.exp(eta)
