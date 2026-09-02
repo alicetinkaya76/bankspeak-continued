@@ -81,10 +81,24 @@ timestamped before any reported outcome was computed: {sap}.</p>""".format(
 
 
 def main() -> int:
+    # Stage, then zip -- always both, in that order, from one command.
+    #
+    # This used to zip whatever zenodo_deposit/ already held and tell the
+    # caller to run the staging step first. Round 20 extended the staging
+    # list by eighteen analysis outputs, re-ran only this file, and shipped a
+    # deposit that carried none of them: the inputs to S10.3-S10.9 and Tables
+    # 3c-5d were on the list and not in the zip. A second external review
+    # found it by opening the zip. A build with two steps and no check between
+    # them is a build that can be half-run, so the staging step is now called
+    # here and the zip is verified against the list before it is reported.
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "prepare_zenodo_deposit.py"),
+                        "--out", str(DEPOSIT), "--copy"],
+                       cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        print(r.stdout[-2000:], r.stderr[-2000:])
+        raise SystemExit("[package] staging failed; nothing zipped")
     if not (DEPOSIT / "MANIFEST.csv").exists():
-        raise SystemExit("[package] build the deposit first: "
-                         "python tools/prepare_zenodo_deposit.py "
-                         "--out zenodo_deposit --copy")
+        raise SystemExit("[package] staging wrote no MANIFEST.csv")
     OUT_ZIP.parent.mkdir(parents=True, exist_ok=True)
 
     files = sorted(f for f in DEPOSIT.rglob("*") if f.is_file())
@@ -94,6 +108,23 @@ def main() -> int:
     raw = sum(f.stat().st_size for f in files)
     print(f"[package] {len(files)} files, {raw/1e6:.1f} MB -> "
           f"{OUT_ZIP.relative_to(ROOT)} ({OUT_ZIP.stat().st_size/1e6:.1f} MB)")
+
+    # Every deposit-list file that exists in the repo must be in the zip.
+    sys.path.insert(0, str(ROOT / "tools"))
+    from prepare_zenodo_deposit import INCLUDE_FILES as _LIST          # noqa: E402
+    with zipfile.ZipFile(OUT_ZIP) as z:
+        names = set(z.namelist())
+    missing = [rel for rel in _LIST
+               if (ROOT / rel).exists()
+               and not any(n.endswith("/" + rel) or n.endswith("/" + rel.replace("data/", "payload/data/", 1))
+                           for n in names)]
+    if missing:
+        for rel in missing:
+            print(f"    missing from zip: {rel}")
+        raise SystemExit(f"[package] REFUSING: {len(missing)} listed file(s) are "
+                         "not in the zip; the staging step did not pick them up")
+    print(f"[package] every listed file present in the zip "
+          f"({sum(1 for rel in _LIST if (ROOT / rel).exists())} checked)")
 
     meta = {
         "title": "Bankspeak, Continued — Stage-B evidence deposit",

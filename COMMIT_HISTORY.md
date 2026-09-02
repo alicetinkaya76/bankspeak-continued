@@ -3,6 +3,7 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+096ce69  2026-09-02  The excluded class rises because two of its three members did not exist in 1946
 f39f64b  2026-09-02  The ladder's opening rungs measured nothing, and my own repair broke a script
 db9ffe3  2026-09-01  The title page printed 62 of the deposit's 64 hex digits
 5b81d7f  2026-09-01  Table 3b's step-1 label invited the confound the ladder rules out

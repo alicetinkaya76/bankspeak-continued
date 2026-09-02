@@ -66,7 +66,7 @@ ANALYSIS = ["ar1_null_calibration", "ar_component_inventory",
             "functional_form_sensitivity",
             "citation_audit", "companion_volume_adjudication",
             "dispersion_calibration", "dispersion_robust_inference",
-            "hshared_draw_diagnostics", "imf_cadence_balance",
+            "hshared_draw_diagnostics",
             "joint_holm_calibration", "passe_coverage", "passp_calibration",
             "prereg_sensitivities", "retrieval_route_tally",
             "rq1_decomposition", "stage_a_exposure_sensitivity",
@@ -78,9 +78,16 @@ INCLUDE = (["src", "tools", "tests", "config", "docs", "Makefile",
             "requirements.txt", "requirements-ppl.txt",
             "data/meta/imf_document_index.csv"]
            + [f"data/analysis/{n}.json" for n in ANALYSIS]
-           + ["data/analysis/imf_frame_publication.json",
-              "data/analysis/imf_frame_publication.csv",
-              "data/analysis/tier2_item_provenance.csv",
+           # The three IMF-derived aggregates that S10.5 and S10.7 read --
+           # imf_frame_publication.{json,csv} and imf_cadence_balance.json --
+           # are NOT on this list. They were, and the DENY rule below dropped
+           # them anyway, so two lists in one file disagreed and the export
+           # said nothing. They travel in the evidence deposit instead
+           # (tools/prepare_zenodo_deposit.py), which the supplement now names
+           # as their source. Whether the mirror may ALSO carry them is the
+           # author's licence ruling and stays needs_human_review; when it is
+           # made, add them here AND narrow DENY in the same commit.
+           + ["data/analysis/tier2_item_provenance.csv",
               "data/analysis/its_results.csv", "data/analysis/power.csv"])
 
 # Never, whatever else matches.
@@ -246,8 +253,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"    {rel}")
         print("  These are on the include list and are not in the export. Either "
               "remove them from INCLUDE, or narrow the DENY pattern once a "
-              "human has ruled on whether they may be redistributed. Flagged "
-              "needs_human_review; not decided here.")
+              "human has ruled on whether they may be redistributed.")
+        print("[public] REFUSING: INCLUDE and DENY disagree about the files above. "
+              "A contradiction between two lists in this file is a defect, not a "
+              "note; an earlier version printed it and went on building.")
+        return 1
 
     if problems:
         print(f"[public] REFUSING: {len(problems)} staged file(s) carry IMF "

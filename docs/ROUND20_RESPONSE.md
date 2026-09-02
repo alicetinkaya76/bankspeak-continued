@@ -117,7 +117,15 @@ renumbers every later year, so it moves the block partition as well as the data*
 and a single *p* cannot separate the two. Each row is therefore evaluated at all
 three block origins. At the frozen origin, dropping fiscal 2020 sends P1 from
 0.0156 to 0.3164 — apparently fatal. At the other two origins the same deletion
-returns 0.0117 and 0.0195. What moved was the partition. A reader given only the
+returns 0.0098 and 0.0195. What moved was the partition.
+
+*Correction (round 21).* When this paragraph was written the origin sweep
+rotated the year vector before blocking, so a shifted origin put 1999 in the
+same block as 2024–25. A later external review caught it in Table 5c, and it
+was wrong here for the same reason. The sweep now keeps time order (a short
+block at each end, ten blocks, support 1,024); the two figures above are the
+corrected ones, and the reading — partition moved, evidence did not — is
+unchanged. `tools/block_origin_enumeration.py` prints both computations. A reader given only the
 frozen-origin column would have drawn the wrong conclusion.
 
 What does move P1 is exactly what §5 and §7 already name as the identification

@@ -152,7 +152,13 @@ def t3_ar_eras() -> None:
             ("acronym_per1k", "Acronym/1k"),
             ("mgmt_per1k", "Mgmt/1k"), ("tier1_per1k", "Tier-1/1k"),
             ("tier2_per1k", "Tier-2/1k")]
-    eras = [(1946, 1965), (2020, 2026)]
+    # The late window is 2020-24. It was written (2020, 2026) here, which
+    # changed nothing in the cells -- there is no fiscal-2025 or -2026 unit in
+    # the assembled series -- but printed "2020-2026" as the row label beside
+    # a cell saying five years, 2020-2024. An external review read it as a
+    # typo; it was a search bound leaking into a label. The bound now equals
+    # the window every other table and the text use.
+    eras = [(1946, 1965), (2020, 2024)]
 
     def stat(a, b, col, weighted):
         sub = [x for x in rs if a <= int(x["year"]) <= b]

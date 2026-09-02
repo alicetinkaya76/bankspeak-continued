@@ -507,6 +507,38 @@ trend form (PREREG §9, sensitivity (a)). Like the placebo, it gates nothing.
 the preregistered grid under three companion settings before any confirmatory
 number existed, and is reported in §6.3 beside the estimate rather than after it.
 
+### 5.1 Use of AI assistance
+
+This work used Anthropic's Claude (Opus 4.x and Opus 5,
+via Claude Code) throughout. The assistant drafted the preregistration and the
+statistical analysis plan, wrote essentially all of the retrieval, extraction,
+inference and diagnostic code, ran the analyses, drafted the manuscript and the
+supplement, and made methodological choices under a standing instruction from
+the author to decide rather than leave a question open. Each such choice is
+recorded individually in `docs/` — the analysis plan, decisions D-1 to D-13, two
+deviation records and a prior-inspection ruling — with the instruction that
+authorised it, and the version history carries `Co-Authored-By` trailers on the
+majority of commits, so the scope is auditable rather than summarised. Several
+results reported here, among them the corpus-selection decomposition and the
+calibration of S10.4, correct errors made earlier in this same work; they are
+reported in the sections where those errors occurred rather than removed.
+
+The human author is the sole author and takes full responsibility for the
+content. [AUTHOR ATTESTATION — to be completed before submission: that the author has
+personally reviewed and adopted the design decisions recorded in `docs/`, the
+confirmatory result and its interpretation, and the limitations in §7; that the
+research question, the hypotheses and the decision to report a null result are
+his; and amending the paragraph above wherever it overstates or understates what
+he verified. Deliberately not filled by the assistant: it is an attestation only
+the author can make.]
+
+No AI system is an author. Outputs were verified by an executable test suite,
+by the guards in `tools/` that refuse to build the submission when a stated
+number disagrees with the filesystem, and by successive independent third-party
+reviews whose findings and our responses are recorded in `docs/`. (The suite's
+size is a number that drifts, so it is stated in the repository README, which is
+regenerated, rather than here.)
+
 ---
 ## 6. Results
 
@@ -523,7 +555,7 @@ mean of fiscal-year rates**; the token-weighted value follows in parentheses.
 | Era | Years present | Nominal./100 | Temporal/1k | Acronym/1k | Mgmt/1k | Tier-1/1k | Tier-2/1k |
 |---|---|---|---|---|---|---|---|
 | 1946–1965 | 19 (1947–1965) | 5.981 (5.989) | **39.963** (38.451) | 15.818 (15.789) | 1.112 (1.135) | 0.009 (0.010) | 0.252 (0.260) |
-| 2020–2026 | 5 (2020–2024) | 7.710 (7.722) | **22.971** (27.767) | 39.803 (41.957) | 4.466 (3.949) | 0.094 (0.060) | 7.631 (6.353) |
+| 2020–2024 | 5 (2020–2024) | 7.710 (7.722) | **22.971** (27.767) | 39.803 (41.957) | 4.466 (3.949) | 0.094 (0.060) | 7.631 (6.353) |
 
 Temporal anchoring falls by 43%; nominalisation, acronym density (15.8 → 39.8 per
 thousand), management vocabulary and the bureaucratese register rise. The pamphlet's qualitative claim survives
@@ -886,28 +918,41 @@ design, not as a repair. Enumerating all 512 exactly, at the frozen block origin
 gives P1 = 8/512 = **0.0156** and P2 = 50/512 = **0.0977** — close to the Monte
 Carlo values, so the simulation is faithful.
 
-Twenty-seven years in three-year blocks admit exactly three distinct partitions,
-and all three are given here, because reporting one of them shows only whichever
-panel that partition happens to move.
+Twenty-seven years in three-year blocks admit three origins — offsets 0, 1 and
+2, after which the blocking repeats — and all three are given here, because
+reporting one of them shows only whichever panel that partition happens to move.
+The frozen origin cuts nine whole blocks. A shifted origin keeps every year with
+its calendar neighbours and leaves a short block at each end, so it has **ten**
+blocks and a support of 2¹⁰ = 1,024 rather than nine and 512. That is not how an
+earlier version of this table was computed: it rotated the year vector before
+blocking, which kept nine blocks at every offset by placing 1999 in the same
+block as 2024 and 2025 — the one thing a block bootstrap exists to prevent. An
+external review reconstructed the cells from the deposited panels, found they
+reproduced only under rotation, and asked for the time-ordered values. These are
+they; the rotated ones are kept in the tool's output under their own label.
 
-**Table 5c — exact PASS-P *p* at every available block origin** Enumeration over
-all 512 sign patterns; `tools/block_origin_enumeration.py` regenerates it.
+**Table 5c — exact PASS-P *p* at every available block origin, time order
+kept.** Enumeration over every sign pattern; `tools/block_origin_enumeration.py`
+regenerates it and also prints what rotation gave.
 
-| origin offset | P1 | P2 |
-| --- | --- | --- |
-| 0 — preregistered | **8/512 = 0.0156** | 50/512 = 0.0977 |
-| 1 year | 164/512 = 0.3203 | 78/512 = 0.1523 |
-| 2 years | 8/512 = 0.0156 | **18/512 = 0.0352** |
+| origin offset | P1 | P2 | blocks | support |
+| --- | --- | --- | --- | --- |
+| 0 — preregistered | **8/512 = 0.0156** | 50/512 = 0.0977 | 9 | 512 |
+| 1 year | 324/1024 = 0.3164 | 178/1024 = 0.1738 | 10 | 1,024 |
+| 2 years | **8/1024 = 0.0078** | **38/1024 = 0.0371** | 10 | 1,024 |
 
 The preregistered origin governs and we do not substitute another. But the table
 cuts both ways and both directions belong in it. A one-year shift moves P1's
-headline twentyfold, 0.0156 to 0.3203. A two-year shift leaves P1 exactly where
-the frozen origin puts it and takes **P2 to 0.0352, below the 0.05 threshold Holm
-would set for that panel** — so the partition that would have made the second
-panel nominally significant is one an arbitrary earlier choice ruled out. A
-convention that can move one panel's *p* by a factor of twenty and carry the
-other across its own threshold is not a nuisance; it is a reason the single
-reported *p* should not be read as a measurement.
+headline twentyfold, 0.0156 to 0.3164. A two-year shift **halves** P1's
+*p* to 0.0078 — the earlier version said the two-year shift left P1
+where the frozen origin put it, which was an artifact of the wrap — and takes P2
+to 0.0371. At that origin the smaller *p* clears Holm's 0.025 and the
+larger clears its 0.05, so **the partition that would have carried both panels
+through condition 1 is one an arbitrary earlier choice ruled out**, while the
+partition one year the other way would have failed both. A convention that can
+move one panel's *p* by a factor of twenty and carry the other across its own
+threshold is not a nuisance; it is a reason the single reported *p* should not
+be read as a measurement.
 
 **What the functional form is worth, and what the block partition is worth,
 separated.** A later review asked for the specification without the
@@ -922,13 +967,15 @@ builds the table.
 
 **Table 5d — functional-form and window sensitivities.** Inner *p*
 enumerated, not sampled; the last column of each panel counts how many of the
-three block origins fall below 0.05. *from YYYY* restricts the pre-period
-start; *less YYYY* deletes that year.
+three block origins fall below 0.05, with time order kept at every origin (a
+shifted origin has one more block than the frozen one, so its support is
+doubled). *from YYYY* restricts the pre-period start; *less YYYY* deletes that
+year.
 
 | variant | P1 β | P1 *p* | <.05 | P2 β | P2 *p* | <.05 |
 |---|---:|---:|---:|---:|---:|---:|
 | frozen design | +0.586 | 0.0156 | 2/3 | +0.332 | 0.0977 | 1/3 |
-| no WB trend ‡ | +1.042 | 0.0586 | 1/3 | +0.943 | 0.1289 | 1/3 |
+| no WB trend ‡ | +1.042 | 0.0586 | 1/3 | +0.943 | 0.1289 | 2/3 |
 | from 2003 | +0.562 | 0.3125 | 2/3 | +0.297 | 0.1719 | 0/3 |
 | from 2007 | +0.548 | 0.0156 | 2/3 | +0.416 | 0.0156 | 2/3 |
 | from 2011 | +0.288 | 0.0625† | 0/3 | +0.299 | 0.2500† | 0/3 |
@@ -942,9 +989,11 @@ start; *less YYYY* deletes that year.
 | less 2025 (C4) | +0.566 | 0.0156 | 2/3 | +0.357 | 0.1445 | 0/3 |
 
 † *A 15-year window has five blocks, so the support is 2⁵ = 32 and the smallest
-attainable* p *is 0.0625. That row cannot be significant whatever the data say;
-reading it as evidence would be reading the support size. Any window shorter
-than sixteen common years has this property.*
+attainable* p *is 0.0625. At the frozen origin that row cannot be significant
+whatever the data say; reading it as evidence would be reading the support
+size. Any window shorter than sixteen common years has this property. (A
+shifted origin gives the same window six blocks and a floor of 0.031, so
+significance is reachable there; it is not reached.)*
 
 ¶ *The comparator is a capped annual cross-section with inclusion
 probabilities running 0.31 to 1.00, so a review asked for it reweighted to the
@@ -962,14 +1011,14 @@ quantity; it is shown so the difference is visible rather than assumed.*
 and precisely the quantity §5 says the design is built to avoid reporting.*
 
 **Three readings, and the second is the one that matters.** First, the frozen
-*p* is not an artifact of the frozen origin: two of the three origins put P1 at
-0.0156. Second, **the rows that move P1 are exactly the two the design says it
+*p* is not an artifact of the frozen origin: two of the three origins put P1
+below 0.05 (0.0156 and 0.0078). Second, **the rows that move P1 are exactly the two the design says it
 cannot separate** — deleting the institution trend takes β from 0.586 to 1.042
 while pushing *p* to 0.0586, and deleting fiscal 2024 takes β to 0.207 and *p*
 to 0.1797. Both were already named in §5 and §7 as the identification problem;
 the table gives them numbers. Third, the single-year deletions look devastating
 at the frozen origin — dropping 2020 sends P1 to 0.3164 — and are not: at the
-other two origins the same rows return 0.0117 and 0.0195, so what moved was the
+other two origins the same row returns 0.0098 and 0.0195, so what moved was the
 partition, not the evidence. A reader given only the frozen-origin column would
 have drawn the wrong conclusion from this table, which is why the column beside
 it is there.
@@ -1051,10 +1100,10 @@ enumerating all 512 patterns moves the last of those by 0.006.
 
 What the repair exposes is that the answer turns almost entirely on a choice
 nobody preregistered. Under the process the preregistration actually names the
-bound is **0.036**, and the design's own power run put the same quantity at
+bound is **0.0365** (146 of 4,000), and the design's own power run put the same quantity at
 0.039 at θ = 0 in August while an external reviewer's independent implementation
 returned 0.0335 ± 0.0040 — three implementations, one number. Under means fitted
-to the observed series it is **0.086**, and 0.093 when ρ and σ_δ are redrawn
+to the observed series it is **0.086** (342 of 4,000), and 0.0935 when ρ and σ_δ are redrawn
 from intervals rather than held at their point estimates. Both nulls are
 defensible; the design specified neither for this purpose. Across all eighteen
 nulls in S10.4 the bound runs from 0.028 to 0.121.
@@ -1593,35 +1642,9 @@ under written permission from the International Monetary Fund (2026-08-20). The
 IMF is not responsible for any analysis or conclusions drawn from these documents.
 World Bank content is public disclosure under its Access to Information Policy.
 
-**Use of AI assistance.** This work used Anthropic's Claude (Opus 4.x and Opus 5,
-via Claude Code) throughout. The assistant drafted the preregistration and the
-statistical analysis plan, wrote essentially all of the retrieval, extraction,
-inference and diagnostic code, ran the analyses, drafted the manuscript and the
-supplement, and made methodological choices under a standing instruction from
-the author to decide rather than leave a question open. Each such choice is
-recorded individually in `docs/` — the analysis plan, decisions D-1 to D-13, two
-deviation records and a prior-inspection ruling — with the instruction that
-authorised it, and the version history carries `Co-Authored-By` trailers on the
-majority of commits, so the scope is auditable rather than summarised. Several
-results reported here, among them the corpus-selection decomposition and the
-calibration of S10.4, correct errors made earlier in this same work; they are
-reported in the sections where those errors occurred rather than removed.
-
-The human author is the sole author and takes full responsibility for the
-content. [AUTHOR ATTESTATION — to be completed before submission: that the author has
-personally reviewed and adopted the design decisions recorded in `docs/`, the
-confirmatory result and its interpretation, and the limitations in §7; that the
-research question, the hypotheses and the decision to report a null result are
-his; and amending the paragraph above wherever it overstates or understates what
-he verified. Deliberately not filled by the assistant: it is an attestation only
-the author can make.]
-
-No AI system is an author. Outputs were verified by an executable test suite,
-by the guards in `tools/` that refuse to build the submission when a stated
-number disagrees with the filesystem, and by successive independent third-party
-reviews whose findings and our responses are recorded in `docs/`. (The suite's
-size is a number that drifts, so it is stated in the repository README, which is
-regenerated, rather than here.)
+**Use of AI assistance.** Disclosed in §5.1, inside the methods, where
+PLOS asks for it; the attestation that closes that subsection is the
+author's.
 
 ---
 

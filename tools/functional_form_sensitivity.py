@@ -30,7 +30,11 @@ the table so the reader can tell the two apart.
 
 The inner p here is ENUMERATED over all sign patterns, not sampled, exactly as
 in tools/joint_holm_calibration.py, so nothing in this table carries Monte Carlo
-noise. Reproduce with `python tools/functional_form_sensitivity.py`.
+noise. The block-origin sweep keeps time order -- a shifted origin has a short
+block at each end, ten blocks and a support of 1,024 on the full series, rather
+than the nine and 512 a rotation would give by wrapping 1999 next to 2025 (see
+tools/block_origin_enumeration.py for the correction and the rotated values).
+Reproduce with `python tools/functional_form_sensitivity.py`.
 """
 from __future__ import annotations
 
@@ -47,6 +51,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
 from bootstrap_engine import POST_LO, POST_HI, BLOCK_LEN     # noqa: E402
 from joint_holm_calibration import Design, irls_poisson      # noqa: E402
+from block_origin_enumeration import time_ordered_blocks    # noqa: E402
 
 PANELS = ("P1", "P2")
 CELLS = {p: ROOT / "data" / "analysis" / "panels" / f"cells_{p}.csv" for p in PANELS}
@@ -82,20 +87,26 @@ def year_scores(des: Design, y: np.ndarray) -> np.ndarray:
     return np.array([s[des.pair[k]].sum() for k in range(des.T)])
 
 
-def p_at_offset(S_year: np.ndarray, offset: int) -> float:
-    """Rotate before blocking, exactly as tools/block_origin_enumeration.py.
-    Blocks stay non-overlapping and exhaust the years; none is dropped."""
-    S = np.roll(S_year, -offset)
-    nb = int(np.ceil(len(S) / BLOCK_LEN))
-    blocks = np.array([S[b * BLOCK_LEN:(b + 1) * BLOCK_LEN].sum()
-                       for b in range(nb)])
+def p_at_offset(S_year: np.ndarray, offset: int) -> tuple[float, int]:
+    """p and support at an origin offset, TIME ORDER KEPT.
+
+    The first version rotated the year vector before blocking, copying
+    tools/block_origin_enumeration.py as it then was, which put the first year
+    of the series in the same block as the last. An external review caught it
+    there and it was wrong here for the same reason. The shared helper now
+    leaves short blocks at the ends instead, so a shifted origin has one more
+    block than the frozen one and a support of 2^(n_blocks) that differs by
+    offset -- which is why the support is returned with the p.
+    """
+    blocks, _ = time_ordered_blocks(S_year, offset, BLOCK_LEN)
+    nb = len(blocks)
     denom = float(np.sqrt((blocks ** 2).sum()))
     if denom == 0.0:
-        return 1.0
+        return 1.0, 2 ** nb
     t_obs = abs(float(blocks.sum())) / denom
     signs = np.array(list(itertools.product([-1.0, 1.0], repeat=nb)))
     stat = np.abs(signs @ blocks) / denom
-    return float((stat >= t_obs - 1e-12).sum()) / signs.shape[0]
+    return float((stat >= t_obs - 1e-12).sum()) / signs.shape[0], 2 ** nb
 
 
 def fit(des: Design) -> dict:
@@ -111,12 +122,15 @@ def fit(des: Design) -> dict:
     """
     y = des.y0
     S = year_scores(des, y)
-    ps = [p_at_offset(S, o) for o in range(BLOCK_LEN)]
+    pairs = [p_at_offset(S, o) for o in range(BLOCK_LEN)]
+    ps = [p for p, _ in pairs]
     floor = 2.0 / (2 ** des.n_blocks)
     return {
         "beta": round(float(des.beta_post(y)), 6),
         "exact_p": round(float(des.exact_p(y)), 8),
+        "blocking": "time order kept at every origin; nothing wraps",
         "p_by_block_origin": [round(v, 8) for v in ps],
+        "support_by_block_origin": [sup for _, sup in pairs],
         "p_min_over_origins": round(float(min(ps)), 8),
         "p_max_over_origins": round(float(max(ps)), 8),
         # The stable quantity is not the p but how many of the three origins

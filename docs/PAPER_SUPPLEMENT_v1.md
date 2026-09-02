@@ -1,8 +1,9 @@
 # Supplementary material
 
-Companion to *Reconstructing Bankspeak: Eight Decades of World Bank Language, a Corpus-Selection Effect, and an Unconfirmed 2023-2025 Differential Shift*. Everything here was in the main text of an earlier draft
-and was moved rather than cut: the material is evidence, but it is procedural
-evidence, and a reader evaluating the claims does not need it inline.
+Companion to *Reconstructing Bankspeak: Eight Decades of World Bank Language, a Corpus-Selection Effect, and an Unconfirmed 2023-2025 Differential Shift*. S1–S9 were in the main text of an earlier draft and were
+moved rather than cut: the material is evidence, but it is procedural evidence,
+and a reader evaluating the claims does not need it inline. S10 was written
+afterwards, in answer to external review, and is new rather than relocated.
 
 Every figure regenerates from the deposited artifacts. Code archive:
 `10.5281/zenodo.22152944` — the concept DOI, which always resolves to the latest
@@ -470,7 +471,7 @@ S10.4's null, 0.086 → 0.064 under the joint one. The full rule's actual
 error rate is not measured by this study.
 
 **What moves it is the null's mean structure, by a factor of three.** The
-preregistered process gives 0.0365; the same rule, the same shock, the same
+preregistered process gives 0.0365 (146 of 4,000); the same rule, the same shock, the same
 ρ and σ, under means fitted to the observed series, gives 0.086. Both are
 defensible nulls and the design specified neither for this purpose. The
 preregistered power run recorded 0.039 for exactly this quantity in August
@@ -536,7 +537,7 @@ measured:
 - The error rate is sensitive to ρ in the direction expected: 0.063 at ρ = 0,
   0.077 at 0.3, 0.086 at 0.5, 0.121 at 0.7. Redrawing ρ ~ U(0.2, 0.8) and
   σ ~ U(0.20, 0.45) every replicate — the frozen pair is a point estimate that
-  was never given an interval — gives 0.094.
+  was never given an interval — gives 0.0935 (374 of 4,000).
 
 **What this does to P1's *p*.** The useful quantity is not a size but a
 calibrated tail probability: how often a null replicate produces a *p* at least
@@ -571,8 +572,8 @@ will compute, and three rows of that table sit above the narrower one for
 reasons that are *not* mean structure: independent World Bank shocks at 0.119
 and the corrected NB2 dispersion at 0.102 change the dependence and the
 variance function, and redrawing ρ ~ U(0.2, 0.8) and σ ~ U(0.20, 0.45) gives
-0.094 by varying the dependence parameters themselves. An earlier version of
-this sentence put that 0.094 inside the mean-structure bracket, which is where
+0.0935 by varying the dependence parameters themselves. An earlier version of
+this sentence put that figure inside the mean-structure bracket, which is where
 it does not belong. §6.2's block-construction sentence is narrowed accordingly: blocks fail
 to absorb the dependence under the fitted means and absorb it more than
 adequately under the preregistered ones, and this study cannot say which is the
@@ -620,7 +621,10 @@ quarter of the size, which is a precision loss rather than evidence of bias — 
 on P1 it is enough to cross the Holm threshold, so condition 1 would not pass on
 the balanced comparator. Neither panel passed the full rule regardless.
 
-Reproduce with `python tools/imf_cadence_balance.py`.
+Reproduce with `python tools/imf_cadence_balance.py` from the evidence deposit, which carries this section's
+IMF-derived inputs as counts; the public code mirror omits every
+file whose name begins `imf`, pending the author's ruling on whether
+derived aggregates may be redistributed there.
 
 ### S10.6 Is the Tier-2 register measurable across eight decades?
 
@@ -812,7 +816,10 @@ staff reports. It is not one.
 The per-year table, with each year's type breakdown, is the
 `unmapped_country_by_year` block of the tool's output.
 
-Reproduce with `python tools/imf_frame_publication.py`; the type tally is the
+Reproduce with `python tools/imf_frame_publication.py` from the evidence deposit, which carries this section's
+IMF-derived inputs as counts; the public code mirror omits every
+file whose name begins `imf`, pending the author's ruling on whether
+derived aggregates may be redistributed there; the type tally is the
 `unmapped_country_types` block of its output.
 
 ### S10.8 The Tier-2 word list, term by term
