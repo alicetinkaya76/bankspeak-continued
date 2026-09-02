@@ -20,7 +20,9 @@ from __future__ import annotations
 
 import importlib.util
 import itertools
+import ast
 import json
+import os
 import re
 import subprocess
 import sys
@@ -32,6 +34,10 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+
+# Brackets the manuscript is SUPPOSED to carry until the author fills them.
+# Anything else is a defect; this list is the difference between the two.
+INTENTIONAL_MANUSCRIPT_FIELDS = ("AUTHOR ATTESTATION", "VERSION DOI")
 
 JOINT_JSON = ROOT / "data" / "analysis" / "joint_holm_calibration.json"
 TIER2_JSON = ROOT / "data" / "analysis" / "tier2_item_provenance.json"
@@ -159,18 +165,18 @@ def test_the_fast_fit_is_the_frozen_fit():
 def test_the_ladder_spans_the_range_the_paper_claims():
     d = json.loads(JOINT_JSON.read_text(encoding="utf-8"))
     by = {s["name"]: s for s in d["scenarios"]}
-    for need in ("s10_4_asbuilt", "fitted_joint", "prereg_literal",
+    for need in ("s10_4_construction", "fitted_joint", "prereg_literal",
                  "fitted_joint_poisson_only", "fitted_joint_rho0.0"):
         assert need in by, need
     # the finding: the preregistered null is near nominal, the fitted one is not
-    assert by["prereg_literal"]["holm_familywise_error_rate"] < 0.05
-    assert by["fitted_joint"]["holm_familywise_error_rate"] > 0.06
+    assert by["prereg_literal"]["holm_c1_family_rejection_rate"] < 0.05
+    assert by["fitted_joint"]["holm_c1_family_rejection_rate"] > 0.06
     # and the paper's stated range must bracket what the file holds
     # Two brackets, and the paper must state both. The narrow one ranges over
     # mean structures at the preregistered dependence parameters; the wide one
     # over every null in the file. An earlier draft printed only the narrow one,
     # and two rows of its own table sat above it.
-    rates = [s["holm_familywise_error_rate"] for s in d["scenarios"]]
+    rates = [s["holm_c1_family_rejection_rate"] for s in d["scenarios"]]
     paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
     supp = (ROOT / "docs" / "PAPER_SUPPLEMENT_v1.md").read_text(encoding="utf-8")
     both = paper + supp
@@ -181,7 +187,7 @@ def test_the_ladder_spans_the_range_the_paper_claims():
     tol = 0.0005 + 1e-9
     assert abs(min(rates) - 0.028) <= tol, min(rates)
     assert abs(max(rates) - 0.121) <= tol, max(rates)
-    narrow = [by[k]["holm_familywise_error_rate"] for k in
+    narrow = [by[k]["holm_c1_family_rejection_rate"] for k in
               ("prereg_literal", "fitted_joint", "fitted_joint_param_uncertainty")]
     assert abs(min(narrow) - 0.037) <= tol, min(narrow)
     assert abs(max(narrow) - 0.094) <= tol, max(narrow)
@@ -193,7 +199,7 @@ def test_serial_dependence_is_not_reported_as_the_sole_cause():
     """Two fifths of the excess survives at rho = 0; the earlier claim that
     serial dependence was the cause is what this guards against returning."""
     d = json.loads(JOINT_JSON.read_text(encoding="utf-8"))
-    by = {s["name"]: s["holm_familywise_error_rate"] for s in d["scenarios"]}
+    by = {s["name"]: s["holm_c1_family_rejection_rate"] for s in d["scenarios"]}
     none_, iid, ar1 = (by["fitted_joint_poisson_only"],
                        by["fitted_joint_rho0.0"], by["fitted_joint"])
     assert none_ < iid < ar1, (none_, iid, ar1)
@@ -211,8 +217,8 @@ def test_the_refuted_diagnostics_are_still_published_refuted():
     flat, fit = by["observed_rates_flat"], by["fitted_joint"]
     assert (flat["diagnostics"]["P1"]["shock_to_noise"]
             > fit["diagnostics"]["P1"]["shock_to_noise"])
-    assert (flat["holm_familywise_error_rate"]
-            < fit["holm_familywise_error_rate"])
+    assert (flat["holm_c1_family_rejection_rate"]
+            < fit["holm_c1_family_rejection_rate"])
     assert (flat["diagnostics"]["leverage"]["block9_variance_share"]
             > fit["diagnostics"]["leverage"]["block9_variance_share"])
 
@@ -222,8 +228,8 @@ def test_the_refuted_diagnostics_are_still_published_refuted():
 def test_the_conjunctive_rule_is_tighter_than_its_first_conjunct():
     d = json.loads(JOINT_JSON.read_text(encoding="utf-8"))
     for s in d["scenarios"]:
-        if "c1_and_c4_family_rate" in s:
-            assert s["c1_and_c4_family_rate"] <= s["holm_familywise_error_rate"]
+        if "holm_c1_and_c4_family_rate" in s:
+            assert s["holm_c1_and_c4_family_rate"] <= s["holm_c1_family_rejection_rate"]
 
 
 # ------------------------------------------------------ Tier-2 provenance ----
@@ -366,7 +372,12 @@ def test_the_placeholder_guard_reads_the_built_artifact():
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "placeholder_report.py")],
                        capture_output=True, text=True, cwd=ROOT)
     assert "BUILT SUBMISSION ARTIFACT" in r.stdout
-    assert r.returncode in (0, 2), r.stdout
+    # The exit code is now the worst finding across all sections, so a
+    # manuscript bracket (the author attestation) gives 1 even where no build
+    # tree exists, as in the public export.
+    assert r.returncode in (0, 1, 2), r.stdout
+    if r.returncode == 1:
+        assert "AUTHOR ATTESTATION" in r.stdout, r.stdout
 
 
 @needs_package
@@ -489,17 +500,36 @@ def test_an_unlisted_placeholder_keyword_is_caught(tmp_path):
             lambda s: s + "\n\nThe coefficient is [FIXME], the CI is [TK], "
                           "see [PENDING FINAL RUN].\n"})
     r = _run(t, "placeholder_report.py")
-    assert r.returncode == 1, r.stdout
+    # Non-zero, not exactly 1: the exit code is the worst finding across all
+    # sections now, so a manuscript hit alongside a built-artifact one gives 2.
+    assert r.returncode != 0, r.stdout
     assert "[FIXME]" in r.stdout and "[TK]" in r.stdout
 
 
 def test_numeric_intervals_are_never_reported_as_placeholders():
     """The manuscript is full of them; a guard that flags them is one nobody
-    runs twice. Positive control on the real tree."""
+    runs twice. Positive control on the real tree: the only manuscript bracket
+    it may report is the author attestation, which is there on purpose."""
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "placeholder_report.py")],
                        capture_output=True, text=True, cwd=ROOT)
     body = r.stdout.split("MANUSCRIPT")[1] if "MANUSCRIPT" in r.stdout else r.stdout
-    assert "no placeholders" in body, r.stdout
+    body = body.split("BUILT SUBMISSION")[0]
+    hits = [l for l in body.splitlines() if l.strip().startswith("docs/")]
+    for h in hits:
+        assert any(k in h for k in INTENTIONAL_MANUSCRIPT_FIELDS), h
+    assert not re.search(r"\[[\s\-\u2212]*\d[^\]]*\]", "\n".join(hits)), hits
+
+
+def test_the_author_attestation_keeps_the_package_unsubmittable():
+    """The AI-use disclosure carries one bracket only the author can sign, and a
+    guard whose length budget misses it lets that field ship unfilled."""
+    paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
+    assert "AUTHOR ATTESTATION" in paper
+    assert "Use of AI assistance" in paper
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "placeholder_report.py")],
+                       capture_output=True, text=True, cwd=ROOT)
+    assert r.returncode != 0, r.stdout
+    assert "AUTHOR ATTESTATION" in r.stdout
 
 
 def test_a_missing_artifact_does_not_read_as_clean(tmp_path):
@@ -615,3 +645,92 @@ def test_the_deposit_hash_survives_typesetting_in_full():
     m = _re.search(r"sha256\s*([0-9a-f]{40,80})", text)
     assert m, "the provenance hash is not in the built PDF"
     assert len(m.group(1)) == 64, len(m.group(1))
+
+
+# ------------------------------------------- every shipped script must parse --
+def _public_scripts(root: Path):
+    return sorted(p for d in ("tools", "src", "tests")
+                  for p in (root / d).rglob("*.py")
+                  if "__pycache__" not in p.parts)
+
+
+def test_every_script_in_the_repository_compiles():
+    """A markdown editor was run over a Python file and collapsed a multi-line
+    comment into prose, so tools/tier2_item_provenance.py raised SyntaxError on
+    import while the supplement told readers to run it. Nothing compiled the
+    scripts, so 432 tests passed with a broken one in the bundle."""
+    broken = []
+    for f in _public_scripts(ROOT):
+        try:
+            ast.parse(f.read_text(encoding="utf-8"), filename=str(f))
+        except SyntaxError as e:
+            broken.append(f"{f.relative_to(ROOT)}:{e.lineno}: {e.msg}")
+    assert not broken, broken
+
+
+@pytest.mark.skipif(not (ROOT / "third_eye_kit" / "07_code").exists(),
+                    reason="no review kit in this tree")
+def test_every_script_inside_the_review_kit_compiles():
+    """The kit is what an external reviewer actually runs, and it is a copy
+    rather than the original, so it gets its own check."""
+    broken = []
+    for f in sorted((ROOT / "third_eye_kit").rglob("*.py")):
+        try:
+            ast.parse(f.read_text(encoding="utf-8"), filename=str(f))
+        except SyntaxError as e:
+            broken.append(f"{f.name}:{e.lineno}: {e.msg}")
+    assert not broken, broken
+
+
+def test_the_calibration_reports_four_decision_rules_off_one_set_of_draws():
+    """holm2 ran unconditionally while two rows were labelled 'no Holm', and the
+    three opening rungs used three different seeds, so their movement mixed the
+    stated change with Monte Carlo noise."""
+    if not JOINT_JSON.exists():
+        pytest.skip("run tools/joint_holm_calibration.py first")
+    d = json.loads(JOINT_JSON.read_text(encoding="utf-8"))
+    by = {s["name"]: s for s in d["scenarios"]}
+    assert "s10_4_construction" in by, sorted(by)
+    c = by["s10_4_construction"]
+    for k in ("raw_any_panel_below_0.05", "holm_c1_family_rejection_rate",
+              "holm_c1_and_c4_family_rate", "same_data_sampled_inner_p"):
+        assert k in c, (k, sorted(c))
+    # A step-down cannot reject more often than the raw threshold it steps down
+    # from, and the conjunction with C4 cannot reject more often than C1 alone.
+    assert c["holm_c1_family_rejection_rate"] <= c["raw_any_panel_below_0.05"]
+    assert c["holm_c1_and_c4_family_rate"] <= c["holm_c1_family_rejection_rate"]
+    # The three mislabelled scenarios must be gone, not merely renamed.
+    for dead in ("s10_4_asbuilt", "s10_4_exact", "s10_4_exact_holm"):
+        assert dead not in by, dead
+    assert "holm_familywise_error_rate" not in c, \
+        "the rate is a C1 upper bound and must not be named a familywise error"
+
+
+def test_the_reported_rate_is_named_an_upper_bound_everywhere():
+    """C2 and C3 are not simulated, so this is not the governing rule's error
+    rate, and calling it one was the second review's F2."""
+    if not JOINT_JSON.exists():
+        pytest.skip("run tools/joint_holm_calibration.py first")
+    d = json.loads(JOINT_JSON.read_text(encoding="utf-8"))
+    assert d["family_rates_are_upper_bounds"] is True
+    assert "UPPER BOUND" in d["reported_quantity"]
+    for f in ("PAPER_DRAFT_v2.md", "PAPER_SUPPLEMENT_v1.md"):
+        text = (ROOT / "docs" / f).read_text(encoding="utf-8")
+        assert "family error rate of the governing rule" not in text, f
+
+
+def test_holm_is_not_claimed_to_have_independence_as_its_worst_case():
+    """min(p1,p2) <= alpha/2 reaches alpha when the lower tails are disjoint;
+    independence gives alpha - alpha^2/4, which is close but is not the max.
+
+    The phrase may still appear -- both documents withdraw it by name, and a
+    withdrawal has to quote what it withdraws. So the test is that every
+    occurrence sits in a retraction, not that none occurs.
+    """
+    marks = ("that is false", "which is false", "is withdrawn", "is false and",
+             "an earlier version")
+    for f in ("PAPER_DRAFT_v2.md", "PAPER_SUPPLEMENT_v1.md"):
+        low = " ".join((ROOT / "docs" / f).read_text(encoding="utf-8").lower().split())
+        for m in re.finditer(r"holm's worst case|worst case is independence", low):
+            window = low[max(0, m.start() - 200):m.end() + 240]
+            assert any(k in window for k in marks), (f, window[:220])

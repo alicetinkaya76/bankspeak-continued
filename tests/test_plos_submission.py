@@ -125,7 +125,13 @@ _ph_spec.loader.exec_module(_ph)
 
 
 def test_the_manuscript_carries_no_unfilled_placeholder():
-    assert _ph.scan(_ph.MANUSCRIPT) == []
+    """One exception, added deliberately: the AI-use disclosure ends in an
+    attestation only the author can sign, and it is meant to keep the package
+    unsubmittable until he does. Everything else must be clean."""
+    from test_round18_checks import INTENTIONAL_MANUSCRIPT_FIELDS
+    hits = _ph.scan(_ph.MANUSCRIPT)
+    assert all(any(k in h[2] for k in INTENTIONAL_MANUSCRIPT_FIELDS)
+               for h in hits), hits
 
 
 def test_the_scanner_sees_a_placeholder_wrapped_across_a_line_break(tmp_path):
@@ -145,7 +151,10 @@ def test_the_scanner_does_not_flag_a_confidence_interval():
     f = ROOT / "docs" / "PAPER_DRAFT_v2.md"
     text = f.read_text(encoding="utf-8")
     assert "[−0.732, 0.239]" in text or "[" in text
-    assert not [h for h in _ph.scan([f])]
+    from test_round18_checks import INTENTIONAL_MANUSCRIPT_FIELDS
+    hits = [h for h in _ph.scan([f])
+            if not any(k in h[2] for k in INTENTIONAL_MANUSCRIPT_FIELDS)]
+    assert not hits, hits
 
 
 # --- the uncited-entry check must not pass on a substring -----------------------

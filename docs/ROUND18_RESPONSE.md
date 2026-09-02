@@ -139,10 +139,16 @@ not worked around.
 
 The reviewer wanted `term, family, source, source_location, match_rule,
 early_count, late_count, n_documents, leave_one_out_effect`.
-`tools/tier2_item_provenance.py` publishes all of it except the two source
-columns, which read **"not recorded in repository"** for every one of the 35
-terms, because that is what the repository holds: one collective end-of-line
-comment at `config/config.yaml:76`. No term is attributed to Liang, Kobak or
+`tools/tier2_item_provenance.py` publishes what the repository can support, and
+**three** of the nine fields it cannot. `source` and `source_location` read "not
+recorded in repository" for all 35 terms, because the repository holds one
+collective end-of-line comment at `config/config.yaml:76`. So does **`family`**:
+there is no authoritative per-term family mapping, only a derived surface stem
+the tool computes and labels as derived. And there is no true **`n_documents`**:
+the published counts are fiscal-year-unit counts over 76 assembled units, not
+document counts, which would need a per-document Tier-2 tally over 6,143 files
+that no derived file holds. An earlier version of this response said only the
+two source columns were missing. No term is attributed to Liang, Kobak or
 Juzek & Ward — those attributions are Tier-1's and are not transferable, and a
 test now fails if any of those names appears in the artifact.
 
@@ -312,6 +318,83 @@ kit is gitignored; the builder now records a sha256 per staged file and
 `tools/check_kit_freshness.py` compares them.
 
 Suite 432.
+
+## 6c. Round 19 — an independent audit found the central repair itself was wrong
+
+A third party audited round 18's own repairs and returned RETURN BEFORE REVIEW.
+Its central finding is correct and it is the second time the same section has
+had to be rebuilt.
+
+**F1 (confirmed, blocker). The ladder's opening rungs were not a decomposition.**
+`holm2()` ran unconditionally, so rows labelled "no Holm" reported a Holm rate
+anyway; `c4=True` added a field rather than switching the decision rule; and the
+three rungs used three different seeds, so the 0.103 → 0.107 → 0.114 movement
+mixed the stated change with Monte Carlo noise. The rungs are now **one
+scenario** reading four decision rules off **one set of replicates**, on common
+random numbers:
+
+| decision rule, identical data | rate |
+|---|---:|
+| at least one panel below a raw 0.05 | 0.190 |
+| the preregistered Holm step-down (C1) | **0.109** |
+| Holm C1 with C4 | 0.083 |
+| same data, inner *p* sampled not enumerated | 0.103 |
+
+The auditor predicted the raw event would sit near 0.20 if it were really being
+measured. It is 0.190.
+
+**F2 (confirmed). The rate is not the governing rule's error rate.** C2 and C3
+are not simulated, so every figure is the **Holm-adjusted C1 family rejection
+rate — an upper bound** on the full C1–C4 rule's false-positive rate. Renamed in
+the JSON, the supplement, §6.2 and the abstract; a test now fails if the old
+name returns or if either manuscript calls it the governing rule's error rate.
+
+**F3 (confirmed). "Holm's worst case over two hypotheses is independence" is
+false** and is withdrawn. Under the global null the event is min(*p*₁,*p*₂) ≤
+α/2: α − α²/4 under independence, α/2 under perfect positive dependence, and it
+approaches α when the lower tails are disjoint. The shared-shock/independent-shock
+comparison (0.086 against 0.119) is a property of the modelled dependence, not of Holm.
+
+**F4 (confirmed). The calibrated tails were read backwards.** P1's exact *p* is
+0.0156; the calibrated tails are 0.014 and 0.042. The text called both weaker
+than face value and said neither approached 0.025. The first is marginally
+*smaller* than 0.0156, and the second is **above** 0.025 — the opposite
+direction. Both halves were wrong; both are corrected.
+
+**F5 (confirmed, and it was my own repair that broke it).** I ran a
+whitespace-normalising markdown editor over a Python file, which collapsed a
+multi-line comment into prose and left `tools/tier2_item_provenance.py` raising
+`SyntaxError` — while the supplement told readers to run it. 438 tests passed
+with a broken script in the bundle because nothing parsed the scripts. Fixed,
+and two tests now parse every `.py` in the repository and every `.py` in the
+review kit.
+
+**F6–F8 (confirmed).** The Tier-2 gap is three fields, not two: `family` is also
+unrecorded and there is no true `n_documents` — the published counts are
+fiscal-year-unit counts. The retitle left the checklist, the cover letter and
+the public README behind, along with a stale supplement page count, abstract
+word count, archive version and a "replication" label the manuscript
+contradicts. The cover letter was 817 words against PLOS ONE's one page, and
+argued with anticipated objections; it is now 495 and describes the work.
+`tools/check_submission_metadata.py` derives title, page counts, abstract length
+and test count from the manuscript and the artifacts and refuses when any
+document disagrees — it reproduces every one of these findings on its own.
+
+**F10 (confirmed, and the right fix is disclosure, not deletion).** The public
+record carries AI provenance in the SAP, two deviation records, a ruling and 108
+commit trailers. The manuscript now carries a **Use of AI assistance** paragraph
+naming the tool, what it did — drafting the plan, writing the code, running the
+analyses, drafting the manuscript, and deciding under standing instruction — and
+how the outputs were verified. Nothing in the frozen record is altered. It ends
+in an author attestation that only Ali can sign, and `placeholder_report.py`
+now refuses while that bracket is unfilled.
+
+**F9 and F11 remain open and are the author's.** The archived v1.2.0 predates
+this work, so the version DOI the manuscript cites does not contain these
+results; the metadata guard refuses while that is true. Cutting the release and
+minting the new DOI is outward-facing and is Ali's to do.
+
+Suite 438.
 
 ## 7. Package state
 

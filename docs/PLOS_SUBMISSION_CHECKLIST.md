@@ -35,7 +35,7 @@ reason given below.
 | item | limit | measured | state |
 |---|---|---|---|
 | Full title | 250 characters | 125 | ok |
-| Abstract | "not exceed 300 words" | 300 | ok |
+| Abstract | "not exceed 300 words" | 299 | ok |
 | Abstract citations | not permitted | none | ok |
 | Required sections | Abstract → Introduction → Results → Discussion → References | present, in order | ok |
 
@@ -96,17 +96,17 @@ Two things the generator will not do, and says so in its output:
 Current (title case, 125 chars):
 
 > Reconstructing Bankspeak: Eight Decades of World Bank Language, a
-> Corpus-Selection Effect, and an Unconfirmed Post-2022 Break
+> Corpus-Selection Effect, and an Unconfirmed 2023-2025 Differential Shift
 
 Sentence case (125 chars) — the word after the colon stays capitalised, as in
 PLOS's own worked example:
 
 > Reconstructing Bankspeak: Eight decades of World Bank language, a
-> corpus-selection effect, and an unconfirmed post-2022 break
+> corpus-selection effect, and an unconfirmed 2023-2025 differential shift
 
 **Short title** (limit 100 characters), which the paper does not currently have:
 
-> Reconstructing Bankspeak: corpus selection and an unconfirmed post-2022 break
+> Reconstructing Bankspeak: corpus selection and an unconfirmed 2023-2025 shift
 
 77 characters.
 
@@ -142,7 +142,9 @@ The corresponding author needs an ORCID iD; PLOS's checklist names it.
 > reference and discuss the existing literature."
 > — `journals.plos.org/plosone/s/criteria-for-publication`
 
-This paper **is** a replication, so that clause applies directly and is not
+This paper is a **reconstruction**, not a replication — the original corpus
+and rules were never released, so nothing can be replicated in the strict sense.
+The clause still applies to a reconstruction of a published result, and is not
 optional. The rationale is already in both places it needs to be: §1 and §2 of
 the manuscript, and the cover letter's second paragraph — the original corpus,
 feature definitions and assembly rules were never released, so the finding has
@@ -169,7 +171,10 @@ suites** — `pytest tests/ -q` in either archive dies with twelve collection
 errors and runs zero tests, because the export filter stripped two of the
 project's own source modules. Until this release the manuscript, the cover letter
 and the data-availability statement all pointed a referee at a broken archive.
-v1.2.0 reports 346 passed, 11 skipped, each skip naming the input it needs.
+The archived release MUST be recut before submission: v1.2.0 predates the
+round-18 calibration, its guards and its outputs, so the version DOI the
+manuscript cites does not contain the results the manuscript reports.
+`tools/check_submission_metadata.py` refuses while that is true.
 
 The GitHub–Zenodo webhook mints these automatically on release, so this half
 needs nobody. The **evidence deposit is a separate Zenodo record** and does not
@@ -183,7 +188,7 @@ ride that integration — see below.
 python tools/build_submission_pdf.py --both
 ```
 
-Builds `build/submission/PLOS_ONE_submission.pdf` — 34 pages — and, with
+Builds `build/submission/PLOS_ONE_submission.pdf` — 36 pages — and, with
 `--both`, `build/submission/PLOS_ONE_supplement.pdf` at 16 pages. The
 supplement went through seventeen rounds as raw Markdown. PLOS publishes
 supporting information in whatever format it is given, so that would have

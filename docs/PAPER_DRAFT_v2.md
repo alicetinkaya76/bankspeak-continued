@@ -31,7 +31,8 @@ discontinuity against an International Monetary Fund comparator. **No panel sati
 reaches *p* = 0.0142, then fails the concentration guard (dropping one word family
 sends the coefficient to −0.067, interval spanning zero),
 leave-one-post-year-out, both secondary routes, and a pre-period event-study
-bin above the estimate. The comparator also rose; ex ante power is 0.16–0.22, and the rule's family error rate runs 0.028 to 0.121 across the nulls examined.
+bin above the estimate. The comparator also rose, ex ante power is 0.16–0.22, and an upper bound on the
+rule's false-positive rate runs 0.028–0.121 across nulls.
 
 The result bounds what a three-post-year, single-comparator design can
 establish; it is not evidence of absence. A nominally significant
@@ -919,19 +920,36 @@ them in separate loops measures a different object. Repairing that
 (`tools/joint_holm_calibration.py`, supplement S10.4) changes the answer in an
 unexpected direction and reveals a larger problem underneath it.
 
-Drawing the panels jointly *lowers* the family error, from 0.114 to **0.086**,
-because a shared comparator makes the two *p*-values positively dependent and
-Holm's worst case over two hypotheses is independence. What the repair exposes
-is that the answer turns almost entirely on a choice nobody preregistered.
-Under the process the preregistration actually names, the family error is **0.037**, and the design's own power run put the same
-quantity at 0.039 at θ = 0 in August while an external reviewer's independent
-implementation returned 0.0335 ± 0.0040. Three estimates of one number, from
-three implementations, none of them ours alone.
-Under means fitted to the observed series it is **0.086**, and 0.094 when ρ and
-σ_δ are redrawn from intervals rather than held at their point estimates. Both
-nulls are defensible. The design specified neither for this purpose. Across all
-twenty nulls in S10.4, including alternative dependence structures, the rate
-runs from 0.028 to 0.121.
+**What the repaired study reports is an upper bound, not the rule's error
+rate.** C2 and C3 are not simulated — a null process for a standardised
+document-level redraw and for the guard count series would be modelling, not
+calibration — and a conjunction can only reject less often than its first
+condition. So every rate below is the **Holm-adjusted C1 family rejection
+rate**, an upper bound on the false-positive rate of the full C1–C4 rule, which
+this study does not measure. Where C4 can be simulated it lowers the bound:
+0.109 → 0.083.
+
+On one set of replicates under the original construction, the raw "at least one
+panel below 0.05" event fires at 0.190, the preregistered Holm step-down at
+**0.109**, and Holm with C4 at 0.083; sampling the inner *p* rather than
+enumerating all 512 patterns moves the last of those by 0.006.
+
+What the repair exposes is that the answer turns almost entirely on a choice
+nobody preregistered. Under the process the preregistration actually names the
+bound is **0.036**, and the design's own power run put the same quantity at
+0.039 at θ = 0 in August while an external reviewer's independent implementation
+returned 0.0335 ± 0.0040 — three implementations, one number. Under means fitted
+to the observed series it is **0.086**, and 0.093 when ρ and σ_δ are redrawn
+from intervals rather than held at their point estimates. Both nulls are
+defensible; the design specified neither for this purpose. Across all eighteen
+nulls in S10.4 the bound runs from 0.028 to 0.121.
+
+Drawing the panels jointly with the preregistered shared World Bank shock gives
+0.086 against 0.119 for the same comparator draw with independent shocks. That
+is a property of the modelled dependence, not a general fact about Holm: an
+earlier version of this paragraph claimed independence is Holm's worst case over
+two hypotheses, which is false — the supremum of min(*p*₁,*p*₂) ≤ α/2 over
+dependence structures is α, not the α − α²/4 independence gives.
 
 Two mechanisms were tested for that gap and both are refuted by the diagnostics
 in S10.4 — neither the shock-to-noise ratio nor the leverage of the ninth block
@@ -946,9 +964,14 @@ held to.
 
 **What survives is about P1's *p*.** The calibrated tail probability of its
 exact 8/512 = 0.0156 is 0.014 under the preregistered null and 0.042 under the
-fitted one. Under neither does it approach the 0.025 the Holm step demanded of
-it, and under both it is worth less than its face value. We report this because
-it is the more useful finding and because it is against us.
+fitted one. The first is essentially the nominal figure — marginally smaller,
+not larger — so under the process the design was preregistered against the *p*
+is worth about what it says. Under fitted means it is worth much less, and 0.042
+is **above** the 0.025 the Holm step demanded, which is the direction that
+matters: on that calibration P1's condition 1 would not have passed. An earlier
+version of this paragraph said neither figure approached 0.025 and that both
+were weaker than face value; both halves were wrong. These are model-dependent
+calibrated tails, not a replacement *p*-value for a preregistered test.
 
 **The documents seen at Stage A do not carry the result.** 748 Stage-B World Bank
 documents were also in the Stage-A frame, so the design is sequential rather than
@@ -1257,7 +1280,8 @@ apparatus as reusable should establish both first, and should note that the null
 *p*-value distribution is not uniform. **A degrees-of-freedom correction to the dispersion estimator is not the fix**:
 supplement S10.1 applies one and the size does not move. What the joint
 calibration adds is that no single fault is the fix either. Under means fitted
-to the observed series the family error is **0.086** against a nominal 0.05, but
+to the observed series the Holm C1 bound is **0.086** against a nominal 0.05,
+but
 **0.045 with no shock at all and 0.063 with an i.i.d. one** — so most of the
 excess is unmodelled overdispersion in one arm rather than serial dependence,
 and under the preregistered mean structure the same rule sits at **0.037**,
@@ -1388,16 +1412,17 @@ in `docs/figures/`.
 Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
-**Code and design record.** `10.5281/zenodo.22168611` (concept DOI
-`10.5281/zenodo.22152944`, which always resolves to the latest version), archived
-from
-`github.com/alicetinkaya76/bankspeak-continued` at release v1.2.0: the frozen
-inference engine, the validation battery, the full pipeline, the 357 tests that
-release carries — 346 pass in the archive and 11 skip, each naming the licensed
-or deposited input it needs — every preregistration draft and amendment,
-decisions D-1..D-13,
-both deviation records, and the generators that produce every table and figure
-here. Code is MIT-licensed and author-created documentation CC BY 4.0; World
+**Code and design record.** Concept DOI `10.5281/zenodo.22152944`, which always
+resolves to the latest version; **version DOI [VERSION DOI — to be completed
+before submission]**, archived from
+`github.com/alicetinkaya76/bankspeak-continued`: the frozen inference engine,
+the validation battery, the full pipeline, the test suite, every preregistration
+draft and amendment, decisions D-1..D-13, both deviation records, and the
+generators that produce every table and figure here. The earlier archived
+release `10.5281/zenodo.22168611` (v1.2.0, 357 tests) **predates the calibration
+and the guards reported here and must not be cited for them**;
+`tools/check_submission_metadata.py` refuses to pass while the version DOI above
+is unfilled. Code is MIT-licensed and author-created documentation CC BY 4.0; World
 Bank and IMF source reports keep their own rights and are not relicensed by
 either deposit.
 
@@ -1434,6 +1459,38 @@ derived non-substitutive outputs of the kind the permission allows.
 under written permission from the International Monetary Fund (2026-08-20). The
 IMF is not responsible for any analysis or conclusions drawn from these documents.
 World Bank content is public disclosure under its Access to Information Policy.
+
+**Use of AI assistance.** This work used Anthropic's Claude (Opus 4.x and Opus 5,
+via Claude Code) extensively and throughout, and the design record says so on its
+face rather than in retrospect: `docs/SAP_FINAL_DRAFT_20260820.md` records the
+statistical analysis plan as drafted by the assistant, `docs/RULING_20260820_
+prior_inspection.md` and the two deviation records name it as the party that
+decided, and the version history carries `Co-Authored-By` trailers on the
+majority of commits. Specifically, the assistant drafted the preregistration and
+the analysis plan; wrote essentially all of the retrieval, extraction, inference
+and diagnostic code; ran the analyses; drafted the manuscript and this
+supplement; and, under standing instruction to decide rather than defer, made
+methodological calls that are recorded individually in `docs/` with the
+instruction that authorised them. Several results reported here — the
+corpus-selection decomposition, the seed collisions, the calibration ladder of
+S10.4 — were found by the assistant auditing its own earlier work across
+successive review rounds, and the errors it found in that work are reported in
+the sections where they occurred rather than removed.
+
+The human author is the sole author and takes full responsibility for the
+content. [AUTHOR ATTESTATION — to be completed before submission: that the author has
+personally reviewed and adopted the design decisions recorded in `docs/`, the
+confirmatory result and its interpretation, and the limitations in §7; that the
+research question, the hypotheses and the decision to report a null result are
+his; and amending the paragraph above wherever it overstates or understates what
+he verified. Deliberately not filled by the assistant: it is an attestation only
+the author can make.]
+
+No AI system is an author. The tool's outputs were verified by an executable
+test suite of 437 tests, by the guards in `tools/` that refuse to build the
+submission when a stated number disagrees with the filesystem, and by successive
+independent third-party reviews whose findings and our responses are recorded in
+`docs/`.
 
 ---
 

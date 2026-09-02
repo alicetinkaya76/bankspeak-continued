@@ -386,13 +386,13 @@ on the comparator series alone, and no coverage study of it exists.
 
 Reproduce with `python tools/passe_coverage.py 200 299`.
 
-### S10.4 What the governing rule's error rate is, and what it turns on
+### S10.4 An upper bound on the governing rule's error rate, and what it turns on
 
 An earlier version of this section reported that "the governing test rejects
 about twice as often as it claims". It did not measure the governing test, and
-the sentence has been withdrawn. This section reports what was measured, what
-the governing rule's error rate actually is, and — the part that matters most —
-how much that answer depends on a choice nobody preregistered.
+the sentence has been withdrawn. This section reports what was measured, an
+upper bound on the governing rule's error rate, and — the part that matters
+most — how much that bound depends on a choice nobody preregistered.
 
 **What the earlier study did.** `tools/ar1_null_calibration.py` simulated P1 and
 P2 in separate loops, each under its own restricted fit, and counted how often
@@ -417,41 +417,79 @@ signs from a set of 512.
 All three are correct. `tools/joint_holm_calibration.py` repairs all three and
 adds the rungs between, because the result is not one number.
 
-| null | P1 raw .05 | P2 raw .05 | family error | MC SE |
-|---|---:|---:|---:|---:|
-| **S10.4 as built** — separate loops, sampled inner *p*, no Holm | 0.113 | 0.095 | 0.103 | 0.005 |
-| + inner *p* enumerated over all 512 | 0.113 | 0.088 | 0.107 | 0.005 |
-| + the preregistered Holm step-down | 0.115 | 0.100 | 0.114 | 0.005 |
-| **+ drawn jointly**: one comparator draw, one shared shock | 0.118 | 0.093 | **0.086** | 0.004 |
-| the same, with independent World Bank shocks | 0.116 | 0.100 | 0.119 | 0.005 |
-| the same, with the corrected NB2 dispersion | 0.110 | 0.104 | 0.102 | 0.005 |
-| **no serial shock at all**, same fitted means | 0.051 | 0.055 | 0.045 | 0.003 |
-| fitted means, differential trend removed | 0.068 | 0.058 | 0.049 | 0.003 |
-| fitted means, year profile flattened | 0.089 | 0.077 | 0.074 | 0.004 |
-| both removed | 0.045 | 0.032 | 0.028 | 0.003 |
-| **flat means**: each series at its own pooled rate | 0.041 | 0.037 | 0.031 | 0.003 |
-| PREREG §8's parity rate on observed tokens | 0.046 | 0.046 | 0.036 | 0.003 |
-| **PREREG §8 literally**, as `src/mde_sim.py` runs it | 0.046 | 0.049 | **0.037** | 0.003 |
+**The decision rule, on one set of replicates.** S10.4's own null — each panel
+under its own restricted fit, the two panels drawn independently — evaluated
+four ways on *the same* 4,000 synthetic datasets. Common random numbers, so any
+gap between rows is the rule and not the draw.
 
-4,000 replicates each, exact 512-point inner *p*, Holm applied every replicate.
-Family error is the probability that the rule confirms at least one panel.
+| decision rule, on identical data | rate |
+|---|---:|
+| at least one panel below a raw 0.05 | 0.190 |
+| **the preregistered Holm step-down (C1)** | **0.109** |
+| Holm C1 together with C4 | 0.083 |
+| the same datasets, inner *p* sampled at B = 999 rather than enumerated | 0.103 |
 
-**None of the three defects is what moves the number.** Enumerating the inner
-*p* changes nothing at all — 0.113 either way — so that criticism is correct and
-empirically inert here. Applying Holm to *jointly* drawn panels *lowers* the
-family error, from 0.114 to 0.086, because a shared comparator arm makes the two
-*p*-values positively dependent and for two hypotheses Holm's worst case is
-independence, not dependence. Correcting the construction made the governing
-rule look better, not worse.
+The step-down rejects less often than the raw threshold, as a step-down must,
+and adding C4 removes about a fifth of what remains. Sampling the inner *p*
+instead of enumerating it moves the family rate by 0.006
+and the per-panel rate by 0.001 — the criticism is correct
+and, on this design, empirically inert.
+
+*An earlier version of this table split these four numbers across three
+scenarios with three different seeds, labelled two of them "no Holm", and
+computed a Holm rate in all three. The movement between those rows isolated
+nothing. External review found it; the rows above replace them.*
+
+**The same rule under other nulls.** Everything below is the Holm C1 rate.
+
+| null | P1 raw .05 | P2 raw .05 | any panel raw .05 | Holm C1 | MC SE |
+|---|---:|---:|---:|---:|---:|
+| **drawn jointly**: one comparator draw, one shared shock | 0.118 | 0.092 | 0.150 | **0.086** | 0.004 |
+| the same, with independent World Bank shocks | 0.116 | 0.100 | 0.204 | 0.119 | 0.005 |
+| the same, with the corrected NB2 dispersion | 0.110 | 0.104 | 0.172 | 0.102 | 0.005 |
+| **no serial shock at all**, same fitted means | 0.051 | 0.055 | 0.101 | 0.045 | 0.003 |
+| fitted means, differential trend removed | 0.068 | 0.058 | 0.092 | 0.049 | 0.003 |
+| fitted means, year profile flattened | 0.089 | 0.076 | 0.122 | 0.074 | 0.004 |
+| both removed | 0.045 | 0.032 | 0.060 | 0.028 | 0.003 |
+| **flat rates**: each series at its own pooled rate | 0.041 | 0.037 | 0.060 | 0.030 | 0.003 |
+| PREREG §8's parity rate on observed tokens | 0.046 | 0.046 | 0.073 | 0.036 | 0.003 |
+| **PREREG §8 literally**, as `src/mde_sim.py` runs it | 0.046 | 0.049 | 0.075 | **0.036** | 0.003 |
+
+4,000 replicates each, exact 512-point inner *p*, the preregistered Holm
+step-down applied every replicate.
+
+**What this rate is, and is not.** It is the probability that the Holm step-down
+rejects at least one panel. It is **not** the governing rule's error rate. The
+governing rule is C1 *and* C2 *and* C3 *and* C4; C2 needs a standardised
+document-level redraw and C3 the guard count series, and inventing null
+processes for those would be modelling rather than calibration. A conjunction
+can only reject less often than its first condition, so every rate here is an
+**upper bound** on the full rule's false-positive rate. Where C4 is simulated it
+is reported, and it lowers the bound: 0.109 → 0.083 under
+S10.4's null, 0.086 → 0.064 under the joint one. The full rule's actual
+error rate is not measured by this study.
 
 **What moves it is the null's mean structure, by a factor of three.** The
-preregistered process gives a family error of 0.037; the same rule, the same
-shock, the same ρ and σ, under means fitted to the observed series, gives 0.086.
-Both are defensible nulls and the design specified neither for this purpose. The
+preregistered process gives 0.036; the same rule, the same shock, the same
+ρ and σ, under means fitted to the observed series, gives 0.086. Both are
+defensible nulls and the design specified neither for this purpose. The
 preregistered power run recorded 0.039 for exactly this quantity in August
 (`docs/MDE_P1P2_20260820.md`, θ = 0); an external reviewer's independent
-implementation returned 0.0335 ± 0.0040; this one returns 0.0365 ± 0.0030. Three
-implementations, one number. The disagreement is not about arithmetic.
+implementation returned 0.0335 ± 0.0040; this one returns
+0.036 ± 0.003. Three implementations, one number. The
+disagreement is not about arithmetic.
+
+**On the dependence comparison, narrowly.** Drawing the panels jointly with one
+shared World Bank shock gives 0.086; the same shared comparator draw with
+*independent* World Bank shocks gives 0.119. An earlier version explained that
+by asserting that independence is Holm's worst case for two hypotheses. That is
+false and is withdrawn: under the global null "at least one Holm rejection" is
+min(*p*₁, *p*₂) ≤ α/2, which is α − α²/4 under independence, α/2 under perfect
+positive dependence, and approaches α when the two lower-tail events are
+disjoint. Independence is near the top of that range, not its maximum. The
+comparison above is a property of the modelled dependence — specifically of
+handing both World Bank arms the same shock, which is what PREREG §8 specifies —
+and not a general fact about Holm.
 
 **Two explanations were tried and both are refuted by the tool's own
 diagnostics**, which is why neither appears above as a mechanism.
@@ -499,11 +537,14 @@ measured:
 
 **What this does to P1's *p*.** The useful quantity is not a size but a
 calibrated tail probability: how often a null replicate produces a *p* at least
-as extreme as the one observed. P1's exact *p* is 8/512 = 0.0156. Under the
-preregistered null that tail is 0.014; under the fitted-means joint null it is
-0.042. The nominal figure sits between them, closer to the preregistered end.
-Read either way it is a weaker number than 0.0156 suggests, and under neither
-does it approach the 0.025 the Holm step demanded of it.
+as extreme as the one observed. P1's exact *p* is 8/512 = 0.0156. Under the preregistered null that tail is
+0.014 — essentially unchanged, and marginally *smaller* than the nominal figure
+rather than larger. Under the fitted-means joint null it is 0.042, which is
+**above** the 0.025 the Holm step demanded: on that calibration condition 1
+would not have passed on P1 either. An earlier version of this paragraph called
+both figures weaker than 0.0156 and said neither approached 0.025. Neither claim
+survives the numbers. Both are model-dependent calibrated tails and neither
+replaces the preregistered test's *p*.
 
 **C2 and C3 are not simulated, and every family rate above is therefore an upper
 bound.** C2 needs a standardized document-level redraw and C3 needs the guard
@@ -516,7 +557,8 @@ conjunct, which is what a conjunctive rule is for.
 **What follows for the manuscript.** The claim that the governing test rejects
 twice as often as it claims is withdrawn: it rested on a per-panel raw threshold
 under one fitted null. The claim that survives is weaker and better supported —
-across the twenty nulls examined the preregistered rule's family error rate runs
+across the eighteen nulls examined the Holm C1 rejection rate — an upper bound
+on the preregistered rule's error rate — runs
 from 0.028 to 0.121, it is above nominal under every null fitted to the observed
 series, and P1's *p* is worth less than its face value under all of them.
 Holding the preregistered dependence parameters and varying only the mean

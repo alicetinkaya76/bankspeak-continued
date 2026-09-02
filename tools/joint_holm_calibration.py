@@ -23,17 +23,22 @@ three separate things stand between them.
      p-value is a count, not a draw. S10.4 sampled B = 999 signs out of 512
      possible ones, which adds resolution noise to a quantity that has none.
 
-External review made all three points and ran its own joint diagnostic. This
-answers with the full ladder, because the honest result is not one number: the
-family error rate depends on the null's mean structure far more than on
-anything the Holm step does, and the ladder is what shows that.
+External review made all three points and ran its own joint diagnostic. A second
+review then found that the first repair of this file did not do what it said:
+holm2 ran unconditionally, so rows labelled "no Holm" reported a Holm rate
+anyway; the C4 switch added a field rather than changing the decision rule; and
+the opening rungs used three different seeds, so their movement mixed the stated
+change with Monte Carlo noise. The rungs are now ONE scenario reading four
+decision rules off one set of replicates, on common random numbers.
 
-  s10_4_asbuilt        per-panel fitted null, panels independent, MC inner p
-  s10_4_exact          the same, inner p enumerated instead of sampled
-  s10_4_exact_holm     the same, with Holm applied -- FWER under independence
+  s10_4_construction   S10.4's own null -- per-panel fitted means, panels
+                       independent -- reporting: at least one panel below a raw
+                       0.05; the preregistered Holm step-down; Holm with C4;
+                       and the sampled inner p on the very same datasets
   fitted_joint         one shared year profile, ONE IMF draw feeding both
-                       panels, one shared WB shock -- the real dependence
-  fitted_joint_indep   the same means, but independent WB shocks
+                       panels, one shared WB shock
+  fitted_joint_indep   the same means and the same shared IMF draw, but
+                       independent WB shocks
   fitted_joint_no_*    the same means with the year profile and/or the WB
                        differential trend switched off, one at a time
   observed_rates_flat  no year effects; each series at its own pooled rate
@@ -42,15 +47,33 @@ anything the Holm step does, and the ladder is what shows that.
                        delta starting at zero -- reproduces the 0.039 that
                        docs/MDE_P1P2_20260820.md has recorded since August
 
-The ladder's two ends differ by a factor of three and both are defensible
-nulls. That is the finding, and none of the three defects above is what makes
-the difference: enumerating the inner p moves nothing, and applying Holm to
-jointly drawn panels LOWERS the family error, because a shared comparator arm
-makes the two p-values positively dependent and for two hypotheses Holm's worst
-case is independence.
+WHAT THE REPORTED RATE IS. Holm-adjusted C1 family rejection: the probability
+that the step-down rejects at least one panel. It is NOT the governing rule's
+error rate. The governing rule is C1 AND C2 AND C3 AND C4, C2 and C3 are not
+simulated here, and a conjunction can only reject less often -- so every rate in
+this file is an UPPER BOUND on the full rule's false-positive rate and is named
+that way in the output.
 
-What moves it is the null's mean structure, and the component scenarios say
-which part: switching off the World Bank differential trend costs more than
+The ladder's two ends differ by a factor of three and both are defensible nulls.
+That is the finding, and none of the three defects above is what makes the
+difference: on common random numbers the sampled inner p and the enumerated one
+give the same answer, and the Holm step-down rejects less often than a raw
+threshold on both panels, as a step-down must.
+
+A NOTE ON DEPENDENCE, because the first version overreached. Drawing the panels
+jointly with a shared World Bank shock gives a LOWER Holm C1 rate (0.086) than
+drawing them with independent shocks (0.119) off the same shared comparator. The
+first version explained that by saying independence is Holm's worst case for two
+hypotheses. That is not true. Under the global null "at least one Holm rejection"
+is min(p1,p2) <= alpha/2; independence gives alpha - alpha^2/4, perfect positive
+dependence gives alpha/2, and the supremum over dependence structures is alpha,
+attained when the two lower-tail events are disjoint. Independence is near the
+top of that range but is not its maximum. What the comparison shows is a
+property of the modelled dependence -- specifically of handing both World Bank
+arms one shock -- and not a general fact about Holm.
+
+What moves the ladder is the null's mean structure, and the component scenarios
+say which part: switching off the World Bank differential trend costs more than
 switching off the year profile, switching off both lands on the flat null, and
 the flat null is CONSERVATIVE under the same shock that makes the fitted null
 anti-conservative.
@@ -60,16 +83,17 @@ own diagnostics. They are left in the output so nobody has to take the refutal
 on trust.
 
   shock-to-noise. observed_rates_flat carries a HIGHER ratio of shock sd to
-  sampling noise than fitted_joint, and less than half its family error. The
+  sampling noise than fitted_joint, and less than half its family rate. The
   ratio cannot be the cause.
 
-  block-nine leverage. The share of the statistic's variance sitting in the
-  last block runs 0.33-0.37 in the inflated scenarios and 0.44-0.48 in the
-  well-behaved ones -- the wrong way round. It runs the wrong way for a
-  reason: when one block dominates the studentised denominator, |eta.S| is
-  close to |sum S| for every sign pattern, so nearly all 512 patterns count as
-  hits and the test goes conservative. High leverage buys conservatism here,
-  not size.
+  block-nine leverage. The share of the statistic's variance sitting in the last
+  block runs lower in the inflated scenarios than in the well-behaved ones --
+  the wrong way round. It runs that way for a reason: when one block dominates
+  the studentised denominator, |eta.S| is close to |sum S| for every sign
+  pattern, so nearly all 512 patterns count as hits and the test goes
+  conservative. High leverage buys conservatism here, not size. One well-behaved
+  scenario carries the lowest leverage in the study, so this is a tendency and
+  not a law.
 
 What IS established, and is all that should be claimed:
 
@@ -105,6 +129,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+from percell_seed import stream_seed              # noqa: E402
 from bootstrap_engine import (build_design, _fit, _pair_index,      # noqa: E402
                               POST_LO, POST_HI, BLOCK_LEN, SEED)
 
@@ -473,10 +498,21 @@ def run_scenario(spec, designs, cells, reps, obs_p, progress=True):
     do_c4 = spec.get("c4", False)
     rng = np.random.default_rng(spec["seed"])
 
+    # Four separate events, recorded every replicate off the SAME synthetic
+    # data. The first version ran holm2 unconditionally and reported its rate in
+    # every row while labelling the first two rows "no Holm", so the ladder's
+    # opening rungs answered a question they did not ask; and it gave the three
+    # rungs three different seeds, so what movement there was mixed the stated
+    # change with Monte Carlo noise. External review found both.
+    also_mc = spec.get("also_mc", False)
     p1s, p2s = np.empty(reps), np.empty(reps)
-    fam_holm = np.zeros(reps, dtype=bool)
+    raw_any = np.zeros(reps, dtype=bool)     # at least one panel below raw .05
+    fam_holm = np.zeros(reps, dtype=bool)    # the preregistered Holm step-down
     both = np.zeros(reps, dtype=bool)
     fam_c1c4 = np.zeros(reps, dtype=bool) if do_c4 else None
+    p1m, p2m = (np.empty(reps), np.empty(reps)) if also_mc else (None, None)
+    raw_any_mc = np.zeros(reps, dtype=bool) if also_mc else None
+    holm_mc = np.zeros(reps, dtype=bool) if also_mc else None
 
     for r in range(reps):
         if spec.get("param_uncertainty"):
@@ -492,10 +528,14 @@ def run_scenario(spec, designs, cells, reps, obs_p, progress=True):
                      else ar1(rng, T, rho, sigma, start) if shock == "independent"
                      else None)
                 y_wb = draw_counts(rng, means[p], d, nb2, ALPHA_NB2[p])
-                ps[p] = designs[p].exact_p(assemble(designs[p], y_wb, y_imf))
-                if do_c4:
-                    ys = assemble(designs[p], y_wb, y_imf)
-                    ps[p + "_y"] = ys
+                ys = assemble(designs[p], y_wb, y_imf)
+                ps[p] = designs[p].exact_p(ys)
+                if also_mc:
+                    mrng = np.random.default_rng(
+                        stream_seed("inner_mc", spec["name"], p, r))
+                    ps[p + "_mc"] = mc_p(designs[p], ys, mrng,
+                                         spec.get("B", 999))
+                ps[p + "_y"] = ys
         else:
             for p in PANELS:
                 d = (ar1(rng, T, rho, sigma, start) if shock != "none" else None)
@@ -511,14 +551,25 @@ def run_scenario(spec, designs, cells, reps, obs_p, progress=True):
                     a = ALPHA_NB2[p]
                     lam = rng.gamma(shape=1.0 / a, scale=a * lam)
                 ys = rng.poisson(lam).astype(float)
-                ps[p] = (designs[p].exact_p(ys) if spec.get("exact", True)
-                         else mc_p(designs[p], ys, rng, spec.get("B", 999)))
-                if do_c4:
-                    ps[p + "_y"] = ys
+                ps[p] = designs[p].exact_p(ys)
+                if also_mc:
+                    # Same dataset, sampled inner p. A dedicated stream so the
+                    # sampling cannot perturb the data-generating one: the two
+                    # p-values must differ only in how the p was computed.
+                    mrng = np.random.default_rng(
+                        stream_seed("inner_mc", spec["name"], p, r))
+                    ps[p + "_mc"] = mc_p(designs[p], ys, mrng,
+                                         spec.get("B", 999))
+                ps[p + "_y"] = ys
         p1s[r], p2s[r] = ps["P1"], ps["P2"]
+        raw_any[r] = (ps["P1"] < 0.05) or (ps["P2"] < 0.05)
         r1, r2 = holm2(ps["P1"], ps["P2"])
         fam_holm[r] = r1 or r2
         both[r] = r1 and r2
+        if also_mc:
+            p1m[r], p2m[r] = ps["P1_mc"], ps["P2_mc"]
+            raw_any_mc[r] = (ps["P1_mc"] < 0.05) or (ps["P2_mc"] < 0.05)
+            holm_mc[r] = any(holm2(ps["P1_mc"], ps["P2_mc"]))
         if do_c4:
             ok = False
             for p, rej in (("P1", r1), ("P2", r2)):
@@ -547,8 +598,15 @@ def run_scenario(spec, designs, cells, reps, obs_p, progress=True):
         "p2_raw_size_at_0.05": rate(p2s < 0.05),
         "p1_raw_size_at_0.025": rate(p1s < 0.025),
         "p2_raw_size_at_0.025": rate(p2s < 0.025),
-        "holm_familywise_error_rate": rate(fam_holm),
-        "holm_fwer_mc_se": se(fam_holm),
+        # NOT "the family error rate of the governing rule". The governing rule
+        # is C1 and C2 and C3 and C4; C2 needs a standardized document-level
+        # redraw and C3 the guard count series, and inventing null processes for
+        # those would be modelling rather than calibration. Every rate here is
+        # therefore an UPPER BOUND on the full rule's false-positive rate, and
+        # is named for what it is.
+        "raw_any_panel_below_0.05": rate(raw_any),
+        "holm_c1_family_rejection_rate": rate(fam_holm),
+        "holm_c1_mc_se": se(fam_holm),
         "holm_both_panels_rejected": rate(both),
         "tail_p1_at_or_below_observed": rate(p1s <= obs_p["P1"] + 1e-12),
         "tail_p2_at_or_below_observed": rate(p2s <= obs_p["P2"] + 1e-12),
@@ -556,9 +614,20 @@ def run_scenario(spec, designs, cells, reps, obs_p, progress=True):
             np.minimum(p1s, p2s) <= obs_p["P1"] + 1e-12),
         "median_p1": float(np.median(p1s)), "median_p2": float(np.median(p2s)),
     }
+    if also_mc:
+        # Common random numbers: identical datasets, identical decision rule,
+        # only the inner p differs. Any gap here IS the sampling, with no seed
+        # confound left in it.
+        out["same_data_sampled_inner_p"] = {
+            "raw_any_panel_below_0.05": rate(raw_any_mc),
+            "holm_c1_family_rejection_rate": rate(holm_mc),
+            "B": spec.get("B", 999),
+            "p1_raw_size_at_0.05": rate(p1m < 0.05),
+            "p2_raw_size_at_0.05": rate(p2m < 0.05),
+        }
     if do_c4:
-        out["c1_and_c4_family_rate"] = rate(fam_c1c4)
-        out["c1_and_c4_mc_se"] = se(fam_c1c4)
+        out["holm_c1_and_c4_family_rate"] = rate(fam_c1c4)
+        out["holm_c1_and_c4_mc_se"] = se(fam_c1c4)
     if not spec.get("param_uncertainty"):
         out["diagnostics"] = shock_to_noise(means, sigma, rho)
         out["diagnostics"]["leverage"] = block_leverage(
@@ -650,24 +719,18 @@ def build_scenarios(cells, designs, reps_c4):
     tmpl = template_means(PREREG_RATE)
 
     S = []
-    S.append(dict(name="s10_4_asbuilt", desc=(
-        "S10.4 as it was built: each panel under its OWN restricted fit, the "
-        "two panels drawn in separate loops, inner p sampled at B=999. No Holm. "
-        "Reproduced here only so the ladder starts where the supplement did."),
+    S.append(dict(name="s10_4_construction", desc=(
+        "S10.4's own null -- each panel under its OWN restricted fit, the two "
+        "panels drawn independently -- with four decision rules read off ONE "
+        "set of replicates: at least one panel below a raw 0.05; the "
+        "preregistered Holm step-down; Holm with C4; and, from the same "
+        "datasets, the sampled inner p instead of the enumerated one. The first "
+        "version of this file split these across three scenarios with three "
+        "different seeds while labelling two of them 'no Holm' and computing a "
+        "Holm rate in all three, so the movement between them isolated "
+        "nothing."),
         means=pp, joint=False, shock="shared", start="stationary",
-        exact=False, B=999, seed=SEED + 8101, c4=False))
-    S.append(dict(name="s10_4_exact", desc=(
-        "The same null and the same independence, with the inner p ENUMERATED "
-        "over all 512 sign patterns instead of sampled. Isolates how much of "
-        "S10.4's number was bootstrap resolution."),
-        means=pp, joint=False, shock="shared", start="stationary",
-        seed=SEED + 8102, c4=False))
-    S.append(dict(name="s10_4_exact_holm", desc=(
-        "Same again; the family verdict is now the preregistered Holm step-down "
-        "rather than a raw 0.05 threshold. Panels still independent, which for "
-        "two hypotheses is the WORST case for Holm's family error."),
-        means=pp, joint=False, shock="shared", start="stationary",
-        seed=SEED + 8103, c4=True))
+        also_mc=True, B=999, seed=SEED + 8101, c4=True))
     S.append(dict(name="fitted_joint", desc=(
         "The real dependence: one shared year profile, ONE Fund draw handed to "
         "both panels exactly as the data hand it to both, one shared World Bank "
@@ -784,6 +847,9 @@ def main(reps: int = 2000, reps_c4: int = 1000, only: str | None = None) -> int:
            "observed_holm": {"P1": bool(r1), "P2": bool(r2)},
            "rho_frozen": RHO, "sigma_delta_frozen": SIGMA_DELTA,
            "nb2_alpha_corrected": ALPHA_NB2,
+           "reported_quantity": ("Holm-adjusted C1 family rejection rate -- an "
+                                "UPPER BOUND on the full C1-C4 rule's "
+                                "false-positive rate, not that rate"),
            "conditions_simulated": ["C1 (PASS-P + Holm)", "C4 (LOPO) where marked"],
            "conditions_not_simulated": ["C2 (stability: NB2 + standardized "
                                         "variant)", "C3 (concentration guard)"],
@@ -797,28 +863,32 @@ def main(reps: int = 2000, reps_c4: int = 1000, only: str | None = None) -> int:
         res["scenarios"].append(r)
         print(f"    raw@.05  P1 {r['p1_raw_size_at_0.05']:.4f}  "
               f"P2 {r['p2_raw_size_at_0.05']:.4f}   "
-              f"HOLM FWER {r['holm_familywise_error_rate']:.4f} "
-              f"(SE {r['holm_fwer_mc_se']:.4f})"
-              + (f"   C1&C4 {r['c1_and_c4_family_rate']:.4f}"
-                 if 'c1_and_c4_family_rate' in r else ""), flush=True)
+              f"rawAny {r['raw_any_panel_below_0.05']:.4f}   "
+              f"HolmC1 {r['holm_c1_family_rejection_rate']:.4f} "
+              f"(SE {r['holm_c1_mc_se']:.4f})"
+              + (f"   C1&C4 {r['holm_c1_and_c4_family_rate']:.4f}"
+                 if 'holm_c1_and_c4_family_rate' in r else ""), flush=True)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1), encoding="utf-8")
     print(f"\n[joint] wrote {OUT.relative_to(ROOT)}")
 
-    print(f"\n{'scenario':34s} {'P1@.05':>7s} {'P2@.05':>7s} {'FWER':>7s} "
-          f"{'SE':>6s} {'S/N':>6s} {'blk9':>6s}")
-    print("-" * 81)
+    print(f"\n{'scenario':34s} {'P1@.05':>7s} {'P2@.05':>7s} {'rawAny':>7s} "
+          f"{'HolmC1':>7s} {'SE':>6s} {'blk9':>6s}")
+    print("-" * 82)
     for r in res["scenarios"]:
         d = r.get("diagnostics")
         sn = f"{d['P1']['shock_to_noise']:6.2f}" if d else "     -"
         b9 = f"{d['leverage']['block9_variance_share']:6.3f}" if d else "     -"
         print(f"{r['name']:34s} {r['p1_raw_size_at_0.05']:7.4f} "
               f"{r['p2_raw_size_at_0.05']:7.4f} "
-              f"{r['holm_familywise_error_rate']:7.4f} "
-              f"{r['holm_fwer_mc_se']:6.4f} {sn} {b9}")
-    print(f"\n(blk9 = share of the statistic's variance in block nine, the "
-          f"post window; equal share would be {1/9:.3f})")
+              f"{r['raw_any_panel_below_0.05']:7.4f} "
+              f"{r['holm_c1_family_rejection_rate']:7.4f} "
+              f"{r['holm_c1_mc_se']:6.4f} {b9}")
+    print(f"\n(rawAny = at least one panel below a raw .05; HolmC1 = the "
+          f"preregistered step-down, an UPPER BOUND on the full C1-C4 rule; "
+          f"blk9 = the last block's share of the statistic's variance, equal "
+          f"share {1/9:.3f})")
     return 0
 
 

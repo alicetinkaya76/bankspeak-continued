@@ -68,7 +68,10 @@ BUILT_PDF = ROOT / "build" / "submission" / "PLOS_ONE_submission.pdf"
 # capitals and forbids a digit-leading bracket outright.
 KEYWORDS = (r"TBD|TO BE|to be |DOI …|DOI \.\.\.|XXX|AFFILIATION|ORCID|Name,|"
             r"Funding|insert|INSERT|to be completed|to be inserted")
-PAT = re.compile(r"\[[^\]]{0,200}?(?:" + KEYWORDS + r")[^\]]{0,200}?\]", re.S)
+# 600, not 200: the AI-use attestation the author must sign is a long
+# bracket, and a length budget that misses it is a budget that lets the
+# one field nobody else can fill ship unfilled.
+PAT = re.compile(r"\[[^\]]{0,600}?(?:" + KEYWORDS + r")[^\]]{0,600}?\]", re.S)
 SHAPE = re.compile(r"\[(?![\s\-−+.]*\d)"          # not an interval or a number
                    r"[^\]\n]{0,80}?"
                    r"\b(?:FIXME|TK|TODO|PENDING|PLACEHOLDER|DRAFT|CHECK|"
@@ -143,31 +146,39 @@ def main() -> int:
     else:
         print("FORM FIELDS: none outstanding")
 
+    # Every section reports, always. An earlier version returned as soon as it
+    # found a manuscript placeholder, so the built artifact -- the file that
+    # actually gets uploaded -- went unreported whenever the manuscript had one.
+    # A guard that stops at the first finding hides the rest of the package.
+    worst = 0
+
     print()
     if in_paper:
         print("MANUSCRIPT placeholders — these must not ship:")
         for f, i, t in in_paper:
             print(f"   {f}:{i}  {t}")
-        return 1
-    print("MANUSCRIPT: no placeholders")
+        worst = max(worst, 1)
+    else:
+        print("MANUSCRIPT: no placeholders")
 
     print()
     if not built_exists:
         print("BUILT SUBMISSION ARTIFACT: NOT CHECKED — no build/submission "
               "artifact in this tree (expected in the public export; run "
               "tools/build_submission_pdf.py --both here)")
-        return 0
-    if in_built:
+    elif in_built:
         print("BUILT SUBMISSION ARTIFACT — visible on the file that gets "
               "uploaded (page numbers for the PDF, line numbers otherwise):")
         for f, i, t in in_built:
             print(f"   {f}:{i}  {t}")
+        worst = max(worst, 2)
+    else:
+        print("BUILT SUBMISSION ARTIFACT: clean")
+
+    if worst:
         print("\n[placeholders] the package is correct as built and NOT "
               "submittable: fill these, rebuild, rerun.")
-        return 2
-    print("BUILT SUBMISSION ARTIFACT: clean")
-    return 0
-
+    return worst
 
 if __name__ == "__main__":
     sys.exit(main())

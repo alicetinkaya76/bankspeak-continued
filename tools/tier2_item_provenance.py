@@ -251,10 +251,11 @@ def main() -> int:
             row[f"n_fy_units_with_hit_late_{tag}"] = sum(
                 1 for y in yrs_late if per_year[y][rule][t])
             # NOT n_documents. One assembled fiscal-year unit concatenates
-            # several volumes -- 134 documents sit behind these 76 units (the # assembly log
-has 135 include rows, one of which carries no # text) -- so this is a unit count
-and is named as one. A true per-term document count needs
-            # a per-document Tier-2 tally, which no derived file holds.
+            # several volumes -- 134 documents sit behind these 76 units (the
+            # assembly log has 135 include rows, one of which carries no text)
+            # -- so this is a unit count and is named as one. A true per-term
+            # document count needs a per-document Tier-2 tally, which no
+            # derived file holds.
             row[f"n_fy_units_with_hit_{tag}"] = sum(
                 1 for y in per_year if per_year[y][rule][t])
             row[f"leave_one_out_ratio_{tag}"] = loo["ratio"]
