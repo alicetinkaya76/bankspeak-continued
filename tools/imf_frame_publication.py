@@ -595,6 +595,81 @@ def main() -> int:
         "therefore anachronistic for the early years.",
     ]
 
+    # What the unmapped rows actually are.
+    #
+    # The open question above asks whether the alias table should be worked down
+    # before 2,788 is quoted as an eligible universe, and the manuscript answered
+    # it by calling those rows "documents the pipeline could not place". That was
+    # more agnostic than the evidence requires and it made our own frame look
+    # weaker than it is: the listing carries a document-type field, and joining
+    # it back settles all but a couple of rows. Reported here so the sentence in
+    # the supplement is regenerated rather than asserted.
+    LISTING = ROOT / "data" / "meta" / "imf_articleiv_listing.csv"
+    if LISTING.exists():
+        listing = pd.read_csv(LISTING, low_memory=False)
+        if {"url", "src_imftype", "src_imfseries"} <= set(listing.columns):
+            um = audit[audit["status"] == "unmapped_country"]
+            j = um.merge(listing[["url", "src_imftype", "src_imfseries"]],
+                         on="url", how="left")
+            # And by YEAR, because the reviewer's real question is whether the
+            # alias failures are era-selective -- a frame that loses documents
+            # mostly in the pre-period would bias a pre/post contrast. The
+            # share does swing enormously (over 80% in 1999, near zero from
+            # 2017), so the by-type breakdown has to be read per year before
+            # anything is concluded from it.
+            j["_year"] = j["year"]
+            by_year = {}
+            for yy, g in j[(j["year"] >= 1999) & (j["year"] <= 2025)].groupby("year"):
+                inc = int(((audit["status"] == "included") &
+                           (audit["year"] == yy)).sum())
+                types = {str(k): int(v) for k, v in
+                         g["src_imftype"].value_counts(dropna=False).items()}
+                by_year[int(yy)] = {
+                    "included": inc, "unmapped": int(len(g)),
+                    "unmapped_share": round(len(g) / (inc + len(g)), 4)
+                    if inc + len(g) else None,
+                    "by_type": types,
+                }
+            DISCONTINUED = ("Public Information Notice", "Press Release")
+            early = [v for k, v in by_year.items() if k <= 2016]
+            n_early = sum(v["unmapped"] for v in early)
+            n_early_disc = sum(sum(v["by_type"].get(t, 0) for t in DISCONTINUED)
+                               for v in early)
+            result["unmapped_country_by_year"] = {
+                "years": by_year,
+                "share_1999_2016": round(
+                    n_early / (sum(v["included"] for v in early) + n_early), 4),
+                "share_2017_2025": round(
+                    sum(v["unmapped"] for k, v in by_year.items() if k >= 2017)
+                    / max(1, sum(v["included"] + v["unmapped"]
+                                 for k, v in by_year.items() if k >= 2017)), 4),
+                "discontinued_share_of_early_unmapped":
+                    round(n_early_disc / n_early, 4) if n_early else None,
+                "reading": (
+                    "The era gradient is the lifecycle of two publication types, "
+                    "not era-selective failure on staff reports. Public "
+                    "Information Notices appear 1999-2013 and stop; press "
+                    "releases run to 2016 and stop. Together they are the great "
+                    "majority of every unmapped row before 2017, after which "
+                    "the unmapped count is a handful a year. If the alias table "
+                    "were failing on Article IV staff reports we would expect "
+                    "the residue to be staff reports; it is not."),
+            }
+            result["unmapped_country_types"] = {
+                "n": int(len(um)),
+                "n_joined": int(j["src_imftype"].notna().sum()),
+                "by_src_imftype": {str(k): int(v) for k, v in
+                                   j["src_imftype"].value_counts(dropna=False).items()},
+                "n_with_empty_src_imfseries": int(j["src_imfseries"].isna().sum()),
+                "reading": ("src_imftype is the IMF's own content-type label on "
+                            "the listing row. These rows are established "
+                            "non-staff-report publication types, not documents "
+                            "of unknown kind: 2,788 is a lower bound because "
+                            "the alias table did not place a country prefix, "
+                            "not because the excluded rows might be Article IV "
+                            "staff reports."),
+            }
+
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(result, indent=1), encoding="utf-8")
 

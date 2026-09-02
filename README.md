@@ -26,7 +26,7 @@ than trusted.
 ```
 src/      the analysis pipeline and the frozen inference engine
 tools/    retrieval, corpus repair, table and figure generators, sensitivity studies
-tests/    the suite that pins the frozen contracts (438 tests; 33 need
+tests/    the suite that pins the frozen contracts (463 tests; 33 need
           permission-gated or deposited inputs and skip here, naming the file)
 config/   pinned configuration, marker family definitions, alias maps
 docs/     preregistration drafts and amendments, the frozen SAP and its freeze
@@ -126,7 +126,11 @@ This repository is archived with a DOI:
 
 That is the **concept DOI**: it always resolves to the latest version, so it
 cannot go stale the way a version DOI in a file inside that same version does.
-The current release is v1.2.0 (`10.5281/zenodo.22168611`).
+The most recent tagged release is v1.2.0 (`10.5281/zenodo.22168611`). It does
+**not** contain the round-18 to round-20 work on `main` — the joint Holm
+calibration, the sibling-class decomposition, the functional-form table and
+the submission guards — so cite the concept DOI above, or the version DOI of
+the release cut after that work, and not v1.2.0.
 
 **Do not cite v1.0.0 or v1.1.0.** Neither archive can run its own test suite:
 `pytest tests/ -q` in either dies with twelve collection errors and runs zero

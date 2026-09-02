@@ -181,11 +181,37 @@ def rate_per1k(per_year: dict[int, dict], terms, win: tuple[int, int],
     return 1000 * num / den if den else float("nan")
 
 
+def rate_per1k_equalyear(per_year: dict[int, dict], terms, win: tuple[int, int],
+                         rule: str) -> float:
+    """Mean of the per-year rates, giving each fiscal year equal weight.
+
+    This is a second aggregation axis, independent of the match rule, and the
+    reason it is here is that the abstract needed it. Section 6.1's era figures
+    -- including the "thirtyfold" Tier-2 rise and the temporal-anchoring 39.96
+    and 22.97 beside it -- are equal-year means, while the four ratios this tool
+    published were pooled. An external review noticed that the abstract paired
+    an equal-year figure with a pooled one and read the mismatch as a match-rule
+    problem; it is an aggregation problem. Publishing both axes from one code
+    path is what lets the abstract quote a matched pair.
+    """
+    vals = []
+    for y in window_years(per_year, win):
+        d = per_year[y]
+        den = d["tokens_production" if rule == "production" else "tokens_boundary"]
+        if den:
+            vals.append(1000 * sum(d[rule][t] for t in terms) / den)
+    return sum(vals) / len(vals) if vals else float("nan")
+
+
 def subset_block(per_year: dict[int, dict], terms, rule: str) -> dict:
     early = rate_per1k(per_year, terms, EARLY, rule)
     late = rate_per1k(per_year, terms, LATE, rule)
+    e_eq = rate_per1k_equalyear(per_year, terms, EARLY, rule)
+    l_eq = rate_per1k_equalyear(per_year, terms, LATE, rule)
     return {"early": early, "late": late,
             "ratio": (late / early) if early else float("inf"),
+            "early_equal_year": e_eq, "late_equal_year": l_eq,
+            "ratio_equal_year": (l_eq / e_eq) if e_eq else float("inf"),
             "n_terms": len(terms)}
 
 

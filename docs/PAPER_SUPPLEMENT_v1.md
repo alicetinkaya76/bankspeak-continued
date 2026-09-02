@@ -470,14 +470,17 @@ S10.4's null, 0.086 → 0.064 under the joint one. The full rule's actual
 error rate is not measured by this study.
 
 **What moves it is the null's mean structure, by a factor of three.** The
-preregistered process gives 0.036; the same rule, the same shock, the same
+preregistered process gives 0.0365; the same rule, the same shock, the same
 ρ and σ, under means fitted to the observed series, gives 0.086. Both are
 defensible nulls and the design specified neither for this purpose. The
 preregistered power run recorded 0.039 for exactly this quantity in August
 (`docs/MDE_P1P2_20260820.md`, θ = 0); an external reviewer's independent
 implementation returned 0.0335 ± 0.0040; this one returns
-0.036 ± 0.003. Three implementations, one number. The
-disagreement is not about arithmetic.
+0.0365 ± 0.0030. Three implementations, one number. The
+disagreement is not about arithmetic. (146 of 4,000 replicates is an exact
+rounding tie at three decimals; the table above prints 0.036 and the manuscript
+0.0365, so the fourth digit is given here to keep one quantity from being
+resolved two ways in two documents.)
 
 **On the dependence comparison, narrowly.** Drawing the panels jointly with one
 shared World Bank shock gives 0.086; the same shared comparator draw with
@@ -562,10 +565,15 @@ on the preregistered rule's error rate — runs
 from 0.028 to 0.121, it is above nominal under every null fitted to the observed
 series, and P1's *p* is worth less than its face value under all of them.
 Holding the preregistered dependence parameters and varying only the mean
-structure — the axis this section is about — the range is 0.037 to 0.094. Both
+structure — the axis this section is about — the range is 0.0365 to 0.086. Both
 brackets are stated because the wider one is what a reader checking the table
-will compute, and two rows of that table (independent World Bank shocks at
-0.119, the corrected NB2 dispersion at 0.102) sit above the narrower one. §6.2's block-construction sentence is narrowed accordingly: blocks fail
+will compute, and three rows of that table sit above the narrower one for
+reasons that are *not* mean structure: independent World Bank shocks at 0.119
+and the corrected NB2 dispersion at 0.102 change the dependence and the
+variance function, and redrawing ρ ~ U(0.2, 0.8) and σ ~ U(0.20, 0.45) gives
+0.094 by varying the dependence parameters themselves. An earlier version of
+this sentence put that 0.094 inside the mean-structure bracket, which is where
+it does not belong. §6.2's block-construction sentence is narrowed accordingly: blocks fail
 to absorb the dependence under the fitted means and absorb it more than
 adequately under the preregistered ones, and this study cannot say which is the
 right null to hold the design to.
@@ -760,8 +768,17 @@ early years even if they could.
 
 **And 2,788 is a lower bound, not the universe.** 2,341 listing hits are
 labelled `unmapped_country`: the title's country prefix did not match the alias
-table. Those are not established non-Article-IV documents; they are documents
-the pipeline could not place. The share depends on which denominator is meant,
+table. An earlier version of this paragraph said those were not established
+non-Article-IV documents but documents the pipeline could not place. That was
+more agnostic than our own metadata warrants, and it understated the frame.
+The listing carries the Fund's own content-type label, and joining it back
+places all 2,341: **1,736 Public Information Notices, 538 press releases, 44
+mission concluding statements, 13 standard pages, 5 transcripts, 3 issue pages
+and 2 rows typed only `Pdf`** — and `src_imfseries` is empty for 2,338 of them.
+So 2,788 is a lower bound because the alias table did not place a country
+prefix on rows that are, with two exceptions, established non-staff-report
+publication types; it is not a lower bound because the excluded rows might be
+Article IV staff reports. The share depends on which denominator is meant,
 and the wide one flatters us: 31.4% of all 7,451 hits, but **42.2% of the 5,542
 rows that actually reached the alias lookup**, because the classifier returns on
 its first failure. The narrower figure is the one the sentence is about.
@@ -774,7 +791,29 @@ no language column at all and every row is defaulted to English, so that test
 can never fire. A zero there is not evidence that every listed document is in
 English, and the tool now says so in the same breath as the count.
 
-Reproduce with `python tools/imf_frame_publication.py`.
+**And whether the failures are era-selective, which is the question that
+matters.** A frame losing documents mostly from the pre-period would bias a
+pre/post contrast, so the unmapped rows are tallied by year as well as by type.
+The share swings enormously: **82.3% of
+1999's listing hits are unmapped against
+2.3% of 2024's**, and the aggregate
+runs 55.1% for 1999–2016 against
+1.9% for 2017–2025. Taken alone that looks alarming.
+
+It is not era-selective failure on staff reports. It is the lifecycle of two
+publication types. **Public Information Notices appear in 1999 and stop in
+2013**; press releases in this listing run to 2016 and stop. Together they are
+**97.9% of every unmapped row
+before 2017**. From 2017 the unmapped count is a handful a year — a mission
+concluding statement here, a standard page there — and 2022 has none at all. If
+the alias table were failing on Article IV staff reports, the residue would be
+staff reports. It is not one.
+
+The per-year table, with each year's type breakdown, is the
+`unmapped_country_by_year` block of the tool's output.
+
+Reproduce with `python tools/imf_frame_publication.py`; the type tally is the
+`unmapped_country_types` block of its output.
 
 ### S10.8 The Tier-2 word list, term by term
 
@@ -829,13 +868,24 @@ supplement does not make it either.
 | modern-register | 23 | production | 0.016 | 4.069 | 254× |
 | modern-register | 23 | boundary (S10.6) | 0.013 | 3.714 | 295× |
 
-**The abstract's two headline figures were computed under different conventions
-from each other.** "Thirtyfold" is the equal-year mean of the production rule
-(0.252 → 7.631, 30.2×); "11-fold" is the token-weighted boundary rule. Matched
-conventions give 24.4× and 9.4×, or 28.4× and 10.9×. The abstract now reports the
-subset figure as a 9- to 11-fold range for that reason. The tool's production-rule
-aggregate reproduces `data/features/ar_fy_features.csv` to four decimal places,
-which is the cross-check that the two paths are computing the same quantity.
+**The abstract's two headline figures used to be computed under different
+conventions from each other, and the axis was not the one it looked like.**
+"Thirtyfold" is the *equal-year mean* of the production rule
+(0.252 → 7.631,
+30.2×); the subset figure it was paired with was
+*token-weighted*. The two differ on **aggregation**, not on the match rule, and
+the temporal-anchoring figures in the same abstract sentence are equal-year
+too — so the coherent repair keeps equal-year throughout rather than moving
+everything to the pooled convention. **The abstract now reports
+30.2× and 10.8×, both equal-year,
+both the production rule.** Matched pooled conventions would instead give
+24.4× and 9.4×, or 28.4× and
+10.9× on the boundary rule; this tool publishes all four cells on
+both aggregations and chooses between none of them. An external review found
+the mismatch and read it as a match-rule problem, which is why the two axes are
+now named separately. The tool's production-rule aggregate reproduces
+`data/features/ar_fy_features.csv` to four decimal places, which is the
+cross-check that the two paths are computing the same quantity.
 
 **22 of the 35 terms do not occur at all in 1946–65** — the same 22 under both
 rules. The early window is 19 fiscal-year units, not 20: the assembled corpus
@@ -876,3 +926,59 @@ Policy. No IMF text is read by it.
 
 Reproduce with `python tools/tier2_item_provenance.py`; the per-term table is
 `data/analysis/tier2_item_provenance.csv`.
+
+### S10.9 What a fiscal-year unit is, year by year
+
+An external review observed that the assembled series ends in single documents of
+29–45 thousand tokens where fiscal 2020 and 2021 are three-document assemblies of
+185–217 thousand, and asked whether part of the headline decline is publication
+packaging rather than language. The inventory that answers it existed
+(`data/features/ar_fy_features.csv`) but was never printed, so it is printed
+here in full.
+
+**Table S10.9 — every assembled fiscal-year unit: documents and tokens**
+(76 units, 6,177,817 tokens; fiscal 1946, 2000 and
+2010 have no unit.)
+
+| yr | n | tokens | yr | n | tokens | yr | n | tokens | yr | n | tokens |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1947 | 1 | 17,023 | 1966 | 1 | 29,405 | 1985 | 1 | 105,441 | 2005 | 2 | 65,078 |
+| 1948 | 1 | 22,513 | 1967 | 1 | 30,134 | 1986 | 1 | 92,982 | 2006 | 2 | 69,343 |
+| 1949 | 1 | 22,402 | 1968 | 1 | 41,266 | 1987 | 1 | 98,407 | 2007 | 2 | 50,807 |
+| 1950 | 1 | 27,925 | 1969 | 1 | 36,982 | 1988 | 1 | 94,189 | 2008 | 30 | 133,820 |
+| 1951 | 1 | 27,925 | 1970 | 1 | 48,439 | 1989 | 1 | 112,087 | 2009 | 2 | 139,432 |
+| 1952 | 1 | 24,213 | 1971 | 1 | 43,758 | 1990 | 1 | 116,339 | 2011 | 1 | 32,042 |
+| 1953 | 1 | 28,073 | 1972 | 1 | 56,134 | 1991 | 1 | 120,872 | 2012 | 3 | 129,292 |
+| 1954 | 1 | 30,801 | 1973 | 1 | 65,525 | 1992 | 1 | 128,787 | 2013 | 3 | 74,546 |
+| 1955 | 2 | 34,609 | 1974 | 1 | 62,563 | 1993 | 1 | 123,047 | 2014 | 3 | 164,769 |
+| 1956 | 1 | 25,725 | 1975 | 1 | 65,299 | 1994 | 1 | 121,457 | 2015 | 1 | 25,651 |
+| 1957 | 1 | 25,701 | 1976 | 1 | 77,343 | 1995 | 1 | 104,270 | 2016 | 3 | 171,618 |
+| 1958 | 1 | 29,567 | 1977 | 1 | 80,728 | 1996 | 1 | 106,643 | 2017 | 3 | 185,908 |
+| 1959 | 1 | 24,910 | 1978 | 1 | 89,412 | 1997 | 1 | 99,387 | 2018 | 3 | 194,973 |
+| 1960 | 1 | 20,821 | 1979 | 1 | 92,320 | 1998 | 1 | 112,457 | 2019 | 3 | 196,164 |
+| 1961 | 1 | 19,314 | 1980 | 1 | 89,905 | 1999 | 1 | 143,694 | 2020 | 3 | 217,404 |
+| 1962 | 1 | 20,381 | 1981 | 1 | 91,479 | 2001 | 4 | 252,812 | 2021 | 3 | 184,775 |
+| 1963 | 1 | 21,720 | 1982 | 1 | 87,150 | 2002 | 2 | 73,917 | 2022 | 1 | 44,574 |
+| 1964 | 1 | 31,280 | 1983 | 1 | 101,589 | 2003 | 2 | 131,713 | 2023 | 1 | 43,795 |
+| 1965 | 1 | 44,740 | 1984 | 1 | 102,171 | 2004 | 2 | 95,052 | 2024 | 1 | 29,028 |
+
+**The observation is correct and the inference does not follow.** Fifty-seven
+units are a single document, eight are two, nine are three, one is four and one
+is thirty. The endpoint years are exactly as described: 2020 and 2021 carry
+three components each, 2022 through 2024 carry one. Fiscal 2008 carries thirty, which
+is the largest departure in the table and sits in neither comparison window.
+
+But the direction is the opposite of the worry. The like-for-like series — the
+narrative volume alone, the one construction that compares the same kind of text
+across eight decades — declines **more** than the as-assembled series, −58.8%
+equal-year against −42.5%, and the two weightings almost coincide on it because
+the narrative volume is one file per year across both comparison windows bar
+fiscal 1955. If packaging were manufacturing the decline, removing the packaging
+would shrink it; removing the packaging enlarges it. §6.1 states this and Table
+3e gives the six cells. Packaging was concealing part of the decline rather than
+producing it, and the table above is why that can be checked rather than
+asserted.
+
+Reproduce the inventory with `python tools/ar_component_inventory.py`; the table
+is a direct read of `data/features/ar_fy_features.csv` columns `year`, `n_docs`
+and `tokens`.

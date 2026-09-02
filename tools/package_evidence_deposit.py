@@ -17,6 +17,7 @@ credential, and credentials are the author's to handle.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import zipfile
@@ -27,7 +28,15 @@ DEPOSIT = ROOT / "zenodo_deposit"
 OUT_ZIP = ROOT / "build" / "zenodo_evidence_deposit.zip"
 OUT_META = ROOT / "build" / "zenodo_evidence_metadata.json"
 
-CODE_DOI = "10.5281/zenodo.22168611"          # v1.2.0
+# The companion code archive this deposit is a supplement TO. It must be the
+# release that actually contains the reported results. Round 20 found v1.2.0
+# baked in here and in the built metadata, which is the release the manuscript
+# says must not be cited for them -- so the deposit was declaring itself a
+# supplement to the wrong archive. The concept DOI is used until the new
+# version DOI exists; it always resolves to the latest version, so it is wrong
+# in a way that self-corrects rather than a way that misdirects.
+CONCEPT_DOI = "10.5281/zenodo.22152944"
+CODE_DOI = os.environ.get("BANKSPEAK_CODE_VERSION_DOI", CONCEPT_DOI)
 SAP_DOI = "10.5281/zenodo.22098259"
 OSF_DOI = "10.17605/OSF.IO/5C9J8"
 

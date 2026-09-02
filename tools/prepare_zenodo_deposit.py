@@ -77,6 +77,31 @@ INCLUDE_FILES = [
     "data/analysis/rq1_decomposition.json",
     "data/analysis/trend_analysis.json",
     "data/analysis/passp_calibration.json",
+    # Every analysis output that backs a numbered table or a supplement
+    # section. These were absent until round 20, which meant a reader could
+    # unpack the deposit and still not check S10.3, S10.4, S10.6-S10.9, Table
+    # 3c, 3d, 3e, 5c or 5d -- the deposit carried the inputs to the frozen
+    # pipeline and none of the inputs to the checks a reviewer actually asked
+    # about. None of these files carries IMF document text, a verbatim title or
+    # an imf.org URL; the frame publication holds column NAMES only.
+    "data/analysis/joint_holm_calibration.json",
+    "data/analysis/ar1_null_calibration.json",
+    "data/analysis/functional_form_sensitivity.json",
+    "data/analysis/ar_exclusion_classes.json",
+    "data/analysis/ar_component_inventory.json",
+    "data/analysis/companion_volume_adjudication.json",
+    "data/analysis/tier2_item_provenance.json",
+    "data/analysis/tier2_item_provenance.csv",
+    "data/analysis/tier2_period_fairness.json",
+    "data/analysis/imf_frame_publication.json",
+    "data/analysis/imf_frame_publication.csv",
+    "data/analysis/imf_cadence_balance.json",
+    "data/analysis/passe_coverage.json",
+    "data/analysis/block_origin_enumeration.json",
+    "data/analysis/dispersion_calibration.json",
+    "data/analysis/dispersion_robust_inference.json",
+    "data/analysis/stage_a_exposure_sensitivity.json",
+    "data/analysis/retrieval_route_tally.json",
     "requirements.txt",
     "README.md",
     "data/meta/country_ontology.csv",

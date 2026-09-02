@@ -96,7 +96,7 @@ def test_most_of_the_duplicate_class_is_not_duplicates():
 @needs_data
 def test_restoring_the_companions_softens_but_does_not_reverse_the_headline():
     """Seven percentage points, and the direction holds. If a future change made
-    the two series agree, Table 3d would be reporting a difference that no longer
+    the two series agree, Table 3c would be reporting a difference that no longer
     exists."""
     import json
     out = ROOT / "data" / "analysis" / "companion_volume_adjudication.json"

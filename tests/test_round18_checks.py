@@ -569,10 +569,24 @@ def test_a_doi_that_does_not_resolve_stops_counting_as_resolved(tmp_path):
 
     if not (ROOT / "data" / "analysis" / "citation_audit.json").exists():
         pytest.skip("no citation audit in this tree")
+    # The expected counts are DERIVED, not typed. This control asserted
+    # "30 of 34" literally and broke the moment round 20 split the Moretti and
+    # Pestre record into its two publication objects and the reference list
+    # became 35. A negative control that fails when an unrelated true number
+    # changes is testing the number, not the guard.
+    audit = _json.loads((ROOT / "data" / "analysis" / "citation_audit.json")
+                        .read_text(encoding="utf-8"))
+    n_entries = audit["n_entries"]
+    n_resolved_after_break = sum(
+        1 for e in audit["entries"]
+        if e.get("doi")
+        and "NOT" not in str((e.get("check") or {}).get("verdict", "")).upper()) - 1
+
     t = _mutated_copy(tmp_path, {"data/analysis/citation_audit.json": break_one})
     r = _run(t, "check_stated_counts.py")
     assert r.returncode == 1, r.stdout
-    assert "30 of 34" in r.stdout or "actual 30/34" in r.stdout, r.stdout
+    assert (f"{n_resolved_after_break} of {n_entries}" in r.stdout
+            or f"actual {n_resolved_after_break}/{n_entries}" in r.stdout), r.stdout
 
 
 def test_the_citation_audit_has_a_real_offline_mode_and_rejects_unknown_flags():

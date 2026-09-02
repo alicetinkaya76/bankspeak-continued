@@ -108,14 +108,29 @@ def main() -> int:
     ck = ECHOES["checklist"]
     if ck.exists():
         t = ck.read_text(encoding="utf-8")
+        # A pattern that stops matching is the failure mode this whole file was
+        # written against, and this loop had it. The supplement pattern required
+        # a backtick immediately before the filename; the checklist writes the
+        # full path inside the backticks, so re.search returned None, the
+        # comparison was skipped, and a checklist that said 16 pages against a
+        # built 18 passed in silence for two rounds. Patterns are now anchored on
+        # the filename alone, and a NON-MATCH is a failure rather than a pass:
+        # the number is supposed to be there, so its absence is news.
         for pat, want, what in (
-            (r"`PLOS_ONE_supplement\.pdf` at (\d+) pages", meta["supplement_pages"],
-             "supplement page count"),
-            (r"\| Abstract \| \"not exceed 300 words\" \| (\d+) \|", meta["abstract_words"],
-             "abstract word count"),
+            (r"PLOS_ONE_supplement\.pdf`?\s*(?:at|—|--|:)?\s*(\d+)\s*pages",
+             meta["supplement_pages"], "supplement page count"),
+            (r"PLOS_ONE_submission\.pdf`?\s*(?:at|—|--|:)?\s*(\d+)\s*pages",
+             meta["submission_pages"], "submission page count"),
+            (r"\| Abstract \| \"not exceed 300 words\" \| (\d+) \|",
+             meta["abstract_words"], "abstract word count"),
         ):
+            if want is None:
+                continue
             m = re.search(pat, t)
-            if m and want is not None and int(m.group(1)) != want:
+            if m is None:
+                bad.append(f"checklist states no {what}; the guard that compares "
+                           f"it therefore checks nothing (it is {want})")
+            elif int(m.group(1)) != want:
                 bad.append(f"checklist says {what} {m.group(1)}; it is {want}")
         # The manuscript is explicit that this is not a replication.
         if re.search(r"This paper \*\*is\*\* a replication", t):
@@ -135,6 +150,55 @@ def main() -> int:
     elif not re.search(r"version DOI `10\.5281/zenodo\.\d+`", paper_t):
         bad.append("the manuscript names no version DOI at all; a concept DOI "
                    "alone does not pin the content a reviewer sees")
+
+    # A test count stated in prose is a number that drifts, and this one did:
+    # the manuscript said 437 while the suite collected 438 and the public
+    # README said 438. It was outside every guard's scope because this file was
+    # written around the checklist. The count is already computed above, so
+    # enforcing it costs nothing.
+    if meta["tests_collected"] is not None:
+        for label, path in list(ECHOES.items()) + [("manuscript", PAPER)]:
+            if not path.exists():
+                continue
+            for m in re.finditer(r"(?:suite of|suite,)\s*(\d[\d,]*)\s*tests|"
+                                 r"\((\d[\d,]*)\s*tests",
+                                 path.read_text(encoding="utf-8", errors="replace")):
+                got = int((m.group(1) or m.group(2)).replace(",", ""))
+                if got != meta["tests_collected"]:
+                    bad.append(f"{label} states {got} tests; pytest collects "
+                               f"{meta['tests_collected']}")
+
+    # A superseded version DOI must not be named anywhere as the archive of
+    # record. The data-availability statement cited v1.2.0 as the deposit while
+    # the manuscript said that release must not be cited for these results --
+    # two submission documents contradicting each other, and no guard saw it
+    # because each was internally consistent.
+    superseded = re.findall(r"10\.5281/zenodo\.(\d+)", paper_t)
+    named_superseded = {d for d in superseded
+                        if re.search(r"zenodo\.%s[^\n]{0,120}"
+                                     r"(?:predates|must not be cited)" % d, paper_t)}
+    # Scan by LINE, not by sentence. The first version of this split on "." and
+    # so cut every match in half, because both a DOI and a version number are
+    # full of dots -- it reported "0 (`10.5281/zenodo.22168611`)" as the context
+    # and then found no claim words in it. A guard that cannot see its own
+    # evidence passes everything.
+    CLAIM = re.compile(r"archived at|deposited at|is the archive|is cut and "
+                       r"archived|current release|are archived", re.I)
+    for label, path in ECHOES.items():
+        if not path.exists():
+            continue
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        for i, line in enumerate(lines):
+            for d in named_superseded:
+                if f"zenodo.{d}" not in line:
+                    continue
+                # The claim may sit on the previous line where prose wraps.
+                window = " ".join(lines[max(0, i - 1):i + 2])
+                if CLAIM.search(window):
+                    bad.append(f"{label}:{i + 1} names the superseded release "
+                               f"10.5281/zenodo.{d} as an archive of record, "
+                               f"which the manuscript says must not be cited "
+                               f"for these results")
 
     cl = ECHOES["cover letter"]
     if cl.exists():

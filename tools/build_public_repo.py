@@ -63,6 +63,7 @@ OUT = ROOT.parent / "bankspeak-public"
 # data/analysis/panels/ carries per-document identifiers and must not travel.
 ANALYSIS = ["ar1_null_calibration", "ar_component_inventory",
             "ar_exclusion_classes", "block_origin_enumeration",
+            "functional_form_sensitivity",
             "citation_audit", "companion_volume_adjudication",
             "dispersion_calibration", "dispersion_robust_inference",
             "hshared_draw_diagnostics", "imf_cadence_balance",
@@ -209,22 +210,44 @@ def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     if "--out" in argv:
         OUT = Path(argv[argv.index("--out") + 1]).resolve()
-    staged, problems = [], {}
+    staged, problems, path_denied = [], {}, []
     for inc in INCLUDE:
         p = ROOT / inc
         if not p.exists():
             print(f"[public] missing, skipped: {inc}")
             continue
         files = sorted(q for q in p.rglob("*") if q.is_file()) if p.is_dir() else [p]
+        explicit = not p.is_dir()
         for f in files:
             rel = f.relative_to(ROOT).as_posix()
             if denied(rel):
+                # A file swept up by a directory include is expected to be
+                # denied and says nothing. A file named ONE BY ONE in INCLUDE
+                # and then dropped is a contradiction between two lists in this
+                # same file, and it was happening in silence: three analysis
+                # outputs on the ANALYSIS list -- the inputs to S10.5 and S10.7,
+                # which the supplement tells a reader to reproduce -- never
+                # reached the archive, because their names begin with "imf".
+                # Whether they MAY be published is a licensing judgement and
+                # this tool does not make it. It just stops hiding the question.
+                if explicit:
+                    path_denied.append(rel)
                 continue
             h = scan(f, rel)
             if h and f.name not in PROSE_OK and f.name not in ACCESS_ROUTE_OK:
                 problems[rel] = h
             else:
                 staged.append((f, rel))
+
+    if path_denied:
+        print(f"\n[public] {len(path_denied)} file(s) named individually in "
+              f"INCLUDE were dropped by a path rule, NOT by the content scan:")
+        for rel in path_denied:
+            print(f"    {rel}")
+        print("  These are on the include list and are not in the export. Either "
+              "remove them from INCLUDE, or narrow the DENY pattern once a "
+              "human has ruled on whether they may be redistributed. Flagged "
+              "needs_human_review; not decided here.")
 
     if problems:
         print(f"[public] REFUSING: {len(problems)} staged file(s) carry IMF "

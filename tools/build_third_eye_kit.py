@@ -151,7 +151,7 @@ INCLUDE = [
     # Round 16. The manuscript now cites S10 and Table 3c; without these the
     # reviewer is asked to take three simulations and a decomposition on trust.
     ("data/analysis/ar_exclusion_classes.json", "06_machine_output",
-     "Table 3c: what the 195 excluded Annual-Report files are, by class and trend"),
+     "Tables 3c and 3d: what the 195 excluded Annual-Report files are, by class and trend, and the sibling class decomposed by institution — each sibling falls on its own series and the class-level +64.4% is a membership change"),
     ("data/meta/ar_assembly_log.csv", "06_machine_output",
      "the assembler's rule per document — Table 3c's only source, and the only "
      "file that maps a volume to IFC vs MIGA vs ICSID"),
@@ -166,7 +166,7 @@ INCLUDE = [
      "S10.2: the panels rerun without every Stage-A-inspected document"),
     ("tools/stage_a_exposure_sensitivity.py", "07_code", "what reruns them"),
     ("data/analysis/ar_component_inventory.json", "06_machine_output",
-     "Table 3d: the decline under three corpus definitions — narrative-only "
+     "Table 3e: the decline under three corpus definitions — narrative-only "
      "-58.8%, frozen -42.5%, full family -35.4%"),
     ("tools/ar_component_inventory.py", "07_code", "the component inventory"),
     ("data/analysis/tier2_period_fairness.json", "06_machine_output",
@@ -180,7 +180,7 @@ INCLUDE = [
     ("tools/check_stated_counts.py", "07_code",
      "refuses if a count stated in prose disagrees with the filesystem"),
     ("data/analysis/companion_volume_adjudication.json", "06_machine_output",
-     "Table 3d: four of the five records excluded as duplicates are distinct "
+     "Table 3c: four of the five records excluded as duplicates are distinct "
      "components sharing a metadata key; restoring them moves the headline "
      "from -42.5% to -35.4%"),
     ("tools/companion_volume_adjudication.py", "07_code",
@@ -196,11 +196,22 @@ INCLUDE = [
     ("data/analysis/joint_holm_calibration.json", "06_machine_output",
      "S10.4 rebuilt: both panels drawn together with one shared comparator "
      "arm, the preregistered Holm step-down applied every replicate, the inner "
-     "p enumerated over all 512 sign patterns. The family error runs 0.037 "
-     "under the preregistered null to 0.094 under fitted means"),
+     "p enumerated over all 512 sign patterns. The family error runs 0.0365 "
+     "under the preregistered null to 0.086 under fitted means, with 0.094 when rho and sigma are redrawn too"),
     ("tools/joint_holm_calibration.py", "07_code",
      "the joint calibration, including two candidate mechanisms its own "
      "diagnostics refute"),
+    ("data/analysis/functional_form_sensitivity.json", "06_machine_output",
+     "Table 5d: the estimate without the institution trend, at three alternative "
+     "pre-period starts, with 2020/2021 dropped and with each post year dropped "
+     "-- each row also evaluated at all three block origins, because deleting a "
+     "year moves the partition as well as the data"),
+    ("tools/functional_form_sensitivity.py", "07_code",
+     "what builds Table 5d; inner p enumerated, not sampled"),
+    ("docs/ROUND20_RESPONSE.md", "03_decisions",
+     "the response to the independent audit of the built package: what it got "
+     "right, what it got wrong, and the two findings in our own text that it "
+     "surfaced -- the sibling-class attribution and the retrieval-route wording"),
     ("data/analysis/tier2_item_provenance.csv", "06_machine_output",
      "S10.8: the per-term Tier-2 table. The source columns read 'not recorded "
      "in repository' because that is what the repository holds"),

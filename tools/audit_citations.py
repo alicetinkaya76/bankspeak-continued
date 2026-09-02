@@ -205,11 +205,45 @@ def main(offline: bool = False) -> int:
     problems += [f"uncited entry: {n}" for n in uncited]
     problems += [f"in-text citation with no reference entry: {n}" for n in unlisted]
 
+    # Four problems are permanent facts about the sources rather than defects,
+    # so this tool exited 1 on every run it has ever had. An exit code that
+    # cannot go green carries no information: a genuinely new citation defect
+    # would look exactly like the four standing ones. They are named here --
+    # named, not silenced, because they are still printed and still written to
+    # the audit object. Anything NOT on this list fails the way it always did.
+    #
+    #  three proceedings papers   ICML/COLING volumes that Crossref does not
+    #                             index; each carries a stable proceedings URL
+    #  Moretti 2015 (pamphlet)    Stanford Literary Lab pamphlets are not
+    #                             registered with a DOI. This entry exists
+    #                             because round 20 split what had been one
+    #                             record naming two publication objects under
+    #                             the New Left Review DOI; the pamphlet now
+    #                             carries its own verified URL
+    #                             (200, application/pdf, 25pp, title and authors
+    #                             checked against the file on 2026-09-02)
+    #  Lopez Bernal 2017          Crossref holds the 2016 online-first record;
+    #                             the entry cites the 2017 print issue, which is
+    #                             the fuller locator, so the "drift" is a
+    #                             print-versus-online artifact of the registry
+    KNOWN = (
+        "Liang 2024: no DOI in entry",
+        "Juzek 2025: no DOI in entry",
+        "Mitchell 2023: no DOI in entry",
+        "Moretti 2015: no DOI in entry",
+        "Lopez Bernal 2017: year 2017 vs Crossref [2016, 2016]",
+    )
+    novel = [p for p in problems if p not in KNOWN]
+    standing = [p for p in problems if p in KNOWN]
+    if standing:
+        print(f"  {len(standing)} standing, documented non-defect(s): "
+              + "; ".join(standing))
+
     if offline:
         # An offline audit reports; it does not overwrite the record it read.
-        print(f"\n[cite] {len(problems)} problem(s); offline, "
-              f"{OUT.relative_to(ROOT)} not rewritten")
-        return 1 if problems else 0
+        print(f"\n[cite] {len(problems)} problem(s), {len(novel)} not on the "
+              f"documented list; offline, {OUT.relative_to(ROOT)} not rewritten")
+        return 1 if novel else 0
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"n_entries": len(entries), "entries": entries,
@@ -217,8 +251,9 @@ def main(offline: bool = False) -> int:
                                "unlisted_intext": unlisted,
                                "problems": problems}, indent=1),
                    encoding="utf-8")
-    print(f"\n[cite] {len(problems)} problem(s); wrote {OUT.relative_to(ROOT)}")
-    return 1 if problems else 0
+    print(f"\n[cite] {len(problems)} problem(s), {len(novel)} not on the "
+          f"documented list; wrote {OUT.relative_to(ROOT)}")
+    return 1 if novel else 0
 
 
 if __name__ == "__main__":

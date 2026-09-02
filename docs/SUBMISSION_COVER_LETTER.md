@@ -26,8 +26,10 @@ replication, and the manuscript says so throughout.
 **Second, a measurement result I did not go looking for.** Over the same fiscal
 years the same archive yields a 43% or a 14% decline in temporal anchoring, and
 within the two reconstructed corpora that difference is attributable to which
-document series are included: the excluded sibling-organisation volumes trend
-upward while the Bank's own fall. The magnitude is not a point estimate but a
+document series are included: the excluded sibling-organisation class rises
+while the Bank's own volumes fall — and that rise turns out to be a change of
+membership between the two windows rather than a change in anyone's prose,
+which the paper reports because an earlier draft of mine said otherwise. The magnitude is not a point estimate but a
 range, −24% to −59%, depending on which components count as an Annual Report and
 whether eras are weighted by year or by tokens. Earlier drafts of my own
 attributed the gap to the wrong operation; the correction is in the paper

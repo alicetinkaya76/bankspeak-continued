@@ -66,10 +66,20 @@ def main() -> int:
                 return bool(e.get("doi"))
             return bool(e.get("doi")) and "NOT" not in str(v).upper()
         n_doi = sum(1 for e in a["entries"] if resolved(e))
-        m = re.search(r"all (\d+) entries parsed,\s*\n?(\d+) resolved", paper)
+        # The footer moved out of the manuscript's bibliography and into the
+        # submission checklist, because an external review pointed out that a QA
+        # note is not a bibliographic entry and that Crossref resolution says
+        # nothing about whether a source supports its proposition. The numbers
+        # are still guarded; only where they live changed. Both files are read
+        # so that the check survives whichever document carries the sentence.
+        checklist = ROOT / "docs" / "PLOS_SUBMISSION_CHECKLIST.md"
+        hay = paper + "\n" + (checklist.read_text(encoding="utf-8")
+                              if checklist.exists() else "")
+        m = re.search(r"all (\d+) entries parsed,\s*\n?(\d+) resolved", hay)
         if not m:
-            bad.append("the reference-audit footer is missing or reworded; "
-                       "its counts can no longer be checked")
+            bad.append("the reference-audit footer is missing or reworded in "
+                       "both the manuscript and the checklist; its counts can "
+                       "no longer be checked")
         else:
             if int(m.group(1)) != n_entries:
                 bad.append(f"footer says {m.group(1)} entries, the audit has {n_entries}")

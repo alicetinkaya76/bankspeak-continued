@@ -204,12 +204,21 @@ removed two rounds ago. Where the reviewer inferred a claim from a paraphrase,
 the paper already said the narrower thing — §5 reports that the comparator
 **fails** Linden's balance criterion, on the design's own published standard.
 
-**MacKinnon & Webb (2017) is not missing.** It has been cited since round 15,
-as a boundary marker rather than a quantitative account, which is exactly the
-status the reviewer asked for. One clause is now narrowed: their small-treated-
-cluster result predicts under-rejection, and which way our measurement runs
-depends on the null — 0.037 under the preregistered process, 0.086 under fitted
-means.
+**MacKinnon & Webb (2017) is not missing.** It is cited as a boundary marker
+rather than a quantitative account, which is exactly the status the reviewer
+asked for. One clause is now narrowed: their small-treated-cluster result
+predicts under-rejection, and which way our measurement runs depends on the
+null — 0.0365 under the preregistered process, 0.086 under fitted means.
+
+*Correction (round 20).* The sentence above previously said the citation "has
+been cited since round 15". Git does not support that: `git log -S MacKinnon`
+returns three commits, and the paper first carries the name at 9efaba9
+(2026-09-01), the round-17 response to the v5 review. It was **declined** at
+rounds 15 and 16 — commit 7b13387 is titled "Three of the reviewer's seven
+citations do not belong" — and added at round 17. A false provenance claim in a
+document whose first line promises that nothing in it is estimated is worse than
+the omission it was defending against, so it is corrected here rather than
+quietly deleted.
 
 **Webb (2023) was mis-filed** in the reference list, under interrupted time
 series rather than bootstrap inference where the body cites it. Moved.

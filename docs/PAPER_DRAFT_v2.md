@@ -16,17 +16,18 @@ Annual Report series to fiscal 2024.
 
 The trajectories recover qualitatively — a reconstruction, not a replication.
 Temporal anchoring falls from 39.96 per thousand tokens in 1946–65 to 22.97 in
-2020–24, and a bureaucratic register rises from 0.25 to 7.6: thirtyfold, but 9- to 11-fold on the twelve terms whose sense predates 1965.
+2020–24, and a bureaucratic register rises from 0.25 to 7.6: thirtyfold, but 10.8-fold on the twelve terms whose sense predates 1965.
 
-The second result concerns measurement. On one weighting the same archive over
-the same fiscal years gives a 43% or a 14% decline, and within these two corpora
-that difference is attributable to the included document series: the 184 excluded sibling volumes rise 64% while the Bank's own fall
-24–59% across corpus definitions and weightings — 58% on the one series that
-is the same publication object throughout. Institution, genre and period change together there, so organisational
-authorship is not isolated.
+The second result concerns measurement. The same archive over the same fiscal
+years gives a 43% or a 14% decline, and that difference is attributable to the
+included document series: the Bank's own fall 24–59% across corpus definitions
+and weightings — 58% on the one series that is the same publication object
+throughout — while the excluded class rises 64%. That rise is composition: every
+sibling falls on its own series, and ICSID and MIGA, absent before 1966, appear
+only late.
 
 Under a plan sealed and timestamped before the comparison was computed, we test
-whether large-language-model vocabulary shows a post-2022 World Bank
+whether an LLM-associated candidate lexicon shows a post-2022 World Bank
 discontinuity against an International Monetary Fund comparator. **No panel satisfies the prespecified decision rule.** One
 reaches *p* = 0.0142, then fails the concentration guard (dropping one word family
 sends the coefficient to −0.067, interval spanning zero),
@@ -77,11 +78,13 @@ features the pamphlet named, though acronym density supplies the largest
 reports.** Measured over the same fiscal years on the equal-year mean, the same archive
 gives a 43% decline in temporal anchoring or a 14% decline, and
 the difference between them is attributable to *which document series are
-included* — the excluded sibling-organisation volumes trend upward while the
-Bank's own volumes fall. Institution, genre, period coverage and extraction
-route all change together across that boundary, so this is a document-series
-composition effect and not a demonstration that organisational authorship is
-what matters.
+included* — the excluded sibling-organisation class rises while the Bank's own
+volumes fall. Institution, genre, period coverage and extraction route all
+change together across that boundary, so this is a document-series composition
+effect and not a demonstration that organisational authorship is what matters.
+It is not even a rise in the siblings' prose: §6.1 decomposes the class and
+finds every one of the three falling on its own series, the class-level rise
+produced by two institutions that did not exist in the early window.
 Concatenating volumes into fiscal-year units, the operation one would expect to
 matter, contributes nothing. We state this early because it generalises past this
 corpus: the unit of analysis can be inert while document selection is worth a
@@ -177,7 +180,14 @@ answers a question it can actually answer.
 **Interrupted time series and structural breaks.** The design distinguishes a
 prespecified intervention point from an estimated one. For the former we follow
 standard ITS practice (Wagner et al. 2002; Lopez Bernal et al. 2017, 2018) with
-HAC standard errors (Newey & West 1987); for the latter, a descriptive breakpoint
+HAC standard errors (Newey & West 1987). A review asked whether we follow the
+corrected specification, the 2017 paper having been corrected in 2020 on the
+post-intervention slope term. The confirmatory design carries **no**
+post-period slope term — with three post years there is nothing to fit one on
+(§5) — so the corrected term does not arise in it; the descriptive scan that
+does carry one enters it as (*t* − *T*₀) truncated at zero
+(`src/s08_its_analysis.py`), which is the corrected form.
+For the estimated breakpoint, a descriptive breakpoint
 scan enters only as a specificity check — we refit the same specification at every
 admissible cut and rank 2023 among them by the magnitude of the fitted level
 shift (§6.4). **That is a ranking, not structural-break estimation in the Bai and
@@ -319,7 +329,7 @@ cells with token offsets.
 claims: nominalisation density, temporal anchoring (explicit dates and time
 references), management vocabulary, acronym density, and function-word share.
 
-**Two-tier lexical markers.** *Tier-1* is the LLM-associated set (`delve`,
+**Two-tier lexical markers.** *Tier-1* is the LLM-associated candidate set (`delve`,
 `underscore`, `showcase`, `pivotal`, `intricate`, `meticulous`, `boast`,
 `commendable`, `realm`, `testament`, `tapestry`, `seamless`, `multifaceted`).
 A frequency is not a measure of spread, and the two literatures that say so are
@@ -537,7 +547,7 @@ seven to two** (supplement S8).
 claimed.** Measured over the same fiscal years, the assembled series falls
 42.5% (39.96 → 22.97 per thousand) while the whole Annual-Report document pool
 falls only 13.8% (35.70 → 30.76). A factor of three. Both are equal-year means, which is the convention every figure in this section
-uses. Table 3b step 4 and Table 3d give the token-weighted contrast for the
+uses. Table 3b step 4 and Table 3e give the token-weighted contrast for the
 assembled series and its two bracket corpora; no token-weighted figure for the
 329-file pool is reported anywhere, because the pool is not a corpus this paper
 analyses. The natural explanation is
@@ -589,8 +599,41 @@ years (`tools/ar_exclusion_classes.py`).
 | metadata-key collision | 5 | — | 27.80 | — |
 | other logged ruling | 6 | 28.61 | — | — |
 
-**The opposing trend is entirely the sibling organisations**, which are 94% of
+**The opposing trend is confined to the sibling organisations**, which are 94% of
 the exclusions, and the six remaining rulings have no late-period observation.
+That much was already in the table. What was not, and what a later review's
+question about institution and genre made us compute, is that the class-level
++64.4% is **not a rise in anyone's prose**. It is a change in who is in the
+class between the two windows.
+
+**Table 3d — the sibling class decomposed** (same convention as Table 3c;
+`tools/ar_exclusion_classes.py`). The right-hand pair takes each institution
+over its *own* first and last observed decade, because two of the three did not
+exist in 1946.
+
+| sibling, alone | files | 1946–65 | 2020–24 | change | own series | own change |
+|---|---:|---:|---:|---:|---|---:|
+| IFC | 92 | 21.65 | 12.35 | **−42.9%** | 1956–2022 | −19.7% |
+| ICSID | 55 | — | 74.26 | — | 1967–2025 | −8.6% |
+| MIGA | 37 | — | 10.12 | — | 1989–2024 | −35.2% |
+| the class without ICSID | 129 | 21.65 | 10.52 | **−51.4%** | | |
+
+**ICSID was founded in 1966 and MIGA in 1988**, so the early window contains ten
+IFC files and nothing else, while the late window contains five ICSID, five MIGA
+and two IFC. IFC is the only sibling observable in both, and it falls 42.9% — the same
+direction and nearly the same magnitude as the Bank's own −42.5%. On its own
+series not one sibling rises. Remove ICSID, whose rate is high and flat across
+its whole run (75.4 on its first decade against 69.0 on its last), and the class
+falls 51.4% instead of rising.
+
+So the +64.4% is a between-institution composition shift: a dense, date-heavy
+document population that could not appear before 1966 appears in the late window
+and in no other. **This is the same error this section reports catching once
+already, one level further down** — a population difference read as a trend —
+and we report it in the row where it was made rather than quietly restating the
+table. The factor-of-three finding is untouched, because it never depended on
+the excluded files rising: mixing a *higher-rate* population into a falling one
+flattens the decline whether or not that population is itself going up.
 
 **The five records excluded as duplicates are a defect, and correcting it moves
 the headline.** The frozen rule drops a record whose (report number, volume
@@ -616,7 +659,7 @@ prose. So we inventoried the family by component
 question: the **narrative volume only**, which is the like-for-like series, and
 the **full family**, which is every component the archive returns.
 
-**Table 3d — the result under three corpus definitions and two weightings.**
+**Table 3e — the result under three corpus definitions and two weightings.**
 
 | corpus | files | weighting | 1946–65 | 2020–24 | change |
 |---|---:|---|---:|---:|---:|
@@ -640,8 +683,11 @@ tokens on average; the extreme pair, fiscal 2024 against 2020, is a seventh).
 construction is both the steepest and the only stable one.** Restricting to the
 narrative volume — the one construction that compares the same kind of text
 across eight decades — gives −58.8% equal-year and −58.0% token-weighted. That
-near-invariance is the point: the narrative volume is one document a year
-throughout, so the two weightings almost coincide on it. The frozen and family
+near-invariance is the point: the narrative volume is a single component type
+in every year, and one file per year across both comparison windows bar fiscal
+1955, so the two weightings almost coincide on it. (Seven mid-series years carry
+more than one — fiscal 2008 alone carries fourteen — so "one a year throughout"
+would be false; the windows that set the endpoints are what matter here.) The frozen and family
 series move by fifteen and eleven points between weightings because they mix
 thin single-volume years with fat three-component ones. The weighting
 sensitivity is therefore a property of the packaging, not of the Bank's prose,
@@ -663,8 +709,9 @@ either weighting. Over the assembled series' own fiscal years their rate runs 22
 matched to the same years, which is the aggregation Table 3b and Figure 1 use.
 Taking each series over its own available years instead gives 38.25 for the late
 window, inflated by a single fiscal-2025 file; §8 says why that comparison is the
-wrong one.) Figure 1 plots all three series. Mixing a rising population into a falling
-one flattens the decline, and that is the whole mechanism.
+wrong one.) Figure 1 plots all three series. Mixing a higher-rate population into a falling
+one flattens the decline, and that is the whole mechanism — Table 3d shows that
+the excluded population is not itself rising, which the mechanism does not need.
 
 The transferable lesson is therefore not the one we started with, and it is more
 useful. A diachronic magnitude here is untouched by the unit of analysis and
@@ -761,7 +808,9 @@ to β = −0.067.
 **The term that absorbs the rest is τ, the World Bank's own differential trend.**
 Refitting the frozen design with τ deleted returns β = 1.042 on P1 — essentially
 the raw log ratio of ratios, 1.039 — which locates the entire gap in that one
-coefficient. And removing `underscore` does not flatten the trend; it *steepens*
+coefficient. (Table 5d gives the same refit with its *p* and its P2 companion,
+0.943; a previous external review listed this number among those it could not
+check, because it was a prose claim with no generator behind it.) And removing `underscore` does not flatten the trend; it *steepens*
 it, from τ̂ = 0.0371 to 0.0489 on P1 and from 0.0483 to 0.0669 on P2. The Bank's
 Tier-1 rate has been climbing about 4% a year faster than the Fund's since 1999,
 and once the single dominant word family is set aside, the post-2023 elevation is
@@ -820,7 +869,7 @@ explanation. Their diagnosis is unequal cluster sizes, which is not this
 design's problem — nine three-year blocks are exactly balanced. Their
 small-treated-cluster result predicts under-rejection, and which way our own
 measurement runs depends on the null: under the preregistered process the family
-error is 0.037, below nominal, and under means fitted to the observed series it
+error is 0.0365, below nominal, and under means fitted to the observed series it
 is 0.086, above it (S10.4). One treated post cluster with extreme leverage on
 the score is their concern and it is ours; the quantitative account of what we
 measure is not theirs and we do not borrow it.
@@ -859,6 +908,72 @@ panel nominally significant is one an arbitrary earlier choice ruled out. A
 convention that can move one panel's *p* by a factor of twenty and carry the
 other across its own threshold is not a nuisance; it is a reason the single
 reported *p* should not be read as a measurement.
+
+**What the functional form is worth, and what the block partition is worth,
+separated.** A later review asked for the specification without the
+institution-specific trend, for alternative pre-period start years and for the
+2020–21 composition years excluded, beside the leave-one-post-year-out arm the
+preregistration already gates on. All four are below. So is a column the request
+did not ask for and which turns out to carry the answer: **deleting a year
+renumbers every later year, so it moves the block partition as well as the
+data.** A single *p* cannot separate those two effects, so each row is also
+evaluated at all three block origins. `tools/functional_form_sensitivity.py`
+builds the table.
+
+**Table 5d — functional-form and window sensitivities.** Inner *p*
+enumerated, not sampled; the last column of each panel counts how many of the
+three block origins fall below 0.05. *from YYYY* restricts the pre-period
+start; *less YYYY* deletes that year.
+
+| variant | P1 β | P1 *p* | <.05 | P2 β | P2 *p* | <.05 |
+|---|---:|---:|---:|---:|---:|---:|
+| frozen design | +0.586 | 0.0156 | 2/3 | +0.332 | 0.0977 | 1/3 |
+| no WB trend ‡ | +1.042 | 0.0586 | 1/3 | +0.943 | 0.1289 | 1/3 |
+| from 2003 | +0.562 | 0.3125 | 2/3 | +0.297 | 0.1719 | 0/3 |
+| from 2007 | +0.548 | 0.0156 | 2/3 | +0.416 | 0.0156 | 2/3 |
+| from 2011 | +0.288 | 0.0625† | 0/3 | +0.299 | 0.2500† | 0/3 |
+| less 2020 | +0.575 | 0.3164 | 2/3 | +0.309 | 0.1523 | 0/3 |
+| less 2021 | +0.589 | 0.2969 | 2/3 | +0.280 | 0.2695 | 0/3 |
+| less 2020–21 | +0.577 | 0.0156 | 2/3 | +0.244 | 0.0859 | 0/3 |
+| IMF reweighted (IPW) | +0.586 | 0.0117 | 2/3 | +0.331 | 0.0977 | 1/3 |
+| IMF counts only ¶ | +0.543 | 0.1172 | 1/3 | +0.304 | 0.0938 | 0/3 |
+| less 2023 (C4) | +0.923 | 0.0117 | 3/3 | +0.548 | 0.0586 | 0/3 |
+| less 2024 (C4) | +0.207 | 0.1797 | 1/3 | +0.071 | 0.4766 | 0/3 |
+| less 2025 (C4) | +0.566 | 0.0156 | 2/3 | +0.357 | 0.1445 | 0/3 |
+
+† *A 15-year window has five blocks, so the support is 2⁵ = 32 and the smallest
+attainable* p *is 0.0625. That row cannot be significant whatever the data say;
+reading it as evidence would be reading the support size. Any window shorter
+than sixteen common years has this property.*
+
+¶ *The comparator is a capped annual cross-section with inclusion
+probabilities running 0.31 to 1.00, so a review asked for it reweighted to the
+population. Inflating a sampled cell to its population total scales the count
+and the token denominator by the same 1/π, and the estimand is a rate — so β
+moves by 0.0001 on P1 and 0.0010 on P2, which is the rounding of counts back to
+integers. **The requested sensitivity is degenerate for this estimator**, and it
+is computed rather than argued. Scaling the count alone does move β, to +0.543,
+but that inflates a numerator without its denominator and is a different
+quantity; it is shown so the difference is visible rather than assumed.*
+
+‡ *WB × centred-year deleted. Not a better-identified version of the published
+β: without the trend term β becomes a pre/post contrast absorbing the whole
+1999–2022 divergence — a different estimand, reported because it was asked for,
+and precisely the quantity §5 says the design is built to avoid reporting.*
+
+**Three readings, and the second is the one that matters.** First, the frozen
+*p* is not an artifact of the frozen origin: two of the three origins put P1 at
+0.0156. Second, **the rows that move P1 are exactly the two the design says it
+cannot separate** — deleting the institution trend takes β from 0.586 to 1.042
+while pushing *p* to 0.0586, and deleting fiscal 2024 takes β to 0.207 and *p*
+to 0.1797. Both were already named in §5 and §7 as the identification problem;
+the table gives them numbers. Third, the single-year deletions look devastating
+at the frozen origin — dropping 2020 sends P1 to 0.3164 — and are not: at the
+other two origins the same rows return 0.0117 and 0.0195, so what moved was the
+partition, not the evidence. A reader given only the frozen-origin column would
+have drawn the wrong conclusion from this table, which is why the column beside
+it is there.
+
 
 **The engine holds its size under a Poisson null, and not under a mildly
 overdispersed one.** An 800-replicate study gives empirical size 0.0512 (P1) and
@@ -1256,7 +1371,18 @@ documents leave the panels by language ruling, all ICR, all 2000–2005 — and
 removing pre-period documents from one arm is not neutral to a pre/post contrast,
 in the direction that favours our own estimate. Within-stratum composition
 (region, sector, instrument, template era) remains untreated, which is §6.1's own
-lesson not yet applied to §6.2. And RQ1 is an **independent reconstruction, not a
+lesson not yet applied to §6.2. The corpus-selection result carries a limitation of its own that §6.1 reports
+and this section should not omit: the excluded class's opposing trend is a
+change of membership between the two windows, not a rise in any institution's
+prose, because ICSID and MIGA did not exist in 1946–65 (Table 3d). The
+factor-of-three finding does not depend on that trend — a higher-rate late
+population flattens a falling one whether or not it is itself rising — but any
+reading of the excluded class as "sibling organisations writing differently"
+is unsupported, and an earlier draft of this paper made it. Institution, genre,
+period coverage and extraction route change together at that boundary, and
+nothing here separates them.
+
+And RQ1 is an **independent reconstruction, not a
 strict replication**: the pamphlet's corpus, features and assembly rules were
 never released, so there is no workflow to re-execute; we claim qualitative
 directional agreement, and the era figures are means over broad windows rather
@@ -1284,7 +1410,7 @@ to the observed series the Holm C1 bound is **0.086** against a nominal 0.05,
 but
 **0.045 with no shock at all and 0.063 with an i.i.d. one** — so most of the
 excess is unmodelled overdispersion in one arm rather than serial dependence,
-and under the preregistered mean structure the same rule sits at **0.037**,
+and under the preregistered mean structure the same rule sits at **0.0365**,
 below nominal. An earlier version of this paragraph named serial dependence and
 the nine-block construction as the fault. Neither survives the measurement
 (§6.2, S10.4), and the design-level remedy is still more years — not because the
@@ -1327,10 +1453,11 @@ was found by measurement rather than suspicion:
 - **Document selection triples a diachronic magnitude; the unit of analysis
   changes nothing.** Assembled and pool Annual-Report series give a 43% and a 14% decline over the
 same fiscal years on the equal-year mean, 28% and 14% token-weighted, and the difference is attributable to which document series
-are included — the excluded sibling-organisation volumes trend *upward* while
-the Bank's own volumes fall. Those series differ in institution, genre, period
-coverage and extraction route at once, so the design cannot assign the effect to
-any one of them. Concatenation into fiscal-year
+are included — the excluded sibling-organisation class rises while the Bank's
+own volumes fall, though Table 3d shows that rise to be composition rather than
+prose: each sibling falls on its own series. Those series differ in institution,
+genre, period coverage and extraction route at once, so the design cannot assign
+the effect to any one of them. Concatenation into fiscal-year
   units contributes 0.0 percentage points, because for a token-normalised rate it
   is arithmetically identical to a token-weighted mean. We claimed the opposite in
   two earlier drafts, and an unmatched year set briefly made the pool series
@@ -1392,8 +1519,9 @@ in `docs/figures/`.
 - **Figure 1** — `fig1_composition`. Temporal anchoring per thousand tokens over
   common fiscal years, in three panels: the assembled series (the Bank's own
   volumes), the whole document pool, and the 195 files the assembly excludes.
-  The excluded files trend upward while the assembled series falls, which is what
-  produces the factor of three.
+  The excluded files rise as a class while the assembled series falls, which is
+  what produces the factor of three; Table 3d decomposes that class rise into a
+  change of membership between the two windows rather than a change in prose.
 - **Figure 2** — `fig2_panels`. Tier-1 markers per thousand tokens by
   institution, both confirmatory panels, with the prespecified 2023 break marked.
 - **Figure 3** — `fig3_power`. The preregistered power curve under three
@@ -1434,17 +1562,22 @@ writing: DOI to be inserted here before publication.** It is built by
 every IMF-derived file by hash without depositing its bytes.
 
 **Access to the comparator corpus.** The permission of 2026-08-20 governs bulk
-retrieval and redistribution, not access: the IMF publishes these reports and any
-reader can obtain them from the Fund's website by country and report number, or
-by the DOI, which identifies the document and resolves to its eLibrary landing
-page. Automated collection is another matter and we report it as we met it. The site is
+retrieval and redistribution, not access: the IMF publishes these reports and
+serves them from its own website without credentials, by country and report
+number or by the DOI, which identifies the document and redirects to its
+eLibrary landing page rather than to the PDF. Automated collection is another matter and we report it as we met it. The site is
 bot-protected and its failures are silent: an absent report redirects to an error
 page served at **HTTP 200 with `text/html`**, so a status code alone reports
 success for a document that is not there — a byte-checked probe of 20 sampled documents on 2026-08-29 found the static path serving a real PDF for 16 and an error page for four, and the DOI resolving to a document for none (`data/meta/imf_access_probe.json`). Our own retrieval needed a
-documented ladder in which **705 documents came from static paths, four through a
-media tree, one through a bounded verification-gated sequence and 354 through a
-public web archive**, a split the probe reproduces
-(`tools/retrieval_route_tally.py`). `data/meta/imf_document_index.csv` lists all
+documented ladder in which **705 documents came from legacy static paths, four
+from the CMS media tree, one from a bounded verification-gated sequence and 354
+from the media-tree link the IMF itself published on the report's own page, read
+out of a web-archive snapshot of that page because the live page is WAF-blocked**
+— a split the probe reproduces (`tools/retrieval_route_tally.py`). **All 1,064
+PDFs were fetched from `www.imf.org`; none came from the archive.** An earlier
+wording of this sentence said 354 documents came "through a public web archive",
+which an external reviewer read as 354 documents obtained from an archive; the
+manifest records `www.imf.org` as the host for every one. `data/meta/imf_document_index.csv` lists all
 1,064 by report number, year, country, DOI and SHA-256, so a reader who obtains a
 document by any route can hash it against that index and confirm byte identity
 with the copy analysed here. Seven carry no DOI and are located by country and
@@ -1461,21 +1594,18 @@ IMF is not responsible for any analysis or conclusions drawn from these document
 World Bank content is public disclosure under its Access to Information Policy.
 
 **Use of AI assistance.** This work used Anthropic's Claude (Opus 4.x and Opus 5,
-via Claude Code) extensively and throughout, and the design record says so on its
-face rather than in retrospect: `docs/SAP_FINAL_DRAFT_20260820.md` records the
-statistical analysis plan as drafted by the assistant, `docs/RULING_20260820_
-prior_inspection.md` and the two deviation records name it as the party that
-decided, and the version history carries `Co-Authored-By` trailers on the
-majority of commits. Specifically, the assistant drafted the preregistration and
-the analysis plan; wrote essentially all of the retrieval, extraction, inference
-and diagnostic code; ran the analyses; drafted the manuscript and this
-supplement; and, under standing instruction to decide rather than defer, made
-methodological calls that are recorded individually in `docs/` with the
-instruction that authorised them. Several results reported here — the
-corpus-selection decomposition, the seed collisions, the calibration ladder of
-S10.4 — were found by the assistant auditing its own earlier work across
-successive review rounds, and the errors it found in that work are reported in
-the sections where they occurred rather than removed.
+via Claude Code) throughout. The assistant drafted the preregistration and the
+statistical analysis plan, wrote essentially all of the retrieval, extraction,
+inference and diagnostic code, ran the analyses, drafted the manuscript and the
+supplement, and made methodological choices under a standing instruction from
+the author to decide rather than leave a question open. Each such choice is
+recorded individually in `docs/` — the analysis plan, decisions D-1 to D-13, two
+deviation records and a prior-inspection ruling — with the instruction that
+authorised it, and the version history carries `Co-Authored-By` trailers on the
+majority of commits, so the scope is auditable rather than summarised. Several
+results reported here, among them the corpus-selection decomposition and the
+calibration of S10.4, correct errors made earlier in this same work; they are
+reported in the sections where those errors occurred rather than removed.
 
 The human author is the sole author and takes full responsibility for the
 content. [AUTHOR ATTESTATION — to be completed before submission: that the author has
@@ -1486,26 +1616,26 @@ his; and amending the paragraph above wherever it overstates or understates what
 he verified. Deliberately not filled by the assistant: it is an attestation only
 the author can make.]
 
-No AI system is an author. The tool's outputs were verified by an executable
-test suite of 437 tests, by the guards in `tools/` that refuse to build the
-submission when a stated number disagrees with the filesystem, and by successive
-independent third-party reviews whose findings and our responses are recorded in
-`docs/`.
+No AI system is an author. Outputs were verified by an executable test suite,
+by the guards in `tools/` that refuse to build the submission when a stated
+number disagrees with the filesystem, and by successive independent third-party
+reviews whose findings and our responses are recorded in `docs/`. (The suite's
+size is a number that drifts, so it is stated in the repository README, which is
+regenerated, rather than here.)
 
 ---
 
 ## References
 
-*Audited by `tools/audit_citations.py` on 2026-08-30: all 34 entries parsed,
-31 resolved against Crossref with matching first author and year, three
-conference papers carry stable proceedings URLs in place of a DOI, and every
-entry is cited in the body with no in-text citation missing from the list.
-The Lopez Bernal (2017) Crossref record is the online-first one and carries no
-print pagination; the printed citation here is the fuller one.*
+*Lopez Bernal et al. (2017) is cited in its print form, 46(1):348–355; the
+Crossref record for `10.1093/ije/dyw098` is the online-first one, dated 2016
+and carrying neither volume nor pages.*
 
 **Bankspeak and institutional discourse.** Moretti, F. & Pestre, D. (2015).
-Bankspeak: The language of World Bank reports. *Literary Lab Pamphlet 9*; also
-*New Left Review* 92:75–99. DOI 10.64590/167. · Barnett, M. & Finnemore, M.
+Bankspeak: The language of World Bank reports, 1946–2012. *Stanford Literary
+Lab Pamphlet 9*, March 2015. https://litlab.stanford.edu/LiteraryLabPamphlet9.pdf
+· Moretti, F. & Pestre, D. (2015). Bankspeak. *New Left Review* II(92):75–99.
+DOI 10.64590/167. · Barnett, M. & Finnemore, M.
 (1999). The politics, power, and pathologies of international organizations.
 *International Organization* 53(4):699–732. DOI 10.1162/002081899551048. ·
 Cornwall, A. & Brock, K. (2005). What do buzzwords do for development policy?
