@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+e5e32c4  2026-09-03  D-14 footprint claim restated per artifact; publish_evidence_repo.py for the no-token route
+b719ad1  2026-09-03  Superseded-release guard: window spans line breaks and accepts the plural
 f4916ea  2026-09-03  Version DOI filled: 10.5281/zenodo.22272212 (v1.3.1), every guard green
 7c63e3c  2026-09-03  v1.3.0 was tagged at the round-19 commit; name it superseded and prepare v1.3.1
 98febdb  2026-09-03  Author fields supplied: ORCID 0000-0002-7747-6854 and institutional email, on the title page and in every echo

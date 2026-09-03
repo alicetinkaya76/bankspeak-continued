@@ -242,11 +242,17 @@ held a report number. The content scan then refused `imf_frame_publication.json`
 for 78 of them: the within-cell fragility check had written the report number
 of each unselected document it dropped, and none of those 78 is among the
 1,064 in the published index. A report number is a catalogue identifier and
-not extracted text, but the compliance record describes an identifier footprint
-of exactly the analysed documents, and this would have widened it to documents
-never retrieved. The tool now withholds the id (the fragility estimate is what a
-reader needs), the file was regenerated, the evidence deposit was rebuilt from
-it, and the ruling stands on the corrected file. The scan did what it is for.
+not extracted text. The distinction that matters is between the two public
+artifacts: the code mirror carries identifiers only for the 1,064 analysed
+documents (the published index), while the evidence deposit carries the
+eligible frame's identifiers by design, because the data-availability
+statement and S10.7 promise the frame so the draw can be replayed. The
+fragility check's ids therefore disclosed nothing the deposit does not, but
+they broke the mirror's rule, and the estimate is what a reader needs from
+that check. The tool withholds the id, the file was regenerated, and the
+ruling stands on the corrected file. (The first wording of this correction
+said the ids would have widened the identifier footprint; that was true of the
+mirror and not of the deposit, and is restated here.) The scan did what it is for.
 
 **Ruling.** They are derived, non-substitutive outputs of the kind the
 permission allows, and are redistributable. They join the mirror's include

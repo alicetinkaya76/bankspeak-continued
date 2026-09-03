@@ -33,6 +33,6 @@
     }
   ],
   "language": "eng",
-  "license": "MIT",
+  "license": "other-open",
   "notes": "Code (src/, tools/, tests/, config/) is MIT licensed. Documentation (docs/) is licensed CC BY 4.0. No World Bank or IMF document text or bibliographic frame is included; the IMF corpus is held under a permission forbidding redistribution."
 }

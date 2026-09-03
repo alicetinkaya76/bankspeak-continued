@@ -77,8 +77,10 @@ stage.
 - D-14, the three IMF-derived aggregates: ruled redistributable as derived
   outputs under the permission, then corrected the same day when the public
   mirror's content scan found 78 report numbers of unselected documents in the
-  frame file. The tool now withholds those ids; the file, the deposit and the
-  mirror were rebuilt; the ruling stands on the corrected file.
+  frame file. Those ids disclosed nothing the evidence deposit does not (the
+  deposit carries the eligible frame's identifiers so the draw can be
+  replayed), but they broke the mirror's own rule, so the tool withholds them;
+  the file, the deposit and the mirror were rebuilt.
 
 ## The release, and what remains
 
