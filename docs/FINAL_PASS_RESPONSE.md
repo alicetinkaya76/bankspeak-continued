@@ -100,14 +100,40 @@ the manuscript, the cover letter and the data-availability statement; it
 refused the v1.3.0 DOI in a check run first. The evidence deposit's metadata
 declares itself a supplement to v1.3.1.
 
-**One thing remains, and it is the author's by construction.** The evidence
-deposit (`build/zenodo_evidence_deposit.zip`, 831 files, verified against its
-list, identifier-free) needs a Zenodo token with `deposit:write` to upload;
-`.env` holds a placeholder, and the uploader's own text says the token is not
-its to create. Upload by hand at zenodo.org, or put the token in `.env` and run
-`python tools/upload_evidence_deposit.py --publish`; then
-`python tools/record_evidence_doi.py <DOI>`, rebuild the PDFs, and the last
-bracket in the data-availability statement is gone.
+**The evidence deposit goes the same way as the code: a public repository and a
+release.** The author publishes to Zenodo only through GitHub releases and the
+repository webhook, with no token and no API, so the deposit gets a repository
+of its own: `alicetinkaya76/bankspeak-evidence-deposit`, built by
+`tools/publish_evidence_repo.py` from the staged, licence-filtered tree, with a
+dataset `.zenodo.json` (creators with ORCID, licence `other-open` for the mixed
+World Bank and CC BY content, `isSupplementTo` the v1.3.1 code DOI), a
+file-by-file LICENSE.md, and `.gitattributes` set to `* -text` because
+MANIFEST.csv hashes the working-tree bytes and 33 CSVs are CRLF.
+
+A preflight audit of that tree before publication found what the scanners had
+not: about sixteen verbatim IMF document titles and five real IMF-published PDF
+filenames in test fixtures under `tests/`, which both the code mirror and the
+deposit copy wholesale, plus filename stems in the compliance record's probe
+table and in a draft query document. Fixtures were replaced with synthetic
+strings that keep each test's logic; the compliance record's stems are
+withheld with a note; the draft no longer ships. A new test reads the
+unpublished frame on this machine and refuses any shipped text carrying a
+title or a filename, and the staging tool now scans `.py`, `.md` and `.yaml`
+files, not only the redacted CSV. The four archived code releases predate this
+and carry the fixtures; the next release does not.
+
+**What remains is the one browser step.** The webhook that lets Zenodo see the
+new repository is created by switching it on at
+https://zenodo.org/account/settings/github/, which only the account owner can
+do. Once it is on:
+
+```bash
+cd ~/Desktop/bankspeak/bankspeak-continued && .venv/bin/python tools/publish_evidence_repo.py --release v1.0.0
+```
+
+mints the dataset DOI within minutes; then `python tools/record_evidence_doi.py
+<DOI>` and a PDF rebuild close the last bracket in the data-availability
+statement.
 
 Suite: 479. Guards: placeholder report clean on the manuscript and the built
 PDF, metadata, counts and cross-references all green.

@@ -206,7 +206,7 @@ def sequence_candidates(report_no: str, iso3: str) -> list[str]:
     base = f"https://www.imf.org/-/media/files/publications/cr/{year}"
     # The English rendition sits under /english/ from 2020 on, but at the YEAR
     # ROOT in 2019, where only the other languages get a subfolder
-    # (.../cr/2019/1ecuea2019001.pdf against .../cr/2019/french/1ecufa2019001.pdf).
+    # (.../cr/2019/1xxxea2019NNN.pdf against .../cr/2019/french/1xxxfa2019NNN.pdf).
     # Assuming the 2020 shape put 2019/079 out of reach; both are tried.
     return [f"{base}/{sub}1{iso}ea{year}{n:03d}.pdf"
             for n in range(1, SEQ_LIMIT + 1) for sub in ("english/", "")]

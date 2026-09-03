@@ -269,12 +269,12 @@ def test_coveo_body_is_the_page_query_minus_session_fields():
 
 # ------------------------------------------------------- A2 catalog fields --
 def test_report_no_is_carried_verbatim_from_seriesvolumeno(tmp_path):
-    pub = result("p1", "Colombia: Staff Report for the 1999 Article IV "
+    pub = result("p1", "Freedonia: Staff Report for the 1999 Article IV "
                  "Consultation", volno="Country Report No.  1999/149",
                  iso=["COL"], series=["IMF Staff Country Reports"],
                  imftype="Issue Page")
     news = result("p2", "IMF Executive Board Concludes 2025 Article IV "
-                  "Consultation with Mongolia", iso=["MNG"],
+                  "Consultation with Ruritania", iso=["MNG"],
                   imftype="Press Release")
     df, _, _ = run(tmp_path, [(200, page(2, [pub])),
                               (200, page(2, [pub, news]))])
@@ -294,7 +294,7 @@ def test_frozen_parser_turns_the_catalog_string_into_a_report_id():
 
 
 def test_multi_country_isocode_is_preserved_not_collapsed(tmp_path):
-    multi = result("p9", "Euro Area Policies: 2025 Article IV Consultation",
+    multi = result("p9", "Sylvania Union: 2025 Article IV Consultation",
                    iso=["DEU", "FRA"], imftype="Issue Page")
     df, _, _ = run(tmp_path, [(200, page(1, [multi])),
                               (200, page(1, [multi]))])

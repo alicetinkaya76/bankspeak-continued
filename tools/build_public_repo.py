@@ -115,8 +115,10 @@ LEAK = [
 ]
 TEXTY = {".py", ".md", ".csv", ".json", ".yaml", ".yml", ".txt", ".jsonl", ".cfg"}
 # Files that legitimately discuss the IMF in prose and carry no document data.
-PROSE_OK = {"IMF_ACCESS_COMPLIANCE_20260820.md", "IMF_RETRIEVAL_20260820.md",
-            "IMF_QUERY_DRAFT_archive_route.md"}
+# The draft query document used to be here too. It is cited by nothing that
+# ships, and it quoted an IMF-published filename; a draft has no claim to
+# publication and it now falls under the docs/IMF_ rule like the others.
+PROSE_OK = {"IMF_ACCESS_COMPLIANCE_20260820.md", "IMF_RETRIEVAL_20260820.md"}
 
 # Exempt from the PATH filter, still subject to the CONTENT scan below.
 #
@@ -142,7 +144,6 @@ PATH_EXEMPT = {
     "tools/imf_corpus_to_pipeline.py",      # corpus -> pipeline adapter
     "docs/IMF_RETRIEVAL_20260820.md",       # cited by §3 of the manuscript
     "docs/IMF_ACCESS_COMPLIANCE_20260820.md",   # cited by §3 of the manuscript
-    "docs/IMF_QUERY_DRAFT_archive_route.md",
     # The supplement tells readers to run both of these ("Reproduce with
     # python tools/imf_cadence_balance.py", and the same for the frame
     # publication). The basename rule was dropping them from the export, so the

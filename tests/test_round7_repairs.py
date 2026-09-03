@@ -50,8 +50,8 @@ def test_true_multi_and_regional_still_excluded_s09b():
 
 
 def test_tto_article_iv_included_s09a():
-    fx = pd.DataFrame([{"title": "Trinidad and Tobago: 2024 Article IV "
-                        "Consultation; IMF Country Report No. 24/100",
+    fx = pd.DataFrame([{"title": "Trinidad and Tobago: 2041 Article IV "
+                        "Consultation; IMF Country Report No. 41/901",
                         "url": "u", "pub_date": "2024-05-01"}])
     _f, audit = imf_build(fx)
     assert audit.iloc[0]["status"] == "included"
@@ -60,9 +60,9 @@ def test_tto_article_iv_included_s09a():
 
 # --------------------------------------------------- FSSA text resolution --
 def test_fssa_cotitled_included_with_flag():
-    fx = pd.DataFrame([{"title": "Canada: 2024 Article IV Consultation and "
+    fx = pd.DataFrame([{"title": "Canada: 2042 Article IV Consultation and "
                         "Financial System Stability Assessment; IMF Country "
-                        "Report No. 24/321", "url": "u",
+                        "Report No. 42/902", "url": "u",
                         "pub_date": "2024-07-01"}])
     _f, audit = imf_build(fx)
     assert audit.iloc[0]["status"] == "included"
@@ -70,8 +70,8 @@ def test_fssa_cotitled_included_with_flag():
 
 
 def test_standalone_fssa_excluded():
-    fx = pd.DataFrame([{"title": "Canada: Financial System Stability "
-                        "Assessment; IMF Country Report No. 24/322",
+    fx = pd.DataFrame([{"title": "Freedonia: Financial System Stability "
+                        "Assessment; IMF Country Report No. 42/903",
                         "url": "u", "pub_date": "2024-07-02"}])
     _f, audit = imf_build(fx)
     assert audit.iloc[0]["status"].startswith("excluded")

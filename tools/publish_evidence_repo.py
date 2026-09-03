@@ -43,12 +43,43 @@ CODE_DOI = os.environ.get("BANKSPEAK_CODE_VERSION_DOI", "10.5281/zenodo.22272212
 SAP_DOI, OSF_DOI = "10.5281/zenodo.22098259", "10.17605/OSF.IO/5C9J8"
 
 sys.path.insert(0, str(ROOT / "tools"))
-from package_evidence_deposit import DESCRIPTION            # noqa: E402
+DESCRIPTION = (
+    "<p><b>Evidence deposit for <i>Reconstructing Bankspeak</i></b>: the artifacts "
+    "behind an independent reconstruction of Moretti and Pestre's <i>Bankspeak</i> "
+    "(2015) from primary World Bank documents, and a preregistered test of whether "
+    "post-2022 vocabulary associated with large language models shows a World Bank "
+    "discontinuity against an IMF Article IV comparator. <b>The confirmatory result "
+    "is negative</b>: no panel satisfies the preregistered decision rule.</p>"
+    "<p>The companion code archive is {code} (v1.3.1); this record carries the "
+    "evidence it was run on. Unpack <code>payload/data</code> as <code>data/</code> "
+    "in a checkout of that release, then <code>python tools/make_paper_tables.py</code> "
+    "reproduces all seven manuscript tables byte for byte and "
+    "<code>python tools/make_paper_figures.py</code> all four figures.</p>"
+    "<p><b>Deposited:</b> write-once World Bank API captures with their request "
+    "logs, frozen sampling frames, retrieval and exclusion ledgers, quality-control "
+    "summaries, the OCR inventory and calibration, document- and year-level counts "
+    "with token denominators, feature-family counts, the confirmatory panel cells, "
+    "both validation batteries, the governing family verdict, the power curves, and "
+    "the post-hoc dispersion, calibration and block-origin studies.</p>"
+    "<p><b>Not deposited, and hashed instead:</b> everything IMF. The 1,064 Article "
+    "IV staff reports are held under a written permission that forbids "
+    "redistributing documents or extracted text and permits derived, "
+    "non-substitutive outputs including SHA-256 hashes. <code>MANIFEST.csv</code> "
+    "lists every IMF-derived file by path and SHA-256 with disposition "
+    "<code>hash_only_not_deposited</code>, so a researcher who lawfully obtains the "
+    "same documents can verify byte identity before rerunning anything. The frozen "
+    "sampling frame ships with its title and URL columns removed for every row.</p>"
+    "<p>Licence: World Bank captures under the Bank's terms; the author's derived "
+    "data under CC BY 4.0; the copied code files under MIT as in the code archive. "
+    "See LICENSE.md.</p>"
+    "<p>Stage-A preregistration: {osf}. Stage-B statistical analysis plan, "
+    "externally timestamped before any reported outcome was computed: {sap}.</p>"
+)
 
 ZENODO = {
     "title": "Bankspeak, Continued: Stage-B evidence deposit",
     "upload_type": "dataset",
-    "description": DESCRIPTION,
+    "description": DESCRIPTION.format(code=CODE_DOI, osf=OSF_DOI, sap=SAP_DOI),
     "creators": [{"name": "Çetinkaya, Ali", "orcid": "0000-0002-7747-6854",
                   "affiliation": "Selçuk University"}],
     "access_right": "open",
@@ -70,28 +101,44 @@ ZENODO = {
 
 LICENSE_MD = """# Licence
 
-This record mixes two kinds of material and they carry different terms.
+This repository is the Stage-B evidence deposit for "Bankspeak, Continued". It
+mixes material with different terms, file by file.
 
-**World Bank API captures** (`payload/data/meta/wb_*_raw/` and the request logs
-beside them) are the World Bank's own metadata, retrieved from its Documents
-and Reports service and reproduced here unchanged as a write-once record of
-what was retrieved. They remain under the World Bank's terms of use for that
-service and are not relicensed by this deposit.
+## 1. World Bank API captures: the World Bank's terms, not relicensed
 
-**Everything else** (sampling frames, retrieval and exclusion ledgers,
-quality-control summaries, derived counts, features, panel cells, validation
-batteries, calibration outputs and the manifest) was produced by the author and
-is released under Creative Commons Attribution 4.0 (CC BY 4.0).
+`payload/data/meta/wb_p1p2_raw/`, `payload/data/meta/wb_p0_raw/` and the
+request logs beside them are the World Bank's own metadata, retrieved from its
+Documents and Reports service and reproduced unchanged as a write-once record
+of what was retrieved. They remain under the World Bank's terms of use for that
+service and the Access to Information Policy.
 
-**Nothing from the IMF is included.** The 1,064 IMF Article IV staff reports
-analysed in the study are held under a written permission that forbids
-redistributing the documents or extracted text. They are listed in
-`MANIFEST.csv` by path and SHA-256 with disposition `hash_only_not_deposited`,
-and identified in `payload/data/meta/imf_document_index.csv` by report number,
-year, country, DOI and hash, with no title and no URL.
+## 2. The author's derived data: CC BY 4.0
+
+Sampling frames, retrieval and exclusion ledgers, quality-control summaries,
+derived counts, features, panel cells, validation batteries, calibration
+outputs and `MANIFEST.csv` were produced by the author and are released under
+Creative Commons Attribution 4.0 International.
+
+## 3. Code files: MIT, as in the code archive
+
+The copies of `payload/tools/`, `payload/src/` and `payload/tests/` are the
+same files as the companion code archive and carry its MIT licence, so that a
+file is not under two licences depending on where it was downloaded from.
+
+## Nothing from the IMF is included
+
+The 1,064 IMF Article IV staff reports analysed in the study are held under a
+written permission that forbids redistributing the documents or extracted
+text. They appear in `MANIFEST.csv` by path and SHA-256 with disposition
+`hash_only_not_deposited`, and in `payload/data/meta/imf_document_index.csv` by
+report number, year, country, DOI and hash, with no title and no URL.
 """
 
-GITATTRIBUTES = "* text=auto eol=lf\n*.csv text eol=lf\n*.json text eol=lf\n*.md text eol=lf\n"
+# Bytes are frozen: MANIFEST.csv hashes the working-tree bytes and 33 CSVs are
+# CRLF. Any normalisation would silently invalidate every hash in the zipball
+# Zenodo archives, so git is told to touch nothing.
+GITATTRIBUTES = "* -text\n"
+GITIGNORE = ".DS_Store\n__pycache__/\n*.pyc\n.pytest_cache/\n.venv/\n.env\n.env.*\n"
 
 
 def scan_stage() -> None:
@@ -136,6 +183,7 @@ def stage() -> None:
         json.dumps(ZENODO, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (REPO_DIR / "LICENSE.md").write_text(LICENSE_MD, encoding="utf-8")
     (REPO_DIR / ".gitattributes").write_text(GITATTRIBUTES, encoding="utf-8")
+    (REPO_DIR / ".gitignore").write_text(GITIGNORE, encoding="utf-8")
     n = sum(1 for f in REPO_DIR.rglob("*") if f.is_file() and ".git" not in f.parts)
     print(f"[evidence-repo] staged {n} files in {REPO_DIR}")
 

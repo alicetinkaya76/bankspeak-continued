@@ -91,6 +91,12 @@ def main() -> int:
     # found it by opening the zip. A build with two steps and no check between
     # them is a build that can be half-run, so the staging step is now called
     # here and the zip is verified against the list before it is reported.
+    # The staging script adds files and never removes them, so a file dropped
+    # from its list survived from an earlier run, unlisted in MANIFEST.csv, and
+    # went into the zip. Rebuild the payload from nothing every time.
+    import shutil
+    if (DEPOSIT / "payload").exists():
+        shutil.rmtree(DEPOSIT / "payload")
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "prepare_zenodo_deposit.py"),
                         "--out", str(DEPOSIT), "--copy"],
                        cwd=ROOT, capture_output=True, text=True)
@@ -123,6 +129,22 @@ def main() -> int:
             print(f"    missing from zip: {rel}")
         raise SystemExit(f"[package] REFUSING: {len(missing)} listed file(s) are "
                          "not in the zip; the staging step did not pick them up")
+    # ... and nothing in the zip may be absent from the manifest: an unlisted
+    # file is one nobody hashed, which is how the stale README travelled.
+    import csv
+    with zipfile.ZipFile(OUT_ZIP) as z:
+        payload_entries = {n.split("/payload/", 1)[1] for n in z.namelist()
+                           if "/payload/" in n and not n.endswith("/")}
+    with (DEPOSIT / "MANIFEST.csv").open(encoding="utf-8") as fh:
+        listed = {r["path"] for r in csv.DictReader(fh)
+                  if r["disposition"].startswith("deposited")}
+    extras = sorted(payload_entries - listed)
+    if extras:
+        for rel in extras[:10]:
+            print(f"    in zip, not in manifest: {rel}")
+        raise SystemExit(f"[package] REFUSING: {len(extras)} zip entr(y/ies) are "
+                         "not in MANIFEST.csv")
+    print(f"[package] zip and manifest agree: {len(payload_entries)} payload files")
     print(f"[package] every listed file present in the zip "
           f"({sum(1 for rel in _LIST if (ROOT / rel).exists())} checked)")
 

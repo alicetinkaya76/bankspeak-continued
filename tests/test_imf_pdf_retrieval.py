@@ -58,6 +58,8 @@ verify = _load("verify_imf_cr_pdfs")
 fitz = pytest.importorskip("fitz")
 
 PDF_MAGIC = b"%PDF-1.7\n"
+# Fixture countries, ISO3 codes (ISO 3166 user-assigned: XFD, XRT), titles and
+# media stems are synthetic; documents are referred to by report number only.
 
 
 def make_pdf(path, text="", title=""):
@@ -94,8 +96,8 @@ def test_legacy_url_uses_the_report_number_year_not_the_sample_year():
 # ------------------------------------------------------- L2 language selection
 
 def test_pick_english_prefers_the_english_folder():
-    links = ["/-/media/Files/Publications/CR/2023/French/1GINFA2023001.ashx",
-             "/-/media/Files/Publications/CR/2023/English/1GINEA2023001.ashx"]
+    links = ["/-/media/Files/Publications/CR/2023/French/1XFDFA2023001.ashx",
+             "/-/media/Files/Publications/CR/2023/English/1XFDEA2023001.ashx"]
     assert "English" in fetch.pick_english(links)
 
 
@@ -107,14 +109,14 @@ def test_pick_english_rejects_every_non_english_rendition():
 
 
 def test_pick_english_accepts_a_link_with_no_language_folder():
-    # the 2019 shape: .../cr/2019/cr1927-senegal-a4.pdf
-    link = "/-/media/files/publications/cr/2019/cr1927-senegal-a4.pdf"
+    # the 2019 shape: .../cr/2019/cr19nn-<country-slug>-a4.pdf
+    link = "/-/media/files/publications/cr/2019/cr1900-freedonia-a4.pdf"
     assert fetch.pick_english([link, "/-/media/files/publications/cr/2019/french/x.pdf"]) == link
 
 
 def test_resolve_via_archive_extracts_the_imf_link_and_fetches_from_imf(monkeypatch):
-    html = ('<a href="/-/media/Files/Publications/CR/2023/French/1GINFA2023001.ashx">fr</a>'
-            '<a href="/-/media/Files/Publications/CR/2023/English/1GINEA2023001.ashx">en</a>')
+    html = ('<a href="/-/media/Files/Publications/CR/2023/French/1XFDFA2023001.ashx">fr</a>'
+            '<a href="/-/media/Files/Publications/CR/2023/English/1XFDEA2023001.ashx">en</a>')
     monkeypatch.setattr(fetch, "fetch_text", lambda url: (200, html))
     monkeypatch.setattr(fetch.time, "sleep", lambda *_: None)
     url, cands = fetch.resolve_via_archive("https://www.imf.org/en/publications/cr/x")
@@ -124,10 +126,10 @@ def test_resolve_via_archive_extracts_the_imf_link_and_fetches_from_imf(monkeypa
 
 def test_resolve_via_archive_normalizes_the_underscore_legacy_artifact(monkeypatch):
     monkeypatch.setattr(fetch, "fetch_text",
-                        lambda url: (200, '<a href="/external/pubs/ft/scr/1999/_cr9947.pdf">x</a>'))
+                        lambda url: (200, '<a href="/external/pubs/ft/scr/1999/_cr9900.pdf">x</a>'))
     monkeypatch.setattr(fetch.time, "sleep", lambda *_: None)
     url, _ = fetch.resolve_via_archive("https://www.imf.org/en/x")
-    assert url.endswith("/scr/1999/cr9947.pdf")
+    assert url.endswith("/scr/1999/cr9900.pdf")
 
 
 def test_resolve_via_archive_reports_nothing_when_the_snapshot_is_missing(monkeypatch):
@@ -187,7 +189,7 @@ def test_cover_check_r1_reads_the_report_number_from_the_text_layer(tmp_path):
 
 def test_cover_check_r2_falls_back_to_the_scan_metadata_stamp(tmp_path):
     p = tmp_path / "b.pdf"
-    make_pdf(p, text="", title="Aruba: Staff Report - ISCR/99/47")
+    make_pdf(p, text="", title="Freedonia: Staff Report - ISCR/99/47")
     assert fetch.cover_check(p, "1999/047") == "ok_scan_metadata"
 
 
@@ -209,18 +211,18 @@ def test_verifier_r3_accepts_a_scan_whose_stamp_is_truncated(tmp_path):
     """1999/089 carries "ISCR/99/" and 2000/095 "ISCR0095"; R2 cannot read
     either, but the title names the document unambiguously."""
     p = tmp_path / "e.pdf"
-    title = "The Bahamas: Staff Report for the 1999 Article IV Consultation- ISCR/99/"
+    title = "Freedonia: Staff Report for the 1999 Article IV Consultation- ISCR/99/"
     make_pdf(p, text="", title=title)
     ratio = verify.difflib.SequenceMatcher(
         None, verify.norm(title),
-        verify.norm("The Bahamas: Staff Report for the 1999 Article IV Consultation")).ratio()
+        verify.norm("Freedonia: Staff Report for the 1999 Article IV Consultation")).ratio()
     assert ratio >= verify.TITLE_THRESHOLD
 
 
 def test_verifier_r3_threshold_rejects_a_different_document():
     ratio = verify.difflib.SequenceMatcher(
-        None, verify.norm("Malta: Staff Report for the 1999 Article IV Consultation"),
-        verify.norm("Brazil: Selected Issues and Statistical Appendix")).ratio()
+        None, verify.norm("Ruritania: Staff Report for the 1999 Article IV Consultation"),
+        verify.norm("Zubrowka: Selected Issues and Statistical Appendix")).ratio()
     assert ratio < verify.TITLE_THRESHOLD
 
 
@@ -318,7 +320,7 @@ def test_archive_walk_uses_an_older_capture_when_the_latest_is_a_stub(monkeypatc
     """Measured 2026-08-20: the latest capture of CR2021/103 is a 15 KB stub
     while the 2021-06-07 one carries the link."""
     good = ('<a href="/-/media/Files/Publications/CR/2021/English/'
-            '1BLZEA2021001.ashx">pdf</a>')
+            '1XRTEA2021001.ashx">pdf</a>')
 
     def fake_fetch_text(url):
         if url.startswith("https://web.archive.org/web/2id_/"):
@@ -331,7 +333,7 @@ def test_archive_walk_uses_an_older_capture_when_the_latest_is_a_stub(monkeypatc
     monkeypatch.setattr(fetch, "fetch_text", fake_fetch_text)
     monkeypatch.setattr(fetch.time, "sleep", lambda *_: None)
     url, cands = fetch.resolve_via_archive("https://www.imf.org/en/x")
-    assert url.endswith("1BLZEA2021001.ashx")
+    assert url.endswith("1XRTEA2021001.ashx")
     assert url.startswith("https://www.imf.org/-/media/")
 
 
@@ -389,12 +391,14 @@ def test_a_complete_body_with_the_eof_trailer_is_kept(tmp_path, monkeypatch):
 # ------------------------------------------------ R4 rung (added 2026-08-20)
 
 @pytest.mark.parametrize("expected,meta", [
-    ("Haiti: Staff Report for the 2000 Article IV Consultation and for a SMP",
-     "Haiti:  2000 Article IV Consultation and Staff-Monitored Program-Staff Report"),
-    ("Republic of Poland: Staff Report for the 2002 Article IV Consultation",
-     "Republic of Poland: 2002 Article IV Consultation-Staff Report; Staff Statement"),
-    ("Democratic Republic of the Congo: Staff Report for the 2003 Article IV Consultation",
-     "Democratic Republic of the Congo: 2003 Article IV Consultation, First Review"),
+    ("Freedonia: Staff Report for the 2000 Article IV Consultation and for a SMP",
+     "Freedonia:  2000 Article IV Consultation and Staff-Monitored Program-Staff Report"),
+    ("Republic of Ruritania: Staff Report for the 2002 Article IV Consultation",
+     "Republic of Ruritania: 2002 Article IV Consultation-Staff Report; Staff Statement"),
+    ("Democratic Republic of the Sylvanian Isles: "
+     "Staff Report for the 2003 Article IV Consultation",
+     "Democratic Republic of the Sylvanian Isles: "
+     "2003 Article IV Consultation, First Review"),
 ])
 def test_r4_accepts_the_same_document_phrased_differently(expected, meta):
     assert verify.country_year_match(expected, meta) is True
@@ -402,12 +406,12 @@ def test_r4_accepts_the_same_document_phrased_differently(expected, meta):
 
 @pytest.mark.parametrize("expected,meta", [
     # different country, identical boilerplate -- the case token-set overlap got wrong
-    ("Finland: Staff Report for the 2005 Article IV Consultation",
-     "Tanzania: 2005 Article IV Consultation-Staff Report; Staff Statement"),
+    ("Freedonia: Staff Report for the 2005 Article IV Consultation",
+     "Ruritania: 2005 Article IV Consultation-Staff Report; Staff Statement"),
     # right country, wrong year
-    ("Republic of Poland: Staff Report for the 2002 Article IV Consultation",
-     "Republic of Poland: 2011 Article IV Consultation-Staff Report"),
-    ("Spain: Staff Report for the 2014 Article IV Consultation", ""),
+    ("Republic of Ruritania: Staff Report for the 2002 Article IV Consultation",
+     "Republic of Ruritania: 2011 Article IV Consultation-Staff Report"),
+    ("Zubrowka: Staff Report for the 2014 Article IV Consultation", ""),
 ])
 def test_r4_rejects_a_different_document(expected, meta):
     assert verify.country_year_match(expected, meta) is False
@@ -417,7 +421,8 @@ def test_token_set_overlap_would_have_been_unsafe_here():
     """Kept as a guard against 'just loosen the threshold'.
 
     Article IV titles share nearly all their tokens, so set overlap cannot
-    discriminate: Finland against Tanzania scores above several TRUE matches.
+    discriminate: the pair below (one country's short title against another
+    country's long one) scores above several TRUE matches.
     Any future rung must beat this, not merely be more permissive."""
     import re as _re
 
@@ -429,16 +434,18 @@ def test_token_set_overlap_would_have_been_unsafe_here():
         A, B = toks(a), toks(b)
         return len(A & B) / max(1, min(len(A), len(B)))
 
-    # the real pair, verbatim from the request list (2005/035 and 2004/285).
-    # A short title against a long one containing all its generic tokens drives
-    # the min-denominator overlap to 0.86 -- above true matches R3 rejected.
-    fin = "Finland: Staff Report for the 2004 Article IV Consultation"
-    tza = ("Tanzania: 2004 Article IV Consultation and Second Review Under the "
-           "Three-Year Arrangement Under the Poverty Reduction and Growth "
-           "Facility-Staff Report; Staff Statement; and Public Information "
-           "Notice and Press Release on the Executive Board Discussion")
-    assert overlap(fin, tza) > 0.8, "the negative control must stay a real trap"
-    assert verify.country_year_match(fin, tza) is False
+    # modelled on the real pair from the request list (2005/035 against
+    # 2004/285) with the country names replaced by synthetic ones; the token
+    # structure is unchanged. A short title against a long one containing all
+    # its generic tokens drives the min-denominator overlap to 0.86 -- above
+    # true matches R3 rejected.
+    brief = "Freedonia: Staff Report for the 2004 Article IV Consultation"
+    full = ("Ruritania: 2004 Article IV Consultation and Second Review Under the "
+            "Three-Year Arrangement Under the Poverty Reduction and Growth "
+            "Facility-Staff Report; Staff Statement; and Public Information "
+            "Notice and Press Release on the Executive Board Discussion")
+    assert overlap(brief, full) > 0.8, "the negative control must stay a real trap"
+    assert verify.country_year_match(brief, full) is False
 
 
 def test_snapshot_walk_tries_the_largest_capture_first(monkeypatch):
@@ -464,10 +471,10 @@ def test_snapshot_walk_tries_the_largest_capture_first(monkeypatch):
 # ----------------------------------- L1c: bounded, verification-gated sequence
 
 def test_sequence_candidates_are_bounded_and_shaped():
-    c = fetch.sequence_candidates("2020/198", "COM")
+    c = fetch.sequence_candidates("2020/198", "XFD")
     assert len(c) == fetch.SEQ_LIMIT * 2          # two path shapes per sequence
-    assert c[0].endswith("/cr/2020/english/1comea2020001.pdf")
-    assert c[1].endswith("/cr/2020/1comea2020001.pdf")
+    assert c[0].endswith("/cr/2020/english/1xfdea2020001.pdf")
+    assert c[1].endswith("/cr/2020/1xfdea2020001.pdf")
     assert fetch.sequence_candidates("2020/198", "") == []      # no ISO3, no guess
 
 
@@ -475,29 +482,34 @@ def test_sequence_candidates_cover_the_2019_year_root_shape():
     """2019 puts the English rendition at the year root and only other languages
     in a subfolder; assuming the 2020 /english/ shape 404s and left 2019/079
     unresolved."""
-    c = fetch.sequence_candidates("2019/079", "ECU")
-    assert any(u.endswith("/cr/2019/1ecuea2019001.pdf") for u in c)
-    assert any(u.endswith("/cr/2019/english/1ecuea2019001.pdf") for u in c)
+    c = fetch.sequence_candidates("2019/079", "XRT")
+    assert any(u.endswith("/cr/2019/1xrtea2019001.pdf") for u in c)
+    assert any(u.endswith("/cr/2019/english/1xrtea2019001.pdf") for u in c)
 
 
 @needs_frozen_imf_sample
 def test_l1c_refuses_a_real_pdf_that_names_a_different_report(tmp_path, monkeypatch):
     """The gate that makes enumeration legitimate rather than guessing.
 
-    Measured: 1comea2020001 IS a valid, complete PDF -- its cover says
-    "IMF Country Report No. 20/152". Only the candidate whose cover names
-    20/198 may be kept, and the rejected one must not be left on disk.
+    Measured on 2020/198: the first sequence candidate (...2020001) IS a valid,
+    complete PDF -- its cover says "IMF Country Report No. 20/152". Only the
+    candidate whose cover names 20/198 may be kept, and the rejected one must
+    not be left on disk. The record's ISO3 is overridden with a user-assigned
+    code (XFD), so the candidate stems below name no real document.
     """
     tried = []
-    keeper = "1comea2020002.pdf"
+    keeper = "1xfdea2020002.pdf"
 
     def fake_fetch_pdf(url, dest):
-        if "1comea2020" not in url:
+        if "1xfdea2020" not in url:
             return 404, 0
         tried.append(url)
         dest.write_bytes(PDF_MAGIC + b"x\n%%EOF\n")
         return 200, 20
 
+    real_load = fetch.load_records
+    monkeypatch.setattr(fetch, "load_records",
+                        lambda: [dict(r, country_iso3="XFD") for r in real_load()])
     monkeypatch.setattr(fetch, "OUT_DIR", tmp_path)
     monkeypatch.setattr(fetch, "MANIFEST", tmp_path / "_manifest.csv")
     monkeypatch.setattr(fetch, "LOG", tmp_path / "_log.jsonl")
@@ -514,5 +526,5 @@ def test_l1c_refuses_a_real_pdf_that_names_a_different_report(tmp_path, monkeypa
     row = list(csv.DictReader((tmp_path / "_manifest.csv").open()))[0]
     assert row["route"] == "L1c_sequence_verified"
     assert row["pdf_url"].endswith(keeper)
-    assert tried[0].endswith("1comea2020001.pdf"), "candidates must run in order"
-    assert any(u.endswith("1comea2020001.pdf") for u in tried), "the decoy was fetched"
+    assert tried[0].endswith("1xfdea2020001.pdf"), "candidates must run in order"
+    assert any(u.endswith("1xfdea2020001.pdf") for u in tried), "the decoy was fetched"

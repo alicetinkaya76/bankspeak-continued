@@ -5,25 +5,25 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from s09a_imf_articleiv_frame import build_frame, parse_report_no
 
 FIX = pd.DataFrame([
- {"title": "Republic of Korea: 2024 Article IV Consultation-Press Release; "
-           "Staff Report; IMF Country Report No. 24/275",
+ {"title": "Korea: Article IV Consultation for 2024-Staff Report; Press Release; "
+           "IMF Country Report No. 24/975",
   "url": "u1", "pub_date": "2024-08-28"},
- {"title": "The Gambia: 2023 Article IV Consultation and Fourth Review Under "
-           "the Extended Credit Facility-Press Release; Country Report No. 23/311",
+ {"title": "The Gambia: Article IV Consultation for 2023 and Ninth Review Under "
+           "the Extended Credit Facility-Staff Report; Country Report No. 23/911",
   "url": "u2", "pub_date": "2023-09-01"},
- {"title": "France: Selected Issues; IMF Country Report No. 24/122",
+ {"title": "Freedonia: Selected Issues; IMF Country Report No. 24/922",
   "url": "u3", "pub_date": "2024-05-30"},
- {"title": "Eastern Caribbean Currency Union: 2024 Article IV Consultation; "
-           "Country Report No. 24/300", "url": "u4", "pub_date": "2024-09-10"},
+ {"title": "Sylvania Currency Union: Article IV Consultation for 2024; "
+           "Country Report No. 24/930", "url": "u4", "pub_date": "2024-09-10"},
  {"title": "Ruritania: 2024 Article IV Consultation; Country Report No. 24/900",
   "url": "u5", "pub_date": "2024-03-01"},
- {"title": "Japan: 2020 Article IV Consultation; IMF Country Report No. 20/39",
+ {"title": "Japan: Article IV Consultation for 2020; IMF Country Report No. 20/939",
   "url": "u6", "pub_date": "2020-02-10"},
- {"title": "Japan: 2020 Article IV Consultation (Corrigendum); "
-           "IMF Country Report No. 20/39", "url": "u7", "pub_date": "2020-03-05"},
- {"title": "Germany: 2026 Article IV Consultation; Country Report No. 26/10",
+ {"title": "Japan: Article IV Consultation for 2020 (Corrigendum); "
+           "IMF Country Report No. 20/939", "url": "u7", "pub_date": "2020-03-05"},
+ {"title": "Germany: Article IV Consultation for 2026; Country Report No. 26/910",
   "url": "u8", "pub_date": "2026-01-20"},
- {"title": "Suisse: Consultation de 2024 au titre de l'article IV; No. 24/50",
+ {"title": "Zubrowka: Consultation de 2024 au titre de l'article IV; No. 24/950",
   "url": "u9", "pub_date": "2024-06-01", "language": "French"},
 ])
 
@@ -39,7 +39,7 @@ def test_pipeline_statuses_and_flags():
     inc = frame.set_index("url")
     assert inc.loc["u1", "country_iso3"] == "KOR"
     assert bool(inc.loc["u2", "combined_with_program"]) is True
-    assert inc.loc["u1", "id"] == "CR2024-275"
+    assert inc.loc["u1", "id"] == "CR2024-975"
 
 def test_revision_resolution_keeps_corrigendum():
     frame, audit = build_frame(FIX)
@@ -55,11 +55,11 @@ def test_report_no_parser():
 
 # ----------------------------- round-7: genuine SPROLL live-capture layer --
 _PAGE1 = """
-<div class="result-row"><a href="/en/pub/a1">Kenya: 2024 Article IV
-Consultation; IMF Country Report No. 24/001</a>
+<div class="result-row"><a href="/en/pub/a1">Freedonia: 2024 Article IV
+Consultation; IMF Country Report No. 24/901</a>
 <span class="date">July 10, 2024</span></div>
-<div class="result-row"><a href="/en/pub/a2">Uganda: 2023 Article IV
-Consultation; IMF Country Report No. 23/002</a>
+<div class="result-row"><a href="/en/pub/a2">Zubrowka: 2023 Article IV
+Consultation; IMF Country Report No. 23/902</a>
 <span class="date">March 3, 2023</span></div>
 """
 _PAGE_EMPTY = "<div>No results found</div>"

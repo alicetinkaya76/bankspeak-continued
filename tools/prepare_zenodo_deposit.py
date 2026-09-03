@@ -103,7 +103,9 @@ INCLUDE_FILES = [
     "data/analysis/stage_a_exposure_sensitivity.json",
     "data/analysis/retrieval_route_tally.json",
     "requirements.txt",
-    "README.md",
+    # "README.md" was here: the source repository's working README, months
+    # stale and full of em dashes, shipped as payload/README.md. The deposit
+    # has its own README at the root; the code README lives in the code archive.
     "data/meta/country_ontology.csv",
     "data/meta/country_unresolved.csv",
     "data/meta/wb_country_api_raw.json",
@@ -204,6 +206,55 @@ REDACT_MUST_NOT_CONTAIN = [
     (re.compile(r"(?i)article\s+iv\s+consultation"), "Article IV title boilerplate"),
     (re.compile(r"10\.5089/"), "IMF DOI prefix"),
 ]
+
+
+MEDIA_STEM = re.compile(r"1[0-9a-z]{3}ea\d{7}|/-/media/files/publications/cr/", re.I)
+
+
+def _refuse_on_shipped_imf_text(payload: Path) -> None:
+    """The redaction scan above reads the redacted CSV. It never read the
+    .py/.md/.yaml files copied beside it, and an audit found real IMF titles and
+    IMF-published PDF filenames in test fixtures. Titles come from the
+    unpublished frame when it is present on this machine; media stems are
+    pattern-matched, with x placeholders allowed as documentation."""
+    frame = ROOT / "data" / "meta" / "imf_articleiv_frame.csv"
+    titles: list[str] = []
+    if frame.exists():
+        with frame.open(encoding="utf-8", errors="replace") as fh:
+            rows = list(csv.DictReader(fh))
+        col = next((c for c in rows[0] if c.lower() in ("title", "display_title")), None)
+        if col:
+            for r in rows:
+                t = r[col].strip()
+                if len(t) >= 40:
+                    titles.append(t)
+                    m = re.search(r"^.{20,}?\b(?:19|20)\d{2}\s+Article\s+IV\s+Consultation", t)
+                    if m and len(m.group(0)) < len(t):
+                        titles.append(m.group(0))
+    bad = []
+    for p in payload.rglob("*"):
+        if not p.is_file() or p.suffix not in (".py", ".md", ".yaml", ".yml", ".txt"):
+            continue
+        text = p.read_text(encoding="utf-8", errors="replace")
+        for m in MEDIA_STEM.finditer(text):
+            frag = m.group(0)
+            # documentation placeholders (x) and stems built on ISO 3166 user-assigned
+            # codes (XAA to XZZ) cannot name a real document; the fixtures use XFD/XRT
+            if ("xxx" in frag.lower() or frag.lower().endswith("/cr/")
+                    or frag.lower().startswith("1x")):
+                continue
+            bad.append(f"{p.relative_to(payload)}: IMF media filename ({len(frag)} chars)")
+            break
+        for t in titles:
+            if t in text:
+                bad.append(f"{p.relative_to(payload)}: IMF title ({len(t)} chars)")
+                break
+    if bad:
+        for b in bad:
+            print("    " + b)
+        raise SystemExit(f"[deposit] REFUSING: {len(bad)} staged text file(s) carry "
+                         "IMF titles or IMF-published filenames")
+    print(f"[deposit] shipped-text scan clean ({len(titles)} title forms checked)")
 
 
 def redact_csv(src: Path, drop: tuple[str, ...]) -> str:
@@ -315,6 +366,8 @@ def main(argv: list[str] | None = None) -> int:
         w.writeheader()
         w.writerows(rows)
 
+    if a.copy:
+        _refuse_on_shipped_imf_text(out / "payload")
     (out / "README.md").write_text(f"""# Bankspeak, Continued: Stage-B evidence deposit
 
 Companion to the OSF registration `10.17605/OSF.IO/5C9J8`. The repository
@@ -349,11 +402,14 @@ so the bytes stay local. Every excluded file appears in `MANIFEST.csv` with its
 hash, so any holder of the originals can verify byte-for-byte.
 
 Licences: WB content is public disclosure under the Access to Information Policy
-and mostly CC BY 3.0 IGO. Derived artifacts are ours. See `docs/DATA_LICENSES.md`.
+and mostly CC BY 3.0 IGO. Derived artifacts are ours. LICENSE.md beside this
+file states the terms file by file.
 
-Reproduction: the WB frames regenerate byte-identically from the deposited raw
-archives. `docs/A7_FRAME_DRIFT_20260820.md` and `docs/MDE_P1P2_20260820.md`
-name the commands.
+Paths in MANIFEST.csv are relative to `payload/`, which is the root of the
+companion code checkout. Reproduction: the WB frames regenerate byte-identically
+from the deposited raw archives. The commands are named in the code archive
+(10.5281/zenodo.22272212) under `docs/A7_FRAME_DRIFT_20260820.md` and
+`docs/MDE_P1P2_20260820.md`; those records are not part of this deposit.
 """, encoding="utf-8")
 
     print(f"[zenodo] deposited: {n_inc} files, {bytes_inc/1e6:.1f} MB")

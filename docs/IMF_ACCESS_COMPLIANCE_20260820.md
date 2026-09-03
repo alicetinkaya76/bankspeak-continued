@@ -41,12 +41,18 @@ document paths are served normally to an ordinary client:
 | `www.imf.org/en/publications/cr/issues/…` (CMS page) | **403** `text/html` |
 | `elibrary.imf.org/view/journals/002/2023/043/…` | **202**, empty body |
 | `doi.org/10.5089/…` → elibrary | **202**, empty body |
-| `www.imf.org/external/pubs/ft/scr/1999/cr9947.pdf` | **206** `application/pdf` |
-| `www.imf.org/external/pubs/ft/scr/2017/cr1715.pdf` | **206** `application/pdf` |
-| `www.imf.org/-/media/…/cr/2023/english/1ginea2023001.pdf` | **206** `application/pdf` |
-| `www.imf.org/-/media/…/cr/2025/english/1polea2025001-print-pdf.pdf` | **206** `application/pdf` |
+| `www.imf.org/external/pubs/ft/scr/1999/cr<yy><nn>.pdf` | **206** `application/pdf` |
+| `www.imf.org/external/pubs/ft/scr/2017/cr<yy><nn>.pdf` | **206** `application/pdf` |
+| `www.imf.org/-/media/…/cr/2023/english/<stem>.pdf` | **206** `application/pdf` |
+| `www.imf.org/-/media/…/cr/2025/english/<stem>-print-pdf.pdf` | **206** `application/pdf` |
 
 Captured 2026-08-20T08:01:01Z with the identified research User-Agent.
+
+*Filename components in the probe table above are withheld in the published copy of this
+record: the `/-/media/` stems are the IMF-published link components the data-availability
+statement says are not redistributed, and the report-number stems name specific documents.
+The unredacted probe log stays local; `data/meta/imf_retrieval/_manifest.csv` holds the
+URLs by hash.*
 
 The two paths the retrieval uses — `/external/pubs/ft/scr/` and `/-/media/` —
 answer a plain, unauthenticated, identified GET. There is no login, no paywall,
@@ -75,8 +81,8 @@ GFSR/WEO `*index.htm` pages — which are not touched.
 ## 4. The one judgment call — the Wayback step
 
 For reports from 2019 onward the PDF filename is **not derivable**. It is
-irregular by design: `1fraea2021001.pdf`, `cr1927-senegal-a4.pdf`,
-`1polea2025001-print-pdf.pdf`. An earlier attempt at guessing the pattern
+irregular by design: `<stem>.pdf`, `cr1927-senegal-a4.pdf`,
+`<stem>-print-pdf.pdf`. An earlier attempt at guessing the pattern
 produced dead links and was withdrawn (commit `8b82787`); guessing is therefore
 ruled out, and brute-forcing candidate filenames would multiply requests against
 the very host the permission asks us to treat gently.
@@ -107,7 +113,7 @@ this network was measured on 2026-08-20 and closed:
 
 | Alternative | Result |
 | --- | --- |
-| Derive the filename from a pattern | Impossible: `1fraea2021001.pdf`, `cr1927-senegal-a4.pdf`, `1polea2025001-print-pdf.pdf`. A prior guess produced dead links and was withdrawn (commit `8b82787`) |
+| Derive the filename from a pattern | Impossible: `<stem>.pdf`, `cr1927-senegal-a4.pdf`, `<stem>-print-pdf.pdf`. A prior guess produced dead links and was withdrawn (commit `8b82787`) |
 | `www.imf.org/sitemap.xml` (declared in robots.txt) | **403** |
 | Coveo, the site's own public search API | Indexes 9,251 PDFs, **none** under `publications/cr`; `@filetype==pdf` + CR path wildcard returns 0 |
 | Crossref full-text `link` field | `null` on the issue DOIs |
