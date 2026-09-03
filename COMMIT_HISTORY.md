@@ -3,6 +3,7 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+72aeacb  2026-09-03  Final-pass record points at the one-command finish
 807e8ff  2026-09-03  finish_evidence_deposit.py: release, DOI lookup, DAS fill, rebuild and guards as one command
 06bec2f  2026-09-03  Final-pass record: the evidence-deposit repository is created and pushed
 72ed75b  2026-09-03  Nothing that ships names an IMF document: fixtures, records, deposit route

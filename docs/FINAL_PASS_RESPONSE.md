@@ -132,12 +132,13 @@ https://zenodo.org/account/settings/github/, which only the account owner can
 do. Once it is on:
 
 ```bash
-cd ~/Desktop/bankspeak/bankspeak-continued && .venv/bin/python tools/publish_evidence_repo.py --release v1.0.0
+cd ~/Desktop/bankspeak/bankspeak-continued && .venv/bin/python tools/finish_evidence_deposit.py
 ```
 
-mints the dataset DOI within minutes; then `python tools/record_evidence_doi.py
-<DOI>` and a PDF rebuild close the last bracket in the data-availability
-statement.
+does the rest as one command: it refuses unless the webhook exists, cuts the
+v1.0.0 release, polls Zenodo's public API until a dataset with this title and
+the author's ORCID appears, records the DOI in the data-availability
+statement, rebuilds both PDFs and runs the guards.
 
 Suite: 479. Guards: placeholder report clean on the manuscript and the built
 PDF, metadata, counts and cross-references all green.
