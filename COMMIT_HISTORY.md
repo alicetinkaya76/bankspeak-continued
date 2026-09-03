@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+a8b7ba8  2026-09-03  Record the final pre-submission pass and the v1.3.0 release notes
+f5ca557  2026-09-03  Final pass for PLOS ONE: prose, references, format, author fields, and one more identifier the scan caught
 bd347f7  2026-09-03  The origin sweep wrapped 1999 next to 2025, and the deposit did not carry its own list
 096ce69  2026-09-02  The excluded class rises because two of its three members did not exist in 1946
 f39f64b  2026-09-02  The ladder's opening rungs measured nothing, and my own repair broke a script
