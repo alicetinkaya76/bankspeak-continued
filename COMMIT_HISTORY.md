@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+06bec2f  2026-09-03  Final-pass record: the evidence-deposit repository is created and pushed
+72ed75b  2026-09-03  Nothing that ships names an IMF document: fixtures, records, deposit route
 5933940  2026-09-03  Deposit README: sentence case after the split
 235bbd6  2026-09-03  Deposit README and record description without em dashes or clause semicolons
 e5e32c4  2026-09-03  D-14 footprint claim restated per artifact; publish_evidence_repo.py for the no-token route

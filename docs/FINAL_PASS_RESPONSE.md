@@ -122,6 +122,10 @@ title or a filename, and the staging tool now scans `.py`, `.md` and `.yaml`
 files, not only the redacted CSV. The four archived code releases predate this
 and carry the fixtures; the next release does not.
 
+The repository was created and pushed on 2026-09-03: `main` and the tag
+`v1.0.0` both at `8c1f75c`, 836 files, `.zenodo.json` at the root, public, no
+release yet.
+
 **What remains is the one browser step.** The webhook that lets Zenodo see the
 new repository is created by switching it on at
 https://zenodo.org/account/settings/github/, which only the account owner can
