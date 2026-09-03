@@ -48,8 +48,7 @@ not as evidence of absence.
 `10.5281/zenodo.22277902`. IMF Article IV documents are third-party
 material and are not redistributed. The manuscript publishes the full eligible
 annual frame, the sampling rule, per-cell seeds and inclusion probabilities so
-the sample can be redrawn independently. [Evidence deposit DOI or reviewer
-access link: to be completed.]
+the sample can be redrawn independently. Evidence deposit: https://doi.org/10.5281/zenodo.22278297.
 
 **Declarations.** The author received no specific funding for this work and
 declares no competing interests. The work is not posted as a preprint. No human

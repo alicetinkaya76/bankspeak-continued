@@ -97,10 +97,7 @@ The **evidence deposit** (write-once raw World Bank API captures, frozen
 sampling frames, retrieval and exclusion logs, quality-control summaries, derived
 document- and year-level counts with token denominators, feature-family counts,
 annual panel cells, validation batteries, the family verdict, and SHA-256 hashes
-for every restricted source file) is **[deposited at DOI … / to be deposited before publication; until the DOI is
-minted the identical tree is public at
-https://github.com/alicetinkaya76/bankspeak-evidence-deposit, tag v1.0.0, with
-the same MANIFEST.csv and hashes]**.
+for every restricted source file) is deposited at **https://doi.org/10.5281/zenodo.22278297**.
 It is built reproducibly by
 `tools/prepare_zenodo_deposit.py` in the archived repository.
 

@@ -1606,10 +1606,7 @@ either deposit.
 
 **Evidence deposit.** Frames, frozen samples, raw World Bank API captures, power
 curves, quality flags, per-document exclusion ledgers, panel cells, both
-validation batteries and the family verdict. **Not yet deposited at the time of
-writing: DOI to be inserted here before publication. Until then the identical
-tree, with the same MANIFEST.csv and hashes, is public at
-https://github.com/alicetinkaya76/bankspeak-evidence-deposit (tag v1.0.0).** It is built by
+validation batteries and the family verdict. Deposited at `10.5281/zenodo.22278297`. It is built by
 `tools/prepare_zenodo_deposit.py`, which also writes the SHA-256 manifest listing
 every IMF-derived file by hash without depositing its bytes.
 

@@ -133,19 +133,13 @@ the DOI exists, the data-availability statement and the manuscript name that
 repository and tag as the reviewer's access route: the same tree, MANIFEST and
 hashes.
 
-**What remains is the one browser step.** The webhook that lets Zenodo see the
-new repository is created by switching it on at
-https://zenodo.org/account/settings/github/, which only the account owner can
-do. Once it is on:
+**The evidence deposit is archived: `10.5281/zenodo.22278297`, v1.0.0.** The
+author switched the repository on at Zenodo, the release was cut, the webhook
+delivered (202, then the usual duplicate 409s), and `tools/finish_evidence_
+deposit.py` verified the record by title, type and ORCID before writing the
+DOI into the data-availability statement, the cover letter and the manuscript.
+No bracket remains in any submission document. `submission/PLOS/` holds one
+file per upload slot, rebuilt from the green build.
 
-```bash
-cd ~/Desktop/bankspeak/bankspeak-continued && .venv/bin/python tools/finish_evidence_deposit.py
-```
-
-does the rest as one command: it refuses unless the webhook exists, cuts the
-v1.0.0 release, polls Zenodo's public API until a dataset with this title and
-the author's ORCID appears, records the DOI in the data-availability
-statement, rebuilds both PDFs and runs the guards.
-
-Suite: 479. Guards: placeholder report clean on the manuscript and the built
+Suite: 481. Guards: placeholder report clean on the manuscript and the built
 PDF, metadata, counts and cross-references all green.
