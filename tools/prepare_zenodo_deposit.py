@@ -315,12 +315,12 @@ def main(argv: list[str] | None = None) -> int:
         w.writeheader()
         w.writerows(rows)
 
-    (out / "README.md").write_text(f"""# Bankspeak, Continued — Stage-B evidence deposit
+    (out / "README.md").write_text(f"""# Bankspeak, Continued: Stage-B evidence deposit
 
 Companion to the OSF registration `10.17605/OSF.IO/5C9J8`. The repository
-carries the decisions; this deposit carries the evidence they were derived from.
+carries the decisions. This deposit carries the evidence they were derived from.
 
-**Deposited:** {n_inc} files, {bytes_inc/1e6:.1f} MB — World Bank raw API
+**Deposited:** {n_inc} files, {bytes_inc/1e6:.1f} MB: World Bank raw API
 archives (write-once, with their request logs) and our own derived artifacts:
 frames, frozen samples, the power curves, the drift decomposition, the OCR
 inventory and calibration, the quality-flag and exclusion ledgers, the
@@ -329,11 +329,11 @@ verdict. A bounded negative result is only checkable if the inputs and the
 verdict travel together, so both are here.
 
 **On IMF document identifiers.** Some deposited tables carry a row per analysed
-document, IMF documents included, with our measurements against it — counts,
+document, IMF documents included, with our measurements against it: counts,
 token totals, language shares. That is deliberate and it is not in tension with
 the hash-only treatment of `imf_articleiv_frame.csv`. The frame is verbatim
-IMF-supplied bibliographic content (titles, URLs, Coveo fields) and stays local;
-what travels here is a report number plus numbers we computed, which §5 permits
+IMF-supplied bibliographic content (titles, URLs, Coveo fields) and stays local.
+What travels here is a report number plus numbers we computed, which §5 permits
 as derived non-substitutive output. It also has to travel: a preregistered study
 whose corpus membership cannot be inspected is not reproducible, and no reader
 could otherwise check that the D-8 and D-11 exclusions were applied rather than
@@ -352,7 +352,7 @@ Licences: WB content is public disclosure under the Access to Information Policy
 and mostly CC BY 3.0 IGO. Derived artifacts are ours. See `docs/DATA_LICENSES.md`.
 
 Reproduction: the WB frames regenerate byte-identically from the deposited raw
-archives; `docs/A7_FRAME_DRIFT_20260820.md` and `docs/MDE_P1P2_20260820.md`
+archives. `docs/A7_FRAME_DRIFT_20260820.md` and `docs/MDE_P1P2_20260820.md`
 name the commands.
 """, encoding="utf-8")
 

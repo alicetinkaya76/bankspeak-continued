@@ -40,7 +40,7 @@ CODE_DOI = os.environ.get("BANKSPEAK_CODE_VERSION_DOI", CONCEPT_DOI)
 SAP_DOI = "10.5281/zenodo.22098259"
 OSF_DOI = "10.17605/OSF.IO/5C9J8"
 
-DESCRIPTION = """<p><b>Evidence deposit for <i>Reconstructing Bankspeak</i></b> — the
+DESCRIPTION = """<p><b>Evidence deposit for <i>Reconstructing Bankspeak</i></b>: the
 artifacts behind an independent reconstruction of Moretti and Pestre's <i>Bankspeak</i>
 (2015) from primary World Bank documents, and a preregistered test of whether
 post-2022 vocabulary associated with large language models shows a World Bank
@@ -69,8 +69,8 @@ researcher who lawfully obtains the same documents can verify byte identity
 before rerunning anything.</p>
 
 <p>One file ships redacted. The frozen sampling frame carries
-<code>display_title</code> and <code>pdfurl</code> for the IMF rows — verbatim
-titles and imf.org document URLs — so those columns are dropped, for every row
+<code>display_title</code> and <code>pdfurl</code> for the IMF rows, verbatim
+titles and imf.org document URLs, so those columns are dropped, for every row
 rather than only the IMF ones, because no generator reads them and a
 whole-column rule cannot leak through a misclassified row. The unredacted
 original is listed by SHA-256 so nothing becomes unverifiable.</p>

@@ -3,6 +3,8 @@
 The working repository is private because it tracks IMF bibliographic data that may not be redistributed. The commit subjects are reproduced here so the reasoning trail survives; they contain no IMF document data.
 
 ```
+5933940  2026-09-03  Deposit README: sentence case after the split
+235bbd6  2026-09-03  Deposit README and record description without em dashes or clause semicolons
 e5e32c4  2026-09-03  D-14 footprint claim restated per artifact; publish_evidence_repo.py for the no-token route
 b719ad1  2026-09-03  Superseded-release guard: window spans line breaks and accepts the plural
 f4916ea  2026-09-03  Version DOI filled: 10.5281/zenodo.22272212 (v1.3.1), every guard green
