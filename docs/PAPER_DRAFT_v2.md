@@ -1595,9 +1595,9 @@ before submission]**, archived from
 `github.com/alicetinkaya76/bankspeak-continued`: the frozen inference engine,
 the validation battery, the full pipeline, the test suite, every preregistration
 draft and amendment, decisions D-1..D-13, both deviation records, and the
-generators that produce every table and figure here. The earlier archived
-release `10.5281/zenodo.22168611` (v1.2.0, 357 tests) **predates the calibration
-and the guards reported here and must not be cited for them**.
+generators that produce every table and figure here. The earlier archived releases `10.5281/zenodo.22168611` (v1.2.0) and
+`10.5281/zenodo.22271589` (v1.3.0, tagged at an earlier commit) **predate the
+calibration and the guards reported here and must not be cited for them**.
 `tools/check_submission_metadata.py` refuses to pass while the version DOI above
 is unfilled. Code is MIT-licensed and author-created documentation CC BY 4.0. World
 Bank and IMF source reports keep their own rights and are not relicensed by

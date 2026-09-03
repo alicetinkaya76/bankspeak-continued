@@ -214,9 +214,10 @@ confirm it through an institutional JCR subscription before submitting.
 resolves to the latest), and at the time every document that cited an older
 release was moved onto it. **It is now itself superseded**: rounds 18 to 20
 changed the calibration, the guards, Tables 3d and 5d and the test count, and
-none of that is in v1.2.0. Cut the next release, let Zenodo mint its version
-DOI, and fill that DOI into the manuscript, this checklist and the cover
-letter. `tools/check_submission_metadata.py` refuses until then, and also
+none of that is in v1.2.0. A v1.3.0 release was cut on 2026-09-03 but its tag sits at the round-19
+commit, so its archive (10.5281/zenodo.22271589) is superseded too. Cut v1.3.1
+from the head of main, let Zenodo mint its version DOI, and fill that DOI into
+the manuscript, this checklist and the cover letter. `tools/check_submission_metadata.py` refuses until then, and also
 refuses if any submission document still names v1.2.0 as the archive of
 record.
 
