@@ -126,11 +126,11 @@ This repository is archived with a DOI:
 
 That is the **concept DOI**: it always resolves to the latest version, so it
 cannot go stale the way a version DOI in a file inside that same version does.
-The most recent tagged release is v1.2.0 (`10.5281/zenodo.22168611`). It does
-**not** contain the round-18 to round-20 work on `main` — the joint Holm
-calibration, the sibling-class decomposition, the functional-form table and
-the submission guards — so cite the concept DOI above, or the version DOI of
-the release cut after that work, and not v1.2.0.
+The release the manuscript cites is **v1.3.1, `10.5281/zenodo.22272212`**.
+Two earlier archives must not be cited for the reported results: v1.2.0
+(`10.5281/zenodo.22168611`) predates the round-18 to round-22 work, and v1.3.0
+(`10.5281/zenodo.22271589`) was tagged at the round-19 commit rather than at
+the head of `main`.
 
 **Do not cite v1.0.0 or v1.1.0.** Neither archive can run its own test suite:
 `pytest tests/ -q` in either dies with twelve collection errors and runs zero

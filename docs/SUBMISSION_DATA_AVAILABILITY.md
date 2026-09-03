@@ -83,7 +83,7 @@ grant nor withhold it.
 the IMF document index are archived at Zenodo under concept DOI
 10.5281/zenodo.22152944, which always resolves to the latest version. The
 version DOI for the release that carries the results reported in the manuscript
-is **[VERSION DOI: to be completed before submission]**. The repository is
+is **`10.5281/zenodo.22272212`**. The repository is
 https://github.com/alicetinkaya76/bankspeak-continued. **Cite the version DOI,
 not the concept DOI**: the concept DOI moves, and the earlier version
 10.5281/zenodo.22168611 (v1.2.0) predates the calibration and the guards

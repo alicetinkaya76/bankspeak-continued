@@ -45,7 +45,7 @@ on a null nobody preregistered. The negative result is reported as inconclusive,
 not as evidence of absence.
 
 **Data and code.** Analysis code and derived inputs are archived at Zenodo
-[VERSION DOI: to be completed]. IMF Article IV documents are third-party
+`10.5281/zenodo.22272212`. IMF Article IV documents are third-party
 material and are not redistributed. The manuscript publishes the full eligible
 annual frame, the sampling rule, per-cell seeds and inclusion probabilities so
 the sample can be redrawn independently. [Evidence deposit DOI or reviewer

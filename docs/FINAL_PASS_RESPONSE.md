@@ -80,32 +80,32 @@ stage.
   frame file. The tool now withholds those ids; the file, the deposit and the
   mirror were rebuilt; the ruling stands on the corrected file.
 
-## The two things that remain
+## The release, and what remains
 
-1. **The version DOI.** The mirror is committed and three commits ahead of
-   GitHub. Pushing it and cutting the release is what mints the DOI, and the
-   harness blocked that action as an outward-facing publish. From the mirror:
+**The version DOI is filled: `10.5281/zenodo.22272212`, v1.3.1.** The first
+attempt at the release was blocked by the harness as an outward-facing
+publish; on the author's renewed instruction it was cut, and it was cut twice.
+A v1.3.0 release already existed by then, created at 06:53 UTC with its tag at
+the round-19 commit `0d3ba98` rather than at the head of `main`, so its Zenodo
+archive (`10.5281/zenodo.22271589`) predates everything from round 20 on, which
+is the defect the audit had raised about v1.2.0. A Zenodo record cannot be
+withdrawn, so v1.3.0 is named beside v1.2.0 in the manuscript, the checklist
+and the public README as an archive not to be cited for these results, and
+v1.3.1 was cut from `2406e4b`, the head of `main`, with the ORCID and
+affiliation in its metadata. `tools/fill_version_doi.py` verified the DOI
+against the record (version v1.3.1 of the concept DOI) before writing it into
+the manuscript, the cover letter and the data-availability statement; it
+refused the v1.3.0 DOI in a check run first. The evidence deposit's metadata
+declares itself a supplement to v1.3.1.
 
-   ```bash
-   git push origin main
-   gh release create v1.3.0 --target main --title "v1.3.0: the release the manuscript cites" --notes-file /Users/alicetinkaya/Desktop/bankspeak/bankspeak-continued/docs/RELEASE_NOTES_v1.3.0.md
-   ```
+**One thing remains, and it is the author's by construction.** The evidence
+deposit (`build/zenodo_evidence_deposit.zip`, 831 files, verified against its
+list, identifier-free) needs a Zenodo token with `deposit:write` to upload;
+`.env` holds a placeholder, and the uploader's own text says the token is not
+its to create. Upload by hand at zenodo.org, or put the token in `.env` and run
+`python tools/upload_evidence_deposit.py --publish`; then
+`python tools/record_evidence_doi.py <DOI>`, rebuild the PDFs, and the last
+bracket in the data-availability statement is gone.
 
-   Zenodo mints the DOI within minutes. Then, from the source repository:
-
-   ```bash
-   python tools/fill_version_doi.py 10.5281/zenodo.NNNNNNNN --tag v1.3.0
-   python tools/build_submission_pdf.py --both
-   ```
-
-   and the metadata guard goes green.
-
-2. **The evidence deposit.** `build/zenodo_evidence_deposit.zip` is built and
-   verified against its own list (60 of 60), and is identifier-free. Uploading
-   it needs a Zenodo token with `deposit:write`; `.env` still holds a
-   three-character placeholder, so `tools/upload_evidence_deposit.py` cannot
-   run. Upload by hand or supply the token, then
-   `python tools/record_evidence_doi.py <DOI>`.
-
-Suite: 479. Guards: placeholder report lists only the two DOI brackets; every
-other guard is green.
+Suite: 479. Guards: placeholder report clean on the manuscript and the built
+PDF, metadata, counts and cross-references all green.
