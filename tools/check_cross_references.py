@@ -35,8 +35,14 @@ def main() -> int:
     have = {
         "section": ({m.group(1) for m in re.finditer(r"^## (\d+)\.", paper, re.M)}
                     | {m.group(1) for m in re.finditer(r"^### (\d+\.\d+)", paper, re.M)}),
-        "table": {m.group(1) for m in re.finditer(r"\*\*Table (\d+[a-z]?) —", paper)},
-        "figure": {m.group(1) for m in re.finditer(r"\*\*Figure (\d+)\*\* —", paper)},
+        # A caption is "**Table 5c — title**" today and may be "**Table 5c.
+        # Title**" or "**Table 5c: title**" after a prose pass; the label is
+        # what defines the table, not the punctuation after it.
+        "table": {m.group(1) for m in re.finditer(r"\*\*Table (\d+[a-z]?)[ .:—]", paper)},
+        # PLOS form: "**Fig 1. Title.**" placed after the first citing paragraph.
+        # The earlier pattern keyed on an em dash, which a prose pass would
+        # remove and thereby silence this guard.
+        "figure": {m.group(1) for m in re.finditer(r"\*\*Fig (\d+)\. ", paper)},
         "supplement": ({m.group(1) for m in re.finditer(r"^## S(\d+)\.", supp, re.M)}
                        | {m.group(1) for m in re.finditer(r"^### S(\d+\.\d+)", supp, re.M)}),
     }
@@ -53,7 +59,7 @@ def main() -> int:
         "table": collections.Counter(
             m.group(1) for m in re.finditer(r"\bTable (\d+[a-z]?)\b", both)),
         "figure": collections.Counter(
-            m.group(1) for m in re.finditer(r"\bFigure (\d+)\b", both)),
+            m.group(1) for m in re.finditer(r"\bFig (\d+)\b", both)),
         # The supplement's own cross references were invisible until round 18:
         # this counter read `paper` only, so a dangling "S6.3" INSIDE the
         # supplement passed every check while the reader following it found

@@ -78,16 +78,17 @@ INCLUDE = (["src", "tools", "tests", "config", "docs", "Makefile",
             "requirements.txt", "requirements-ppl.txt",
             "data/meta/imf_document_index.csv"]
            + [f"data/analysis/{n}.json" for n in ANALYSIS]
-           # The three IMF-derived aggregates that S10.5 and S10.7 read --
-           # imf_frame_publication.{json,csv} and imf_cadence_balance.json --
-           # are NOT on this list. They were, and the DENY rule below dropped
-           # them anyway, so two lists in one file disagreed and the export
-           # said nothing. They travel in the evidence deposit instead
-           # (tools/prepare_zenodo_deposit.py), which the supplement now names
-           # as their source. Whether the mirror may ALSO carry them is the
-           # author's licence ruling and stays needs_human_review; when it is
-           # made, add them here AND narrow DENY in the same commit.
-           + ["data/analysis/tier2_item_provenance.csv",
+           # The three IMF-derived aggregates that S10.5 and S10.7 read.
+           # Ruling D-14 (docs/DECISIONS_20260820_stageb_close.md, addendum of
+           # 2026-09-03): per-year counts, inclusion probabilities and a
+           # cadence tally are derived, non-substitutive outputs under the
+           # permission's item 6, so they are redistributable. They are named
+           # here AND exempted from the path rule below in the same commit,
+           # and the content scan still reads every byte of them.
+           + ["data/analysis/imf_frame_publication.json",
+              "data/analysis/imf_frame_publication.csv",
+              "data/analysis/imf_cadence_balance.json",
+              "data/analysis/tier2_item_provenance.csv",
               "data/analysis/its_results.csv", "data/analysis/power.csv"])
 
 # Never, whatever else matches.
@@ -133,6 +134,10 @@ PROSE_OK = {"IMF_ACCESS_COMPLIANCE_20260820.md", "IMF_RETRIEVAL_20260820.md",
 # numbers, IMF DOIs or document URLs is still refused, by the check that reads
 # the bytes rather than the name.
 PATH_EXEMPT = {
+    # D-14: derived per-year aggregates, no identifiers; content-scanned anyway
+    "data/analysis/imf_frame_publication.json",
+    "data/analysis/imf_frame_publication.csv",
+    "data/analysis/imf_cadence_balance.json",
     "src/s09a_imf_articleiv_frame.py",      # the Article IV sampling frame builder
     "tools/imf_corpus_to_pipeline.py",      # corpus -> pipeline adapter
     "docs/IMF_RETRIEVAL_20260820.md",       # cited by §3 of the manuscript

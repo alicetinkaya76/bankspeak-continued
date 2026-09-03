@@ -47,6 +47,11 @@ VANCOUVER_AUTHOR_CAP = 6
 def split_paper() -> tuple[str, str]:
     s = PAPER.read_text(encoding="utf-8")
     body, refs = s.split("## References", 1)
+    # The reference list ends at the next heading. PLOS wants supporting-
+    # information captions after the references, and the first time one was
+    # added it was read here as a 36th entry with no author and no year.
+    if "\n## " in refs:
+        refs = refs[:refs.index("\n## ")]
     return " ".join(body.split()), refs
 
 

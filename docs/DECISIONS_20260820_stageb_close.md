@@ -222,3 +222,36 @@ inside the band the corpus itself defines — with the band derived at runtime
 rather than hardcoded, a `kept_original_outside_band` outcome distinct from
 `no_improvement`, and a regression test that builds mojibake, confirms it passes
 both one-sided tests, and asserts the band is what refuses it.
+
+## Addendum 2026-09-03: ruling D-14 — the three IMF-derived aggregates
+
+**Question.** May `data/analysis/imf_frame_publication.json`,
+`imf_frame_publication.csv` and `imf_cadence_balance.json` be redistributed in
+the public code mirror, as they already are in the evidence deposit?
+
+**Basis.** The written permission of 2026-08-20 (`docs/IMF_ACCESS_COMPLIANCE_
+20260820.md`, items 5 and 6): no redistribution of the documents or of
+extracted text; derived outputs only. The three files hold, per fiscal year,
+listing-hit counts, eligible counts, sampled counts, inclusion probabilities,
+the cap flag and the per-cell seed, and a cadence tally. None holds a title, a
+URL or a sentence of any document. The public build's content scan reads every
+byte of them and refuses on an IMF identifier.
+
+*Correction, same day.* As first written this ruling said none of the three
+held a report number. The content scan then refused `imf_frame_publication.json`
+for 78 of them: the within-cell fragility check had written the report number
+of each unselected document it dropped, and none of those 78 is among the
+1,064 in the published index. A report number is a catalogue identifier and
+not extracted text, but the compliance record describes an identifier footprint
+of exactly the analysed documents, and this would have widened it to documents
+never retrieved. The tool now withholds the id (the fragility estimate is what a
+reader needs), the file was regenerated, the evidence deposit was rebuilt from
+it, and the ruling stands on the corrected file. The scan did what it is for.
+
+**Ruling.** They are derived, non-substitutive outputs of the kind the
+permission allows, and are redistributable. They join the mirror's include
+list; the deny rule is narrowed to exempt exactly these three paths; the
+content scan still runs on them. Made by the author on the instruction that the
+remaining open items be closed, and recorded here so it is a ruling and not a
+default.
+

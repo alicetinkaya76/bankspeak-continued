@@ -51,8 +51,12 @@ def save(fig, name: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     for ext in ("png", "pdf"):
         fig.savefig(OUT / f"{name}.{ext}", dpi=200, bbox_inches="tight")
+    # PLOS asks for figure files as TIFF or EPS; 300 dpi TIFF, LZW so the
+    # four files stay small enough to upload.
+    fig.savefig(OUT / f"{name}.tif", dpi=300, bbox_inches="tight",
+                pil_kwargs={"compression": "tiff_lzw"})
     plt.close(fig)
-    print(f"[figures] wrote docs/figures/{name}.png and .pdf")
+    print(f"[figures] wrote docs/figures/{name}.png, .pdf and .tif")
 
 
 def fig1_composition() -> None:

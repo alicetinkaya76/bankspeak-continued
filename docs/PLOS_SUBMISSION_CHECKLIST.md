@@ -35,7 +35,7 @@ reason given below.
 | item | limit | measured | state |
 |---|---|---|---|
 | Full title | 250 characters | 125 | ok |
-| Abstract | "not exceed 300 words" | 299 | ok |
+| Abstract | "not exceed 300 words" | 296 | ok |
 | Abstract citations | not permitted | none | ok |
 | Required sections | Abstract → Introduction → Results → Discussion → References | present, in order | ok |
 
@@ -122,17 +122,43 @@ PLOS's own worked example:
 > Reconstructing Bankspeak: Eight decades of World Bank language, a
 > corpus-selection effect, and an unconfirmed 2023-2025 differential shift
 
-**Short title** (limit 100 characters), which the paper does not currently have:
+**Short title** (limit 100 characters). Entered in the submission form; the text
+is in `docs/SUBMISSION_FORM_FIELDS.md`:
 
-> Reconstructing Bankspeak: corpus selection and an unconfirmed 2023-2025 shift
+> Reconstructing Bankspeak and a preregistered post-2022 null
 
-77 characters.
+60 characters.
 
 ### Manuscript file
 
-The manuscript is Markdown. PLOS accepts DOC, DOCX or RTF, and a single PDF for
-format-free initial submission. Tables go inline after first citation; figures
-upload as separate files.
+The manuscript is Markdown, built to PDF through LaTeX by
+`tools/build_submission_pdf.py`. PLOS accepts a PDF for a LaTeX manuscript and
+enforces three things on the file at initial submission, all now in the build:
+continuous line numbers, double spacing, page numbers. The supplement is
+supporting information and is single-spaced.
+
+Checked against the live submission guidelines on 2026-09-03:
+
+- Title 250 characters or fewer: yes. Abstract 300 words or fewer: yes.
+- Required opening order (title page, abstract, introduction) and closing
+  order (acknowledgments, references, supporting-information captions): yes.
+  The middle sections keep their own names, which the guidelines allow.
+- AI-use disclosure in a dedicated methods subsection: §5.1.
+- Figure files: separate, TIFF at 300 dpi (`docs/figures/*.tif`, LZW), with
+  each caption placed after the paragraph that first cites it, labelled
+  "Fig N." as PLOS writes it.
+- Supporting information: one file, captioned "S1 Text" at the end of the
+  manuscript.
+- Funding, competing interests, CRediT, data availability: entered in the
+  form, not the file; the text is in `docs/SUBMISSION_FORM_FIELDS.md`.
+- Prose: no em dashes, no semicolon-joined clauses; the pass is verified by
+  a script that refuses on any remaining instance outside tables, code and
+  citation groups.
+- References: still author-year in the text and grouped in the list. The
+  numbered Vancouver list is generated and ready (section above); the in-text
+  conversion is deferred to acceptance, where PLOS applies formatting, because
+  it touches about eighty citations and one of them (Moretti and Pestre 2015)
+  now resolves to two publication objects that a person must assign.
 
 ---
 
@@ -144,12 +170,16 @@ file, so nothing here should be pasted into the paper:
 | field | where the text is | still needed |
 |---|---|---|
 | Data availability | `docs/SUBMISSION_DATA_AVAILABILITY.md` | the Zenodo evidence-deposit DOI, once uploaded |
-| Cover letter | `docs/SUBMISSION_COVER_LETTER.md` | name, affiliation, ORCID, email |
-| Financial disclosure | — | funding statement, or a declaration of none |
-| Competing interests | — | declaration |
-| Ethics | not applicable — no human or animal subjects | — |
+| Cover letter | `docs/SUBMISSION_COVER_LETTER.md` | ORCID |
+| Financial disclosure | `docs/SUBMISSION_FORM_FIELDS.md` | confirm the declaration of none |
+| Competing interests | `docs/SUBMISSION_FORM_FIELDS.md` | confirm the declaration of none |
+| Author contributions | `docs/SUBMISSION_FORM_FIELDS.md` | — |
+| Ethics | not applicable, no human or animal subjects | — |
 
-The corresponding author needs an ORCID iD; PLOS's checklist names it.
+The corresponding author needs an ORCID iD. The public registry lists three
+Selçuk-affiliated records under this name (0000-0003-4535-3953,
+0000-0002-7747-6854, 0000-0001-5446-2938) and no tool can tell which is his,
+so the bracket stays until he fills it.
 
 ---
 
@@ -213,7 +243,7 @@ ride that integration — see below.
 python tools/build_submission_pdf.py --both
 ```
 
-Builds `build/submission/PLOS_ONE_submission.pdf` — 38 pages — and, with
+Builds `build/submission/PLOS_ONE_submission.pdf` — 59 pages — and, with
 `--both`, `build/submission/PLOS_ONE_supplement.pdf` at 20 pages. The
 supplement went through seventeen rounds as raw Markdown. PLOS publishes
 supporting information in whatever format it is given, so that would have

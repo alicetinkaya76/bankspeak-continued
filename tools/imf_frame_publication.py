@@ -36,6 +36,14 @@ from pathlib import Path
 
 import pandas as pd
 
+# The within-cell fragility check used to write the report number of the
+# unselected document it dropped ("dropped_id"). Those are identifiers of
+# documents this study never retrieved, and none of them is in the published
+# index of the 1,064 it did; the public-mirror content scan refused the file on
+# exactly that, and ruling D-14 had asserted the file carried no identifier.
+# The number a reader needs is the fragility estimate, not which document was
+# dropped, so the id is withheld here and the decision record was corrected.
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from s09_frame_sampler import sample_frame                    # noqa: E402
@@ -268,7 +276,7 @@ def within_cell_fragility(frame: pd.DataFrame, frozen: pd.DataFrame,
             perturbed = cell[cell["id"].astype(str) != dropped]
             new = set(sample_frame(perturbed, cap)["id"].astype(str))
             order = sorted(cell["id"].astype(str))
-            entry[label] = {"dropped_id": dropped,
+            entry[label] = {"dropped_id": "withheld",
                             # position of the deleted row in the sorted cell:
                             # everything after it shifts down by one, which is
                             # what actually perturbs the draw

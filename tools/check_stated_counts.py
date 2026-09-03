@@ -48,7 +48,10 @@ def main() -> int:
     supp = SUPP.read_text(encoding="utf-8")
     bad = []
 
-    n_fig = len(re.findall(r"\*\*Figure \d+\*\* —", paper))
+    # PLOS form, placed after the first citing paragraph: "**Fig 1. Title.**".
+    # The earlier pattern keyed on an em dash and on a section that no longer
+    # exists, and reported zero figures for a manuscript with four.
+    n_fig = len(re.findall(r"\*\*Fig \d+\. ", paper))
     n_sup = len(re.findall(r"^## S\d+\.", supp, re.M))
 
     n_entries = n_doi = None

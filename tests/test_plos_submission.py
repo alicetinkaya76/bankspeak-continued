@@ -95,7 +95,7 @@ def test_figure_embedding_refuses_a_missing_image(monkeypatch, tmp_path):
     """A submission PDF with a figure silently dropped is worse than a failed
     build, because nothing in the output says a figure is missing."""
     monkeypatch.setattr(_pdf, "FIGDIR", tmp_path)          # empty
-    md = ("# T\n\n## Figures\n\n- **Figure 1** — `fig1_composition`. A caption.\n\n---\n")
+    md = ("# T\n\n**Fig 1. A title.** A caption. (`fig1_composition`, regenerated.)\n")
     with pytest.raises(SystemExit) as e:
         _pdf.embed_figures(md)
     assert "no image for fig1_composition" in str(e.value)
@@ -103,12 +103,12 @@ def test_figure_embedding_refuses_a_missing_image(monkeypatch, tmp_path):
 
 def test_figure_embedding_refuses_a_section_it_cannot_parse():
     with pytest.raises(SystemExit) as e:
-        _pdf.embed_figures("# T\n\n## Figures\n\n- Figure 1: no backticks here.\n\n---\n")
+        _pdf.embed_figures("# T\n\nFig 1: no bold label, no backticked stem here.\n")
     assert "matched no caption entries" in str(e.value)
 
 
 def test_every_manuscript_figure_has_an_image_on_disk():
-    stems = re.findall(r"- \*\*Figure \d+\*\* — `([a-z0-9_]+)`",
+    stems = re.findall(r"\*\*Fig \d+\. [^*]+\*\* .*?\(`([a-z0-9_]+)`[;,]",
                        PAPER.read_text(encoding="utf-8"))
     assert stems, "no figure entries found in the manuscript"
     for stem in stems:

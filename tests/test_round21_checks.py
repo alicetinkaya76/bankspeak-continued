@@ -129,7 +129,8 @@ def test_ai_disclosure_lives_in_the_methods():
     j = t.index("## 6. Results")
     assert i < j
     body = t[i:j]
-    assert "AUTHOR ATTESTATION" in body          # still the author's to sign
+    assert "takes full responsibility" in body   # the attestation, filled by the author
+    assert "AUTHOR ATTESTATION" not in body
     assert "No AI system is an author" in body
     # and section 9 only points at it now
     k = t.index("## 9. Data and code availability")

@@ -14,15 +14,15 @@ from temporally anchored description toward nominalised management language, on
 an unreleased corpus. We reconstruct it from primary documents and extend the
 Annual Report series to fiscal 2024.
 
-The trajectories recover qualitatively — a reconstruction, not a replication.
+The trajectories recover qualitatively (a reconstruction, not a replication).
 Temporal anchoring falls from 39.96 per thousand tokens in 1946–65 to 22.97 in
 2020–24, and a bureaucratic register rises from 0.25 to 7.6: thirtyfold, but 10.8-fold on the twelve terms whose sense predates 1965.
 
 The second result concerns measurement. The same archive over the same fiscal
 years gives a 43% or a 14% decline, and that difference is attributable to the
 included document series: the Bank's own fall 24–59% across corpus definitions
-and weightings — 58% on the one series that is the same publication object
-throughout — while the excluded class rises 64%. That rise is composition: every
+and weightings (58% on the one series that is the same publication object
+throughout), while the excluded class rises 64%. That rise is composition: every
 sibling falls on its own series, and ICSID and MIGA, absent before 1966, appear
 only late.
 
@@ -36,7 +36,7 @@ bin above the estimate. The comparator also rose, ex ante power is 0.16–0.22, 
 rule's false-positive rate runs 0.028–0.121 across nulls.
 
 The result bounds what a three-post-year, single-comparator design can
-establish; it is not evidence of absence. A nominally significant
+establish. It is not evidence of absence. A nominally significant
 shift can rest on one word family, one post-period year and one block origin,
 and the sealed rule did not confirm it.
 
@@ -60,17 +60,17 @@ institutions produce documents. The second is that since late 2022 large languag
 models have entered professional writing at scale, and a fast-growing literature
 reports LLM-associated lexical shifts in scientific abstracts, peer reviews and
 consumer complaints (Kobak et al. 2025; Liang et al. 2024, 2025a, 2025b; Juzek & Ward
-2025). Whether the same shift reaches the drafting of institutional documents —
+2025). Whether the same shift reaches the drafting of institutional documents,
 which are edited, templated, reviewed and legally constrained in ways that
-journal abstracts are not — is an open and testable question.
+journal abstracts are not, is an open and testable question.
 
 **What this paper establishes, in the order it establishes it.**
 
 **First, that the *Bankspeak* trajectory is real and continues.** Rebuilt from
 primary documents and extended through fiscal 2024, the pamphlet's qualitative
 claim survives independent re-measurement: temporal anchoring declines while
-nominalisation, acronym density and management vocabulary rise. In ratio terms the fastest-growing register — a broader bureaucratese vocabulary, rising thirtyfold on the equal-year mean of
-the production match rule and 24-fold token-weighted (S10.8) — is not among the five
+nominalisation, acronym density and management vocabulary rise. In ratio terms the fastest-growing register is a broader bureaucratese vocabulary, rising thirtyfold on the equal-year mean of
+the production match rule and 24-fold token-weighted (S10.8). It is not among the five
 features the pamphlet named, though acronym density supplies the largest
 *absolute* rise.
 
@@ -78,7 +78,7 @@ features the pamphlet named, though acronym density supplies the largest
 reports.** Measured over the same fiscal years on the equal-year mean, the same archive
 gives a 43% decline in temporal anchoring or a 14% decline, and
 the difference between them is attributable to *which document series are
-included* — the excluded sibling-organisation class rises while the Bank's own
+included*. The excluded sibling-organisation class rises while the Bank's own
 volumes fall. Institution, genre, period coverage and extraction route all
 change together across that boundary, so this is a document-series composition
 effect and not a demonstration that organisational authorship is what matters.
@@ -92,21 +92,21 @@ factor of three, and selection is usually one clause in a data section, if it
 appears at all.
 
 **Third, that a preregistered test of the post-2022 LLM hypothesis on this corpus
-cannot support the claim** — and that saying so is worth more than the
+cannot support the claim**, and that saying so is worth more than the
 alternative. One panel reaches *p* = 0.0142 and fails the two preregistered checks that
 bear on the data, plus a third that failed on our own stratifier error.
 The concentration guard is the informative one: with a single word family removed
 the differential coefficient is −0.067 with an interval spanning zero. A study
 without that guard would have published the *p*-value.
 
-The apparatus that makes the third claim reportable — a two-stage sealed
+The apparatus that makes the third claim reportable (a two-stage sealed
 preregistration, a frozen inference engine, ruled defect ledgers, and a deposit
-that hash-lists a corpus it may not redistribute — is described in §§3 and 5. We
+that hash-lists a corpus it may not redistribute) is described in §§3 and 5. We
 do not offer it as a finding. We offer it as the reason an unconfirmed result
 could be written down at all, rather than quietly becoming a different paper.
 
 Two commitments run through the paper. **On vocabulary:** we write "post-2022
-increase", "consistent with", "convergent evidence"; we never write "is
+increase", "consistent with", "convergent evidence". We never write "is
 AI-generated" and never assert causal attribution to any model or vendor. The
 measurement is population-level change, not document classification, and §2
 explains why that distinction is not cosmetic. **On numbers:** every count,
@@ -120,9 +120,9 @@ rather than in an appendix.
 
 **Bankspeak and institutional discourse.** Moretti & Pestre (2015) is the direct
 antecedent. The broader literature on how international organisations produce and
-deploy language — Barnett & Finnemore (1999) on the authority effects of
+deploy language, including Barnett & Finnemore (1999) on the authority effects of
 bureaucratic expertise, Cornwall & Brock (2005) on the circulation of development
-buzzwords, Mosse (2004) on the gap between policy text and practice — supplies
+buzzwords, and Mosse (2004) on the gap between policy text and practice, supplies
 the interpretive frame within which a lexical drift is worth measuring at all.
 Studies of Bank documents specifically (Broad 2006; Vetterlein 2012; De
 Francesco & Guaschino 2020) establish that Bank knowledge products are
@@ -132,30 +132,30 @@ observe one. What they support is the weaker and sufficient point that an LLM
 signal in institutionally produced text would be non-trivial, and that its
 absence is not evidence that drafters are not using the tools. The nearest is Ban (2015), who traces a documented 2008–2013
 shift in the Fund's published fiscal doctrine to staff composition and framing
-inside its Fiscal Affairs and Research Departments — evidence that the Fund's
+inside its Fiscal Affairs and Research Departments. This is evidence that the Fund's
 prose moves for reasons internal to the Fund, though on flagship publications
 rather than on the Article IV staff reports that form our comparator, and over a
 window that closes before ours begins to matter. **We have not located an equivalent literature on Fund staff
-reports** — the third organisation in De Francesco and Guaschino is the OECD, not
-the IMF — so the comparator's drafting constraints are assumed here rather than
+reports** (the third organisation in De Francesco and Guaschino is the OECD, not
+the IMF), so the comparator's drafting constraints are assumed here rather than
 established, which is a further sense in which it is non-equivalent (§7).
 
 **LLM-associated lexical shift.** The methodological template we adopt comes from
 excess-vocabulary estimation: Kobak et al. (2025) measure post-2022 excess word
-frequencies in PubMed abstracts against pre-2022 baselines; Liang et al. (2024)
+frequencies in PubMed abstracts against pre-2022 baselines. Liang et al. (2024)
 estimate LLM-modified text at the population level in machine-learning conference
 peer reviews, and Liang et al. (2025a, 2025b) do the same for preprints and
 published papers, and for consumer complaints, corporate press releases, job
-postings and United Nations press releases — the last being the closest published
-measurement to an international organisation's own prose; Juzek & Ward (2025) examine the same shift in scientific
+postings and United Nations press releases, the last being the closest published
+measurement to an international organisation's own prose. Juzek & Ward (2025) examine the same shift in scientific
 writing. All of these estimate a *population* quantity from aggregate frequencies
 rather than classifying individual documents. Our Tier-1/Tier-2 marker design
 follows that logic with **two** departures, and the first is the larger.
 
 Most of those studies infer aggregate shifts from corpus-specific reference
 distributions or from candidate sets built by corpus-level frequency comparison
-— Kobak and colleagues from PubMed itself, Liang and colleagues by fitting
-reference distributions to each target corpus. Juzek and Ward's three-step scan
+(Kobak and colleagues from PubMed itself, Liang and colleagues by fitting
+reference distributions to each target corpus). Juzek and Ward's three-step scan
 of 26.7 million abstracts is multi-stage and draws on more than the corpus it
 reports on, so this is a tendency in the literature rather than a rule. **We do
 neither.** Our list is fixed a priori from their
@@ -183,16 +183,16 @@ standard ITS practice (Wagner et al. 2002; Lopez Bernal et al. 2017, 2018) with
 HAC standard errors (Newey & West 1987). A review asked whether we follow the
 corrected specification, the 2017 paper having been corrected in 2020 on the
 post-intervention slope term. The confirmatory design carries **no**
-post-period slope term — with three post years there is nothing to fit one on
-(§5) — so the corrected term does not arise in it; the descriptive scan that
+post-period slope term, because with three post years there is nothing to fit one on
+(§5), so the corrected term does not arise in it. The descriptive scan that
 does carry one enters it as (*t* − *T*₀) truncated at zero
 (`src/s08_its_analysis.py`), which is the corrected form.
 For the estimated breakpoint, a descriptive breakpoint
-scan enters only as a specificity check — we refit the same specification at every
+scan enters only as a specificity check. We refit the same specification at every
 admissible cut and rank 2023 among them by the magnitude of the fitted level
 shift (§6.4). **That is a ranking, not structural-break estimation in the Bai and
 Perron (1998) sense**, which locates breaks by global minimisation of the residual
-sum of squares and settles their number by supF and sequential supF(l+1|l) tests;
+sum of squares and settles their number by supF and sequential supF(l+1|l) tests.
 `src/s12_robustness.py` sorts candidate cuts by |b₂| and discards the standard
 error, so we claim none of their inferential guarantees and cite them as the
 standard this check does not meet.
@@ -201,7 +201,7 @@ standard this check does not meet.
 corpus design, Sandve et al. (2013) on reproducible computational research, and
 Wilkinson et al. (2016) on FAIR data supply the standards this study's provenance
 controls were built to meet. §3.3 reports a case in which all three were satisfied and the
-measurement was still invalid — which is why the controls here extend to
+measurement was still invalid, which is why the controls here extend to
 measurement validity and not only to provenance.
 
 ---
@@ -224,26 +224,28 @@ so from the start. A preregistered ceiling of 40 documents per year-genre cell
 (PREREG §7) is applied by equal-probability sampling without replacement inside
 each cell, drawn from a 2,788-unit eligible frame distilled from 7,451 audited
 listing hits. Inclusion probabilities therefore run from 0.310 to 1.000 and the
-design weights years by cap rather than by the Fund's output; 1999 is short at
-24 because its eligible universe was 24, not because of the cap. Supplement
-S10.7 publishes the per-year frame, the inclusion probabilities, the per-cell
-seeds, a replay of the draw against the frozen sample, and the two things that
-limit it — that 2,788 is a lower bound, since 42.2% of the rows reaching the
-alias lookup could not be placed to a country, and that the per-cell seed makes
-the draw reproducible from *this* frame but not from a refreshed one. Retrieval is documented in `docs/IMF_RETRIEVAL_20260820.md` and the access
-position in `docs/IMF_ACCESS_COMPLIANCE_20260820.md`; 1,064 of 1,064 sampled
-documents were obtained and verified against a four-rung ladder tried in order
-until one rung resolves the document — cover text (869), scan metadata (170),
-title similarity (16), country prefix plus year (9) — so nine documents rest on
-the weakest rung. Supplement S3 gives the rungs, and the negative control that
-caused a proposed title measure to be rejected before use.
+design weights years by cap rather than by the Fund's output. The year 1999 is
+short at 24 because its eligible universe was 24, not because of the cap.
+Supplement S10.7 publishes the per-year frame, the inclusion probabilities, the
+per-cell seeds, a replay of the draw against the frozen sample, and the two
+things that limit it: that 2,788 is a lower bound, since 42.2% of the rows
+reaching the alias lookup could not be placed to a country, and that the
+per-cell seed makes the draw reproducible from *this* frame but not from a
+refreshed one. Retrieval is documented in `docs/IMF_RETRIEVAL_20260820.md` and
+the access position in `docs/IMF_ACCESS_COMPLIANCE_20260820.md`. All 1,064 of
+the 1,064 sampled documents were obtained and verified against a four-rung
+ladder tried in order until one rung resolves the document: cover text (869),
+scan metadata (170), title similarity (16), country prefix plus year (9). Nine
+documents therefore rest on the weakest rung. Supplement S3 gives the rungs, and
+the negative control that caused a proposed title measure to be rejected before
+use.
 
 The Stage-B sample is drawn per cell under the preregistered sampler (PREREG Appendix
-B.7), which differs from the Stage-A global-RNG draw; the two overlap on 27.3% of
+B.7), which differs from the Stage-A global-RNG draw. The two overlap on 27.3% of
 documents, disclosed in §7 rather than buried, because outcomes on the
 overlapping documents were inspected at Stage-A.
 
-**Table 1 — Corpus composition, Stage-B.**
+**Table 1: Corpus composition, Stage-B.**
 
 | Stratum | Sampled | Extracted | Coverage | Span | Eligible tokens | Extraction method |
 |---|---|---|---|---|---|---|
@@ -258,7 +260,7 @@ logged with its error.
 ### 3.2 Annual Report assembly
 
 The Annual Report facet returns sibling-organisation reports (IFC, MIGA, ICSID),
-excluded by logged per-document rules; remaining volumes are deduplicated by
+excluded by logged per-document rules. Remaining volumes are deduplicated by
 report and volume number and concatenated per fiscal year. This produces the
 assembled series on which RQ1 is measured. As §6.1 shows, the exclusions matter
 far more than the concatenation: removing sibling-organisation volumes and
@@ -268,20 +270,20 @@ the concatenation itself changes it by nothing.
 ### 3.3 Extraction quality: provenance is not validity
 
 An external audit of our own earlier release found two defective assembled units
-that every provenance control had passed: fiscal 2002 (twelve tokens — cover
-sheets only) and fiscal 2007 (46,723 tokens at a 0.9% function-word share — a
+that every provenance control had passed: fiscal 2002 (twelve tokens, cover
+sheets only) and fiscal 2007 (46,723 tokens at a 0.9% function-word share, a
 mojibake dump from a broken font encoding). Both had correct hashes, complete
 manifests and pinned environments. **A frozen manifest guarantees provenance, not
 measurement validity.**
 
 The design therefore carries a prespecified per-unit gate (≥5,000 tokens, ≥15%
 function-word share) and a corpus-wide diagnostic scan run before any outcome was
-computed, over the full 6,143-document extraction pool — a superset of Table 1's
+computed, over the full 6,143-document extraction pool, a superset of Table 1's
 Stage-B sample. Every hard flag was adjudicated on record before the analysis ran,
-and the gate refuses to proceed while any is unruled; supplement S6 gives the
+and the gate refuses to proceed while any is unruled. Supplement S6 gives the
 full scan counts and the populations they are measured over.
 
-**Table 1b — defect classes, detection and ruling.**
+**Table 1b: defect classes, detection and ruling.**
 
 | Class | Detected | Ruling and effect |
 |---|---|---|
@@ -295,7 +297,7 @@ from the World Bank's **own** server-side plain text and not once from the PDF
 path we had distrusted, which inverts the premise that a publisher's text is the
 safer source.
 
-**Table 2 — Exclusions applied to the analysis corpus.**
+**Table 2: Exclusions applied to the analysis corpus.**
 
 | Ledger | Rule | Documents | Strata touched |
 |---|---|---|---|
@@ -304,7 +306,7 @@ safer source.
 | `d13_kept.csv` | D-13: flagged, adjudicated, **KEPT** (listed for completeness; not an exclusion) | 1 | annual_report |
 
 Of the 395 intention-to-sample exclusions, 382 are documents outside the
-confirmatory window 1999–2025; the remainder are the language and eligibility
+confirmatory window 1999–2025. The remainder are the language and eligibility
 rulings above.
 
 ### 3.4 Access and redistribution
@@ -315,8 +317,8 @@ outputs including SHA-256 hashes. The evidence deposit is therefore built to
 carry the World Bank raw captures and all derived artifacts in full, and every
 IMF-derived file by hash only, each listed by path so any holder of the originals
 can verify byte-for-byte. It is prepared by `tools/prepare_zenodo_deposit.py` and
-**will be deposited before publication**; §9 gives its contents, and its DOI is
-inserted there once it is minted.
+**will be deposited before publication**. Its contents are given in §9, and its
+DOI is inserted there once it is minted.
 
 ---
 
@@ -336,30 +338,30 @@ A frequency is not a measure of spread, and the two literatures that say so are
 worth separating from the count-model sense of "dispersion" used in §6.2 and
 S9–S10: Gries (2008) on dispersion and adjusted frequencies in corpora, and
 Egbert & Biber (2019) on incorporating text dispersion into keyword analysis.
-Neither bears on the negative-binomial variance function; both bear on whether an
+Neither bears on the negative-binomial variance function. Both bear on whether an
 aggregate rate is carried by a few documents. Supplement S10.6 reports a period-fairness subset analysis for Tier-2 and S10.8
-the per-term table; neither is a document-level dispersion result, and §6.2's
+the per-term table. Neither is a document-level dispersion result, and §6.2's
 concentration guard is the Tier-1 counterpart fixed in advance.
 
 **Its provenance is mixed and we state it rather than round it up.** Ten of the
-thirteen appear in Kobak et al.'s published excess-vocabulary list; `boast`,
-`testament` and `tapestry` do not, and the frozen configuration attributes the
-set to "Kousha & Thelwall-style lists" alongside the distributional work, a
+thirteen appear in Kobak et al.'s published excess-vocabulary list, while
+`boast`, `testament` and `tapestry` do not. The frozen configuration attributes
+the set to "Kousha & Thelwall-style lists" alongside the distributional work, a
 source this paper does not otherwise cite. `config/config.yaml` records one
-blanket attribution for all thirteen families and no per-word field — and
+blanket attribution for all thirteen families and no per-word field.
 `config/families.yaml`, which freezes the matching rule, carries no attribution
-at all — so the set has no item-level provenance and we do not claim one. Nothing about the frozen
-list changes — it was sealed at Stage-A and is the list the confirmatory run
-used — only the description of where
+at all. The set therefore has no item-level provenance and we do not claim one. Nothing about the frozen
+list changes (it was sealed at Stage-A and is the list the confirmatory run
+used), only the description of where
 it came from. *Tier-2* is shared bureaucratese, which an institution can drift toward with no
 LLM involvement at all. It has no per-term provenance in this repository and we
 do not claim one, and its matching rule was never frozen: the production
 pipeline counts exact token membership while the period-fairness study used
-boundary-anchored regex, which moves the headline ratio from 24.4× to 28.4× —
+boundary-anchored regex, which moves the headline ratio from 24.4× to 28.4×,
 almost entirely through the denominator, not the matching. S10.8 publishes the
 per-term table under both rules and does not choose between them. Keeping them
-separate is what allows §6.1's Tier-2 rise — thirtyfold on the equal-year mean,
-24-fold token-weighted — and §6.2's failure to
+separate is what allows §6.1's Tier-2 rise (thirtyfold on the equal-year mean,
+24-fold token-weighted) and §6.2's failure to
 establish a Tier-1 differential to be stated as different facts rather than
 averaged into one.
 
@@ -367,11 +369,11 @@ averaged into one.
 pre-2022 models (GPT-2, Pythia-1.4b). This is a deviation measure, not a
 detector and not an econometric instrument. PREREG §7 (the NLL eligibility bullet) defers a patch to its computation, and
 decision D-4 rules that no NLL number appears in any output until that
-regeneration has run; none is reported here. One further declared arm was also
+regeneration has run. None is reported here. One further declared arm was also
 not executed: the A5.4 SAR sensitivity, declared before any document text was read
-and reaffirmed at Stage-B close. Decision D-5 records why — SAR is the PAD
+and reaffirmed at Stage-B close. Decision D-5 records why (SAR is the PAD
 series' pre-1997 predecessor and contributes no year inside the 1999–2025 common
-window — and the declaration is public inside the frozen SAP at the DOI cited
+window), and the declaration is public inside the frozen SAP at the DOI cited
 above.
 
 ---
@@ -382,8 +384,8 @@ What a seal enforces is Nosek et al.'s (2018) distinction between prediction and
 postdiction: a choice made after an outcome has been seen is a postdiction
 however defensible it looks afterwards. That is why decision D-1 refuses a
 purposive rereading of PREREG §11.5 once the gate had been measured, and why the
-concentration guard's outcome-informed basis is disclosed rather than dropped —
-preregistration over partly preexisting data is the non-ideal case Nosek and
+concentration guard's outcome-informed basis is disclosed rather than dropped.
+Preregistration over partly preexisting data is the non-ideal case Nosek and
 colleagues address directly, and it is ours.
 
 The design was fixed in two sealed stages: Stage-A preregistration (OSF
@@ -394,10 +396,10 @@ externally timestamped before any confirmatory outcome was computed (Zenodo
 **How the family was selected.** {P1, P2} is the preregistration's *default*
 confirmatory family. A co-primary family was conditional on a deterministic branch
 rule over three World Bank policy-document candidates against four conjunctive
-gates; none passed, because the gate requiring 25 pre-2023 common years is
+gates. None passed, because the gate requiring 25 pre-2023 common years is
 unsatisfiable against a comparator frame spanning 24. The fallback in PREREG §11.5
 was not triggered on its literal text, and a purposive reading that would have
-triggered it was considered and deliberately rejected — reinterpreting a frozen
+triggered it was considered and deliberately rejected. Reinterpreting a frozen
 rule after measuring an inconvenient quantity is the failure the freeze exists to
 prevent (decision D-1). Supplement S4 gives the measured gate values and what was
 and was not evaluated.
@@ -405,11 +407,11 @@ and was not evaluated.
 **Panels.** Two confirmatory panels, each a World Bank operational stratum
 against the IMF comparator: **P1** = ICR × Article IV, **P2** = PAD × Article IV.
 Annual Reports are descriptive only. The comparator is explicitly *non-equivalent*
-— institution and genre are confounded — and the preregistration caps
+(institution and genre are confounded), and the preregistration caps
 interpretation accordingly in advance rather than after the fact.
 
 **Estimand, and what to call it.** This is a **single-comparator comparative
-interrupted time series** — a differential interrupted trend — and not a
+interrupted time series** (a differential interrupted trend) and not a
 difference-in-differences design, which is why we do not use that name.
 
 In Linden's (2015) terms this is a multiple-group interrupted time series with a
@@ -419,12 +421,12 @@ and comparator are balanced before the intervention. **Both are large here and
 τ's interval excludes zero in both panels** (Table 4), so the comparator fails
 that criterion on the design's own published standard. We fit it as a Poisson QML
 GLM with a token offset and saturated year dummies rather than his OLS with
-Newey–West errors, and we carry no post-period slope term — with three post-period
+Newey–West errors, and we carry no post-period slope term. With three post-period
 years there is nothing to fit one on. §6.4's placebo cuts are his pseudo-start
 procedure.
 
 There are
-two units, not many; the comparator is non-equivalent by construction; and with
+two units, not many. The comparator is non-equivalent by construction, and with
 year fixed effects and annual aggregation the model reduces to a regression on
 the annual World Bank–IMF log-rate contrast. The frozen design is
 
@@ -442,36 +444,39 @@ in Table 4 rather than in a supplement.
 **The identifying assumption, stated plainly.** β is the post-2023 departure from
 the World Bank–IMF differential trend *extrapolated linearly* from 1999–2022.
 With three post-period observations, β and τ are separated almost entirely by
-that functional form; the data do not adjudicate between "a break in 2023" and
+that functional form. The data do not adjudicate between "a break in 2023" and
 "the pre-existing divergence continued". We therefore do not use causal treatment
-language anywhere, and §6.4's event study — whose bins impose no trend form — is
+language anywhere, and §6.4's event study, whose bins impose no trend form, is
 the closest the design comes to letting the data speak on this point.
 
-**Figure 4 plots that contrast directly**, with the pre-2023 line fitted and
+**Fig 4 plots that contrast directly**, with the pre-2023 line fitted and
 extrapolated across the post window, because the identification question is
 visible in it and not in the raw institutional rates.
+
+**Fig 4. The annual World Bank–IMF log-rate contrast.** The estimand itself: the annual World Bank–IMF log-rate contrast for both panels, with the pre-2023 trend fitted and extrapolated across the post window. Drawn without a confidence band, because the band would come from the frozen bootstrap and this is a display, not a second inference. --- (`fig4_contrast`, regenerated by
+`tools/make_paper_figures.py`.)
 
 **Inference.** PASS-P, a nested bootstrap with B = 9,999 and a wild score
 block procedure, Holm-adjusted across the two panels at α = 0.05. One property of
 that procedure is worth stating in the design section rather than the results:
 with 27 common years and three-year blocks there are nine blocks, so the sign
 support has exactly 2⁹ = 512 points. The 9,999 draws sample that support with
-replacement; they do not add information beyond it, and the achievable resolution
+replacement. They do not add information beyond it, and the achievable resolution
 is 1/512. §6.2 reports the exact enumeration and the sensitivity of the result to
 where the block partition begins.
 
 **The four conditions.** A panel supports a claim only if *all four* hold:
 
-- **C1** — Holm-adjusted significance of the differential.
-- **C2** — specification stability, in two arms: a negative-binomial refit, and a
+- **C1** is Holm-adjusted significance of the differential.
+- **C2** is specification stability, in two arms: a negative-binomial refit, and a
   composition-standardized refit over country → region × income groups.
-- **C3** — the **concentration guard**: refit with the mandatory guard family
+- **C3** is the **concentration guard**: refit with the mandatory guard family
   removed. `underscore` was named as that family **after Stage-A World Bank
-  outcomes had been inspected** — the preregistration records that it already
-  accounted for 43.48% of post-period hits — and **frozen before the IMF
+  outcomes had been inspected** (the preregistration records that it already
+  accounted for 43.48% of post-period hits) and **frozen before the IMF
   contrast and the sealed Stage-B confirmatory run**. That two-stage chronology
-  is stated wherever the guard appears; see §6.2.
-- **C4** — leave-one-post-year-out influence.
+  is stated wherever the guard appears (see §6.2).
+- **C4** is leave-one-post-year-out influence.
 
 The family verdict is Holm over panels, and it emits a `headline_template` only
 when a panel passes. There is no branch in which a failed condition is reported
@@ -515,22 +520,28 @@ statistical analysis plan, wrote essentially all of the retrieval, extraction,
 inference and diagnostic code, ran the analyses, drafted the manuscript and the
 supplement, and made methodological choices under a standing instruction from
 the author to decide rather than leave a question open. Each such choice is
-recorded individually in `docs/` — the analysis plan, decisions D-1 to D-13, two
-deviation records and a prior-inspection ruling — with the instruction that
+recorded individually in `docs/` (the analysis plan, decisions D-1 to D-13, two
+deviation records and a prior-inspection ruling) with the instruction that
 authorised it, and the version history carries `Co-Authored-By` trailers on the
 majority of commits, so the scope is auditable rather than summarised. Several
 results reported here, among them the corpus-selection decomposition and the
-calibration of S10.4, correct errors made earlier in this same work; they are
+calibration of S10.4, correct errors made earlier in this same work. They are
 reported in the sections where those errors occurred rather than removed.
 
 The human author is the sole author and takes full responsibility for the
-content. [AUTHOR ATTESTATION — to be completed before submission: that the author has
-personally reviewed and adopted the design decisions recorded in `docs/`, the
-confirmatory result and its interpretation, and the limitations in §7; that the
-research question, the hypotheses and the decision to report a null result are
-his; and amending the paragraph above wherever it overstates or understates what
-he verified. Deliberately not filled by the assistant: it is an attestation only
-the author can make.]
+content. The research question, the two-stage design, the hypotheses and the
+decision to report the result as a bounded null are his. The methodological
+choices the assistant made were made under his standing instruction, are
+recorded one by one in the repository with that instruction, and have been
+reviewed and adopted by him across twenty-one rounds of independent external
+audit that he commissioned, read and acted on. He has reviewed the
+confirmatory result and its interpretation, the corpus-selection result and
+its correction, the calibration study, and the limitations in the section
+below, and affirms that every hypothesis, interpretation, conclusion,
+limitation and implication stated in this article represents his own view of
+the evidence. Where the assistant's earlier work was wrong, the correction and
+the error are both reported, at his direction, in the section where the error
+occurred.
 
 No AI system is an author. Outputs were verified by an executable test suite,
 by the guards in `tools/` that refuse to build the submission when a stated
@@ -542,51 +553,51 @@ regenerated, rather than here.)
 ---
 ## 6. Results
 
-### 6.1 RQ1 — the replication gate, then the continuation
+### 6.1 RQ1: the replication gate, then the continuation
 
 D4 makes internal replication a **gate**, not a robustness check: the 1946–2012
 series must qualitatively reproduce the pamphlet's published trajectories before
 any extension past 2012 is reported. It does.
 
-**Table 3 — assembled Annual Report era means** (`ar_fy_features.csv`, 76 fiscal
+**Table 3: assembled Annual Report era means** (`ar_fy_features.csv`, 76 fiscal
 years 1947–2024, QC-gated, missing 2000 and 2010). Cells are the **unweighted
-mean of fiscal-year rates**; the token-weighted value follows in parentheses.
+mean of fiscal-year rates**. The token-weighted value follows in parentheses.
 
 | Era | Years present | Nominal./100 | Temporal/1k | Acronym/1k | Mgmt/1k | Tier-1/1k | Tier-2/1k |
 |---|---|---|---|---|---|---|---|
 | 1946–1965 | 19 (1947–1965) | 5.981 (5.989) | **39.963** (38.451) | 15.818 (15.789) | 1.112 (1.135) | 0.009 (0.010) | 0.252 (0.260) |
 | 2020–2024 | 5 (2020–2024) | 7.710 (7.722) | **22.971** (27.767) | 39.803 (41.957) | 4.466 (3.949) | 0.094 (0.060) | 7.631 (6.353) |
 
-Temporal anchoring falls by 43%; nominalisation, acronym density (15.8 → 39.8 per
+Temporal anchoring falls by 43%. Nominalisation, acronym density (15.8 → 39.8 per
 thousand), management vocabulary and the bureaucratese register rise. The pamphlet's qualitative claim survives
 independent re-measurement from primary documents.
 
 **The aggregation is stated because it is not innocent.** Weighting by tokens
-instead of by year gives a temporal fall of 38.45 → 27.77 — 28%, not 43% —
+instead of by year gives a temporal fall of 38.45 → 27.77 (28%, not 43%),
 because recent Annual Reports are far larger and pull the late era toward their
-own value. Every direction in the table survives both aggregations; two of the
+own value. Every direction in the table survives both aggregations. Two of the
 magnitudes do not. We quote the unweighted figures, which treat each fiscal year
 as one observation of institutional practice, and print the weighted ones beside
 them so the choice is visible rather than absorbed.
 
 Two features of this agreement are worth stating. It was computed on a corpus
 that had since been re-extracted, OCR'd, re-fetched and pruned by ruling, none of
-it with this comparison in view; and the series is materially more complete than
-when those repairs began — **76 fiscal years against 71, missing years down from
+it with this comparison in view, and the series is materially more complete than
+when those repairs began: **76 fiscal years against 71, missing years down from
 seven to two** (supplement S8).
 
-**The composition result, decomposed — and it is not the result we first
+**The composition result, decomposed. And it is not the result we first
 claimed.** Measured over the same fiscal years, the assembled series falls
 42.5% (39.96 → 22.97 per thousand) while the whole Annual-Report document pool
 falls only 13.8% (35.70 → 30.76). A factor of three. Both are equal-year means, which is the convention every figure in this section
 uses. Table 3b step 4 and Table 3e give the token-weighted contrast for the
-assembled series and its two bracket corpora; no token-weighted figure for the
+assembled series and its two bracket corpora. No token-weighted figure for the
 329-file pool is reported anywhere, because the pool is not a corpus this paper
 analyses. The natural explanation is
-*unit definition* — whether volumes are concatenated into fiscal-year units.
+*unit definition*, whether volumes are concatenated into fiscal-year units.
 **It is not the explanation, and decomposing the gap produces a sharper one.**
 
-**Table 3b — where the factor of three comes from.** Each step is applied to the
+**Table 3b: where the factor of three comes from.** Each step is applied to the
 previous step's output, over the assembled series' own fiscal years.
 
 | Step | 1946–65 → 2020–24 | change | contribution |
@@ -604,23 +615,23 @@ others not, which invited exactly the confound the ladder exists to rule out.
 
 **Concatenation contributes nothing at all.** For a token-normalised rate,
 assembling documents and taking a token-weighted mean of their individual rates
-are the same arithmetic; across all 76 fiscal years the two agree to within
-0.0006 per thousand. The operation everyone worries about — the unit of analysis —
+are the same arithmetic. Across all 76 fiscal years the two agree to within
+0.0006 per thousand. The operation everyone worries about, the unit of analysis,
 is a no-op here.
 
 **The entire factor of three is document selection.** Of the 329 files the
-Annual-Report facet returns, 134 enter the assembled series; the other 195 are
-removed by logged ruling. Those excluded files do not merely add noise: **they
+Annual-Report facet returns, 134 enter the assembled series. The other 195 are
+removed by logged ruling. Those excluded files do not simply add noise: **they
 trend in the opposite direction.**
 
 The 195 are not one category, and a mechanism resting on a mixed category is not
 demonstrated until the mix is shown. Removing a duplicate record is data
-cleaning; excluding IFC, MIGA and ICSID volumes is a substantive decision about
+cleaning. Excluding IFC, MIGA and ICSID volumes is a substantive decision about
 what counts as a World Bank Annual Report. `src/s10_assemble_ar.py` recorded a
 rule per document at assembly time, so the split is a read of
 `data/meta/ar_assembly_log.csv` rather than a reconstruction.
 
-**Table 3c — what the excluded files are, and where each class goes.**
+**Table 3c: what the excluded files are, and where each class goes.**
 Token-weighted per-year rates, averaged over the assembled series' own fiscal
 years (`tools/ar_exclusion_classes.py`).
 
@@ -638,7 +649,7 @@ question about institution and genre made us compute, is that the class-level
 +64.4% is **not a rise in anyone's prose**. It is a change in who is in the
 class between the two windows.
 
-**Table 3d — the sibling class decomposed** (same convention as Table 3c;
+**Table 3d: the sibling class decomposed** (same convention as Table 3c,
 `tools/ar_exclusion_classes.py`). The right-hand pair takes each institution
 over its *own* first and last observed decade, because two of the three did not
 exist in 1946.
@@ -652,7 +663,7 @@ exist in 1946.
 
 **ICSID was founded in 1966 and MIGA in 1988**, so the early window contains ten
 IFC files and nothing else, while the late window contains five ICSID, five MIGA
-and two IFC. IFC is the only sibling observable in both, and it falls 42.9% — the same
+and two IFC. IFC is the only sibling observable in both, and it falls 42.9%, the same
 direction and nearly the same magnitude as the Bank's own −42.5%. On its own
 series not one sibling rises. Remove ICSID, whose rate is high and flat across
 its whole run (75.4 on its first decade against 69.0 on its last), and the class
@@ -661,7 +672,7 @@ falls 51.4% instead of rising.
 So the +64.4% is a between-institution composition shift: a dense, date-heavy
 document population that could not appear before 1966 appears in the late window
 and in no other. **This is the same error this section reports catching once
-already, one level further down** — a population difference read as a trend —
+already, one level further down** (a population difference read as a trend),
 and we report it in the row where it was made rather than quietly restating the
 table. The factor-of-three finding is untouched, because it never depended on
 the excluded files rising: mixing a *higher-rate* population into a falling one
@@ -671,19 +682,19 @@ flattens the decline whether or not that population is itself going up.
 the headline.** The frozen rule drops a record whose (report number, volume
 number) key has already been seen, which is content-blind. Adjudicated by title
 (`tools/companion_volume_adjudication.py`), **only one of the five is a
-duplicate** — on a test the tool itself calls weak, since two files can share a
+duplicate**, on a test the tool itself calls weak, since two files can share a
 title and differ. It is strictly stronger than the metadata key that produced
 the original misclassification, and it is not strong enough to be called
 settled.
 The other four are distinct components sharing a key with the main volume: two
-2023 companions — an appendixes product and a management-discussion-and-financial-
-statements product, 42,404 and 94,717 tokens — a 2024 executive summary, and a
+2023 companions (an appendixes product and a management-discussion-and-financial-
+statements product, 42,404 and 94,717 tokens), a 2024 executive summary, and a
 2008 lending table. Excluding them removed 137,121 tokens from fiscal 2023 alone,
 against the 43,795 that were kept.
 
 This raises a second and larger question, because the assembled unit is not the
 same publication across the span. Fiscal 2020 and 2021 are three-document units
-of 217,404 and 184,775 tokens; fiscal 2022 is a single document of 44,574. If
+of 217,404 and 184,775 tokens. Fiscal 2022 is a single document of 44,574. If
 financial statements and lending appendixes left the bound volume after 2021, the
 endpoint decline would be a packaging change rather than a change in the Bank's
 prose. So we inventoried the family by component
@@ -691,7 +702,7 @@ prose. So we inventoried the family by component
 question: the **narrative volume only**, which is the like-for-like series, and
 the **full family**, which is every component the archive returns.
 
-**Table 3e — the result under three corpus definitions and two weightings.**
+**Table 3e: the result under three corpus definitions and two weightings.**
 
 | corpus | files | weighting | 1946–65 | 2020–24 | change |
 |---|---:|---|---:|---:|---:|
@@ -706,20 +717,20 @@ Every figure this paper has reported for this contrast, including the −42.5%,
 was the equal-year mean, and it never said so. The second axis was added after
 external review asked for both weightings side by side. It matters here more
 than anywhere else in the paper because the late window is not a balanced set of
-years — fiscal 2020 and 2021 carry three components and about 200,000 tokens
-each, fiscal 2022 through 2024 carry one and 29,000 to 45,000 — so equal-year weighting gives the three thin years the same say as the two fat
+years: fiscal 2020 and 2021 carry three components and about 200,000 tokens
+each, fiscal 2022 through 2024 carry one and 29,000 to 45,000. So equal-year weighting gives the three thin years the same say as the two fat
 ones and token weighting gives them about a fifth of it (39,132 against 201,090
-tokens on average; the extreme pair, fiscal 2024 against 2020, is a seventh).
+tokens on average, and the extreme pair, fiscal 2024 against 2020, is a seventh).
 
 **The decline survives every definition and every weighting, and the cleanest
 construction is both the steepest and the only stable one.** Restricting to the
-narrative volume — the one construction that compares the same kind of text
-across eight decades — gives −58.8% equal-year and −58.0% token-weighted. That
+narrative volume, the one construction that compares the same kind of text
+across eight decades, gives −58.8% equal-year and −58.0% token-weighted. That
 near-invariance is the point: the narrative volume is a single component type
 in every year, and one file per year across both comparison windows bar fiscal
 1955, so the two weightings almost coincide on it. (Seven mid-series years carry
-more than one — fiscal 2008 alone carries fourteen — so "one a year throughout"
-would be false; the windows that set the endpoints are what matter here.) The frozen and family
+more than one, and fiscal 2008 alone carries fourteen, so "one a year throughout"
+would be false. The windows that set the endpoints are what matter here.) The frozen and family
 series move by fifteen and eleven points between weightings because they mix
 thin single-volume years with fat three-component ones. The weighting
 sensitivity is therefore a property of the packaging, not of the Bank's prose,
@@ -729,38 +740,44 @@ decline, not manufacturing it.
 
 The per-year inventory also relocates the anomaly. Fiscal 2016 through 2021 and
 fiscal 2023 all carry a narrative volume, financial statements and appendixes.
-**Fiscal 2022 is the thin year** — a narrative volume alone — and fiscal 2024 adds
+**Fiscal 2022 is the thin year**, a narrative volume alone, and fiscal 2024 adds
 only an executive summary. The frozen series' 22.97 sits between the two bracket corpora because it mixes
 components unevenly across years, which is a reason to report the range rather
 than a single figure. **We report all six cells and claim the range −24% to
-−59%, not the point −42.5%** — and we note that the narrow part of that range is
+−59%, not the point −42.5%**, and we note that the narrow part of that range is
 where the packaging varies, while the like-for-like series sits at −58% under
 either weighting. Over the assembled series' own fiscal years their rate runs 22.23 per thousand in
-1946–65 against 33.53 in 2020–24 — rising — while the Bank's own volumes fall from
+1946–65 against 33.53 in 2020–24, rising, while the Bank's own volumes fall from
 39.96 to 22.97. (Both are unweighted means of per-year token-weighted rates,
-matched to the same years, which is the aggregation Table 3b and Figure 1 use.
+matched to the same years, which is the aggregation Table 3b and Fig 1 use.
 Taking each series over its own available years instead gives 38.25 for the late
-window, inflated by a single fiscal-2025 file; §8 says why that comparison is the
-wrong one.) Figure 1 plots all three series. Mixing a higher-rate population into a falling
-one flattens the decline, and that is the whole mechanism — Table 3d shows that
+window, inflated by a single fiscal-2025 file. §8 says why that comparison is the
+wrong one.) Fig 1 plots all three series. Mixing a higher-rate population into a falling
+one flattens the decline, and that is the whole mechanism. Table 3d shows that
 the excluded population is not itself rising, which the mechanism does not need.
+
+**Fig 1. Temporal anchoring under three corpus definitions.** Temporal anchoring per thousand tokens over common fiscal years, in three panels: the assembled series (the Bank's own volumes), the whole document pool, and the 195 files the assembly excludes. The excluded files rise as a class while the assembled series falls, which is what produces the factor of three. Table 3d decomposes that class rise into a change of membership between the two windows rather than a change in prose. (`fig1_composition`, regenerated by
+`tools/make_paper_figures.py`.)
 
 The transferable lesson is therefore not the one we started with, and it is more
 useful. A diachronic magnitude here is untouched by the unit of analysis and
-changed threefold by **what counts as a document of this institution** — a
+changed threefold by **what counts as a document of this institution**, a
 decision that is usually one clause in a data section, if it appears at all. It
 is also a decision with no neutral setting: including sibling-organisation
 reports is defensible, excluding them is defensible, and the two defensible
 choices differ by a factor of three.
 
-### 6.2 RQ2 — the preregistered differential test
+### 6.2 RQ2: the preregistered differential test
 
-**Figure 2** plots both panels. It is drawn to scale on purpose: twenty-four
+**Fig 2** plots both panels. It is drawn to scale on purpose: twenty-four
 pre-period years against three post-period ones is the whole design, and no
 amount of statistical machinery makes that asymmetry go away.
 
-**Table 4 — governing verdict** (`s13_validation_battery family`, Holm over two
-panels, α = 0.05). **P1 is the ICR stratum against the IMF Article IV comparator;
+**Fig 2. Tier-1 markers by institution, both panels.** Tier-1 markers per thousand tokens by institution, both confirmatory panels, with the prespecified 2023 break marked. (`fig2_panels`, regenerated by
+`tools/make_paper_figures.py`.)
+
+**Table 4. Governing verdict** (`s13_validation_battery family`, Holm over two
+panels, α = 0.05). **P1 is the ICR stratum against the IMF Article IV comparator.
 P2 is the PAD stratum against the same comparator**, and the labels carry that
 meaning in every table below.
 
@@ -779,17 +796,17 @@ meaning in every table below.
 | τ̂ WB differential trend (log pts/yr) | 0.0371 [0.019, 0.055] | 0.0483 [0.033, 0.064] |
 | PREREG §9 extrapolation trigger | 0.445 vs β̂ 0.586 — **fires** | 0.579 vs β̂ 0.332 — **fires** |
 
-`family_pass = false`; no passing panel; no headline. Under PREREG §5, failure
+`family_pass = false`. No passing panel, no headline. Under PREREG §5, failure
 of any condition means the panel is reported descriptively with the failed
 condition named.
 
 **What every bracket in this section is.** Unless a sentence names something
 else, an interval reported in §6 is a PASS-E percentile interval from the same
-engine and the same 9,999 draws — including the guard refits, the joint stress
+engine and the same 9,999 draws, including the guard refits, the joint stress
 and the τ̂ row above. Two exceptions are named where they occur: the validation
 outcomes in §6.3 use a delete-one-year jackknife, and the H-SHARED interval is a
 circular block bootstrap on the comparator series alone. None of them is a 95%
-confidence interval. The nominal level is 95%; the measured coverage of the
+confidence interval. The nominal level is 95%. The measured coverage of the
 PASS-E procedure is 0.71–0.91 under the four nulls of S10.3, so these are
 bootstrap percentile intervals with empirically poor nominal coverage and no
 threshold argument is built on one.
@@ -798,19 +815,19 @@ threshold argument is built on one.
 mandatory concentration guard before the Stage-B data existed, and recorded its
 reason in the frozen text: the family was "already known to dominate on the WB
 side (43.48% of post-period hits)". That justification is **outcome-informed and
-we say so** — the 43.48% comes from Stage-A material whose outcomes had been
+we say so**. The 43.48% comes from Stage-A material whose outcomes had been
 seen. The preregistration handles it the only way that works: by naming the guard
 in advance and disclosing the basis, rather than choosing it after the fact, and
 by closing the adjacent exit at the same time: occurrence count stays primary, so
-the analysis cannot later slide to breadth or prevalence — both of which were
-nonetheless estimated and are reported below, since foreclosing an axis as the
-primary outcome is not the same as leaving it unmeasured. On the Stage-B corpus
-the family's post-period share is 36.6% on ICR and 41.1% on PAD — lower than the
+the analysis cannot later slide to breadth or prevalence. Both were nonetheless
+estimated and are reported below, since foreclosing an axis as the primary
+outcome is not the same as leaving it unmeasured. On the Stage-B corpus the
+family's post-period share is 36.6% on ICR and 41.1% on PAD, lower than the
 figure that motivated the guard, and still large enough to carry the result
 single-handed.
 
 Refitting without it, the differential coefficient is **β = −0.067, CI
-[−0.509, 0.398]** — the estimand does not merely shrink, it crosses zero with a
+[−0.509, 0.398]**. The estimand does not simply shrink, it crosses zero with a
 wide interval. P2 behaves the same way and more sharply (β = −0.439, CI
 [−0.934, 0.051]). The guard was set for this contingency and it caught it, in
 both panels, which is the relevant fact: this is not one panel misbehaving.
@@ -818,7 +835,7 @@ both panels, which is the relevant fact: this is not one panel misbehaving.
 This must be stated precisely, because a cruder statistic points the other way.
 Removing `underscore`, the raw pre/post rate ratios still favour the World Bank.
 
-**Table 5 — the raw ratio and the fitted interaction are different quantities.**
+**Table 5. The raw ratio and the fitted interaction are different quantities.**
 Rates are Tier-1 counts per thousand eligible tokens, pooled within period.
 
 | | all Tier-1 | excluding `underscore` |
@@ -832,18 +849,17 @@ The Bank's rate still rises faster than the Fund's. What collapses is the
 *modelled differential*, and the reason is **not** the Fund's own rise. The Fund
 is already divided out in the ratio of ratios above: its larger proportional
 increase once `underscore` is removed (×1.55 against ×1.16) accounts for about
-60% of what takes 2.83 down to 1.74 — −0.29 of the −0.49 log-point fall, with the
-Bank's own ratio dropping from ×3.26 to ×2.68 supplying the rest — and it is
-spent there. It cannot also explain the further fall
-to β = −0.067.
+60% of what takes 2.83 down to 1.74 (−0.29 of the −0.49 log-point fall, with the
+Bank's own ratio dropping from ×3.26 to ×2.68 supplying the rest), and it is
+spent there. It cannot also explain the further fall to β = −0.067.
 
 **The term that absorbs the rest is τ, the World Bank's own differential trend.**
-Refitting the frozen design with τ deleted returns β = 1.042 on P1 — essentially
-the raw log ratio of ratios, 1.039 — which locates the entire gap in that one
+Refitting the frozen design with τ deleted returns β = 1.042 on P1 (essentially
+the raw log ratio of ratios, 1.039), which locates the entire gap in that one
 coefficient. (Table 5d gives the same refit with its *p* and its P2 companion,
-0.943; a previous external review listed this number among those it could not
-check, because it was a prose claim with no generator behind it.) And removing `underscore` does not flatten the trend; it *steepens*
-it, from τ̂ = 0.0371 to 0.0489 on P1 and from 0.0483 to 0.0669 on P2. The Bank's
+0.943. A previous external review listed this number among those it could not
+check, because it was a prose claim with no generator behind it.) And removing
+`underscore` does not flatten the trend. It *steepens* it, from τ̂ = 0.0371 to 0.0489 on P1 and from 0.0483 to 0.0669 on P2. The Bank's
 Tier-1 rate has been climbing about 4% a year faster than the Fund's since 1999,
 and once the single dominant word family is set aside, the post-2023 elevation is
 no longer distinguishable from that long-running trend.
@@ -851,23 +867,23 @@ no longer distinguishable from that long-running trend.
 So the honest reading of C3 is sharper than "the effect disappears". It is:
 **without one word family, the post-2023 rise is indistinguishable from a
 differential trend that has been running since 1999.** A raw ratio, a fitted
-deviation from trend, and a pre/post contrast are three different quantities;
-only the second was preregistered.
+deviation from trend, and a pre/post contrast are three different quantities.
+Only the second was preregistered.
 
 The preregistration also fixed a **non-gating** joint stress, removing
 `underscore` *and* `pivotal` together. It was computed and frozen and had not been
-reported: β = −0.264, CI [−0.732, 0.239] on P1; β = −0.465, CI [−1.024, 0.092] on
-P2. It gates nothing by design, and it points the same way as C3.
+reported: β = −0.264, CI [−0.732, 0.239] on P1, and β = −0.465, CI [−1.024, 0.092]
+on P2. It gates nothing by design, and it points the same way as C3.
 
 **The two secondary sensitivities the plan promised, and what they do to the
 picture.** PREREG §4 fixed two reported sensitivities beside the confirmatory
 test: HAC(3) OLS on the annual paired log-rate difference, and document-level QML
 with institution×year clustering. Neither appeared in earlier drafts of this
-paper — an omission found by external review, and a serious one in a study whose
+paper, an omission found by external review, and a serious one in a study whose
 warrant is adherence to a frozen plan. Both are reported here.
 
-**Table 5b — three inference routes, same data** (*p* for the WB×post term).
-Bold marks a *p* below that panel's Holm threshold — 0.025 on P1, 0.05 on P2 —
+**Table 5b. Three inference routes, same data** (*p* for the WB×post term).
+Bold marks a *p* below that panel's Holm threshold (0.025 on P1, 0.05 on P2),
 not below 0.05 unconditionally.
 
 | | PASS-P (governing) | HAC(3) annual | doc-level QML |
@@ -878,9 +894,9 @@ not below 0.05 unconditionally.
 | P2, excl. `underscore` | — | **0.0123** | **0.0431** |
 
 **Which panel looks significant depends on the inference route.** PASS-P makes P1
-significant and P2 not; HAC(3) does the reverse. And with the guard family
+significant and P2 not. HAC(3) does the reverse. And with the guard family
 removed, HAC(3) and the clustered document-level fit both return a *significant
-negative* on P2 — the Bank falling relative to the Fund. The document-level point
+negative* on P2, the Bank falling relative to the Fund. The document-level point
 estimates reproduce the confirmatory coefficients exactly (+0.586, −0.067,
 +0.332, −0.439), so the disagreement is entirely about standard errors, which is
 to say about how much information twenty-seven annual observations actually
@@ -893,21 +909,21 @@ resamples signs over non-overlapping three-year blocks: 27 years gives nine
 blocks, so the test statistic has a support of exactly 2⁹ = 512 sign patterns,
 and 9,999 Monte Carlo draws sample that support with replacement rather than
 adding information. That a sign bootstrap over *G* units has only 2^*G* attainable
-values, and what it costs when *G* is small, is Webb's (2023) result; we derived
+values, and what it costs when *G* is small, is Webb's (2023) result. We derived
 the count independently here and cite it as the standard the design is measured
 against. The neighbouring literature on wild bootstrap inference with few clusters is
 MacKinnon & Webb (2017), and it is a required caution here rather than an
 explanation. Their diagnosis is unequal cluster sizes, which is not this
-design's problem — nine three-year blocks are exactly balanced. Their
+design's problem. Nine three-year blocks are exactly balanced. Their
 small-treated-cluster result predicts under-rejection, and which way our own
 measurement runs depends on the null: under the preregistered process the family
 error is 0.0365, below nominal, and under means fitted to the observed series it
 is 0.086, above it (S10.4). One treated post cluster with extreme leverage on
-the score is their concern and it is ours; the quantitative account of what we
+the score is their concern and it is ours. The quantitative account of what we
 measure is not theirs and we do not borrow it.
 
 **And the post window is exactly one of the nine blocks.** At the preregistered
-origin the ninth block is [2023, 2024, 2025] — the whole post period, and nothing
+origin the ninth block is [2023, 2024, 2025], the whole post period, and nothing
 else. Every treated observation therefore sits inside a single sign-flippable
 unit, so of the 512 patterns only the sign of one block decides whether the
 post-period contribution enters with its observed sign at all. This is the
@@ -915,24 +931,24 @@ structural reason the *p*-value moves twentyfold when the partition is shifted b
 a year (Table 5c): shifting the origin breaks the post window across two blocks
 and changes what the test is able to see. We report it as a property of the frozen
 design, not as a repair. Enumerating all 512 exactly, at the frozen block origin,
-gives P1 = 8/512 = **0.0156** and P2 = 50/512 = **0.0977** — close to the Monte
+gives P1 = 8/512 = **0.0156** and P2 = 50/512 = **0.0977**, close to the Monte
 Carlo values, so the simulation is faithful.
 
-Twenty-seven years in three-year blocks admit three origins — offsets 0, 1 and
-2, after which the blocking repeats — and all three are given here, because
+Twenty-seven years in three-year blocks admit three origins (offsets 0, 1 and
+2, after which the blocking repeats), and all three are given here, because
 reporting one of them shows only whichever panel that partition happens to move.
 The frozen origin cuts nine whole blocks. A shifted origin keeps every year with
 its calendar neighbours and leaves a short block at each end, so it has **ten**
-blocks and a support of 2¹⁰ = 1,024 rather than nine and 512. That is not how an
-earlier version of this table was computed: it rotated the year vector before
-blocking, which kept nine blocks at every offset by placing 1999 in the same
-block as 2024 and 2025 — the one thing a block bootstrap exists to prevent. An
-external review reconstructed the cells from the deposited panels, found they
-reproduced only under rotation, and asked for the time-ordered values. These are
-they; the rotated ones are kept in the tool's output under their own label.
+blocks and a support of 2¹⁰ = 1,024 rather than nine and 512. That is not how
+an earlier version of this table was computed: it rotated the year vector before blocking,
+which kept nine blocks at every offset by placing 1999 in the same block as 2024 and 2025,
+the one thing a block bootstrap exists to prevent. An external review
+reconstructed the cells from the deposited panels, found they reproduced only
+under rotation, and asked for the time-ordered values. These are they. The
+rotated ones are kept in the tool's output under their own label.
 
-**Table 5c — exact PASS-P *p* at every available block origin, time order
-kept.** Enumeration over every sign pattern; `tools/block_origin_enumeration.py`
+**Table 5c. Exact PASS-P *p* at every available block origin, time order
+kept.** Enumeration over every sign pattern. `tools/block_origin_enumeration.py`
 regenerates it and also prints what rotation gave.
 
 | origin offset | P1 | P2 | blocks | support |
@@ -944,14 +960,14 @@ regenerates it and also prints what rotation gave.
 The preregistered origin governs and we do not substitute another. But the table
 cuts both ways and both directions belong in it. A one-year shift moves P1's
 headline twentyfold, 0.0156 to 0.3164. A two-year shift **halves** P1's
-*p* to 0.0078 — the earlier version said the two-year shift left P1
-where the frozen origin put it, which was an artifact of the wrap — and takes P2
+*p* to 0.0078 (the earlier version said the two-year shift left P1
+where the frozen origin put it, which was an artifact of the wrap) and takes P2
 to 0.0371. At that origin the smaller *p* clears Holm's 0.025 and the
 larger clears its 0.05, so **the partition that would have carried both panels
 through condition 1 is one an arbitrary earlier choice ruled out**, while the
 partition one year the other way would have failed both. A convention that can
 move one panel's *p* by a factor of twenty and carry the other across its own
-threshold is not a nuisance; it is a reason the single reported *p* should not
+threshold is not a nuisance. It is a reason the single reported *p* should not
 be read as a measurement.
 
 **What the functional form is worth, and what the block partition is worth,
@@ -965,12 +981,12 @@ data.** A single *p* cannot separate those two effects, so each row is also
 evaluated at all three block origins. `tools/functional_form_sensitivity.py`
 builds the table.
 
-**Table 5d — functional-form and window sensitivities.** Inner *p*
-enumerated, not sampled; the last column of each panel counts how many of the
+**Table 5d. Functional-form and window sensitivities.** Inner *p*
+enumerated, not sampled. The last column of each panel counts how many of the
 three block origins fall below 0.05, with time order kept at every origin (a
 shifted origin has one more block than the frozen one, so its support is
-doubled). *from YYYY* restricts the pre-period start; *less YYYY* deletes that
-year.
+doubled). *from YYYY* restricts the pre-period start, and *less YYYY* deletes
+that year.
 
 | variant | P1 β | P1 *p* | <.05 | P2 β | P2 *p* | <.05 |
 |---|---:|---:|---:|---:|---:|---:|
@@ -990,34 +1006,34 @@ year.
 
 † *A 15-year window has five blocks, so the support is 2⁵ = 32 and the smallest
 attainable* p *is 0.0625. At the frozen origin that row cannot be significant
-whatever the data say; reading it as evidence would be reading the support
+whatever the data say. Reading it as evidence would be reading the support
 size. Any window shorter than sixteen common years has this property. (A
 shifted origin gives the same window six blocks and a floor of 0.031, so
-significance is reachable there; it is not reached.)*
+significance is reachable there. It is not reached.)*
 
 ¶ *The comparator is a capped annual cross-section with inclusion
 probabilities running 0.31 to 1.00, so a review asked for it reweighted to the
 population. Inflating a sampled cell to its population total scales the count
-and the token denominator by the same 1/π, and the estimand is a rate — so β
+and the token denominator by the same 1/π, and the estimand is a rate, so β
 moves by 0.0001 on P1 and 0.0010 on P2, which is the rounding of counts back to
 integers. **The requested sensitivity is degenerate for this estimator**, and it
 is computed rather than argued. Scaling the count alone does move β, to +0.543,
 but that inflates a numerator without its denominator and is a different
-quantity; it is shown so the difference is visible rather than assumed.*
+quantity. It is shown so the difference is visible rather than assumed.*
 
 ‡ *WB × centred-year deleted. Not a better-identified version of the published
 β: without the trend term β becomes a pre/post contrast absorbing the whole
-1999–2022 divergence — a different estimand, reported because it was asked for,
-and precisely the quantity §5 says the design is built to avoid reporting.*
+1999–2022 divergence. That is a different estimand, reported because it was asked
+for, and precisely the quantity §5 says the design is built to avoid reporting.*
 
 **Three readings, and the second is the one that matters.** First, the frozen
 *p* is not an artifact of the frozen origin: two of the three origins put P1
 below 0.05 (0.0156 and 0.0078). Second, **the rows that move P1 are exactly the two the design says it
-cannot separate** — deleting the institution trend takes β from 0.586 to 1.042
+cannot separate**. Deleting the institution trend takes β from 0.586 to 1.042
 while pushing *p* to 0.0586, and deleting fiscal 2024 takes β to 0.207 and *p*
-to 0.1797. Both were already named in §5 and §7 as the identification problem;
-the table gives them numbers. Third, the single-year deletions look devastating
-at the frozen origin — dropping 2020 sends P1 to 0.3164 — and are not: at the
+to 0.1797. Both were already named in §5 and §7 as the identification problem.
+The table gives them numbers. Third, the single-year deletions look devastating
+at the frozen origin (dropping 2020 sends P1 to 0.3164) and are not: at the
 other two origins the same row returns 0.0098 and 0.0195, so what moved was the
 partition, not the evidence. A reader given only the frozen-origin column would
 have drawn the wrong conclusion from this table, which is why the column beside
@@ -1029,7 +1045,7 @@ overdispersed one.** An 800-replicate study gives empirical size 0.0512 (P1) and
 0.0425 (P2) against a nominal 0.05, and 0.0063 / 0.0050 against 0.01
 (supplement S1). That study's null is Poisson: the year-level shock it adds is
 drawn once per year and applied to both institutions, and a design carrying
-saturated year dummies absorbs it exactly — as this project's own preregistration
+saturated year dummies absorbs it exactly, as this project's own preregistration
 had already recorded before the calibration script reintroduced it.
 
 Asked the question the frozen design never asked itself, the answer is worse and
@@ -1038,12 +1054,12 @@ correction and is applied to 54 cells fitted with 30 parameters, and it recovers
 between a seventh and a twenty-third of a dispersion that is really there
 (supplement S9, `tools/dispersion_calibration.py`, 1,000 replicates). **At the
 dispersion our own data are consistent with, PASS-P's size at a nominal 0.05 is
-0.107 on P1 and 0.075 on P2** — double on one panel and half again on the
+0.107 on P1 and 0.075 on P2**, double on one panel and half again on the
 other.
 
 Two consequences, and both cut the same way. Condition 2's NB2 arm ran with
 α̂ = 0.012 (P1) and 0.0005 (P2), so it fitted a model barely distinguishable from
-the Poisson primary, and its **pass carries little information**; we report it as
+the Poisson primary, and its **pass carries little information**. We report it as
 a pass because it is one, and say here what it can detect. And the single *p*
 that reached significance, P1's 0.0142, comes from a test that is roughly twice
 as easy to trip as its nominal level suggests. **A result the preregistered rule
@@ -1053,9 +1069,9 @@ already declined to confirm is, on this evidence, weaker still.**
 verdict either.** External review asked the right question: preregistration does
 not oblige anyone to keep privileging a procedure after showing it miscalibrated,
 so does the verdict survive an inference with roughly correct size? We refit the
-dispersion by the moment condition that respects the fitted degrees of freedom —
-choosing α so that the Pearson statistic equals *n* − *p* rather than dividing by
-*n* — leaving the frozen engine untouched (`tools/dispersion_robust_inference.py`,
+dispersion by the moment condition that respects the fitted degrees of freedom
+(choosing α so that the Pearson statistic equals *n* − *p* rather than dividing by
+*n*), leaving the frozen engine untouched (`tools/dispersion_robust_inference.py`,
 supplement S10).
 
 The corrected α is **4.3 times** the frozen one on P1 (0.0520 against 0.0121) and
@@ -1063,7 +1079,7 @@ The corrected α is **4.3 times** the frozen one on P1 (0.0520 against 0.0121) a
 the other side. Two things follow, and the second was not what we expected.
 
 First, **the verdict is robust**. The exact *p* moves by at most four patterns in
-512 — P1 stays at 8/512, P2 goes 50/512 to 46/512 — and no panel's condition 1
+512 (P1 stays at 8/512, P2 goes 50/512 to 46/512), and no panel's condition 1
 changes. The governing result is not an artifact of the frozen estimator.
 
 Second, **the correction does not fix the size**. Under a null carrying the
@@ -1072,22 +1088,22 @@ dispersion the corrected estimator itself reports, empirical size at a nominal
 P2 (3,000 replicates, Monte Carlo standard error 0.004). The inflation is therefore
 not coming from the dispersion estimator.
 
-**And those nulls were the wrong ones — but so was the quantity.** Every
+**And those nulls were the wrong ones, but so was the quantity.** Every
 calibration to this point drew i.i.d. per-cell noise, which is a poor test of
 machinery whose blocks exist to absorb serial dependence. Rerun under the
 process the preregistration specifies, a World-Bank-specific differential AR(1)
 shock at ρ = 0.5 and σ_δ = 0.3205, per-panel size roughly doubles. A second
 external reading then pointed out that per-panel size is not the governing
-rule's error rate: the two panels share their entire comparator arm — the same
-twenty-seven cells — and the rule is a Holm step-down over both, so simulating
+rule's error rate: the two panels share their entire comparator arm (the same
+twenty-seven cells), and the rule is a Holm step-down over both, so simulating
 them in separate loops measures a different object. Repairing that
 (`tools/joint_holm_calibration.py`, supplement S10.4) changes the answer in an
 unexpected direction and reveals a larger problem underneath it.
 
 **What the repaired study reports is an upper bound, not the rule's error
-rate.** C2 and C3 are not simulated — a null process for a standardised
+rate.** C2 and C3 are not simulated (a null process for a standardised
 document-level redraw and for the guard count series would be modelling, not
-calibration — and a conjunction can only reject less often than its first
+calibration), and a conjunction can only reject less often than its first
 condition. So every rate below is the **Holm-adjusted C1 family rejection
 rate**, an upper bound on the false-positive rate of the full C1–C4 rule, which
 this study does not measure. Where C4 can be simulated it lowers the bound:
@@ -1095,28 +1111,28 @@ this study does not measure. Where C4 can be simulated it lowers the bound:
 
 On one set of replicates under the original construction, the raw "at least one
 panel below 0.05" event fires at 0.190, the preregistered Holm step-down at
-**0.109**, and Holm with C4 at 0.083; sampling the inner *p* rather than
+**0.109**, and Holm with C4 at 0.083. Sampling the inner *p* rather than
 enumerating all 512 patterns moves the last of those by 0.006.
 
 What the repair exposes is that the answer turns almost entirely on a choice
 nobody preregistered. Under the process the preregistration actually names the
 bound is **0.0365** (146 of 4,000), and the design's own power run put the same quantity at
 0.039 at θ = 0 in August while an external reviewer's independent implementation
-returned 0.0335 ± 0.0040 — three implementations, one number. Under means fitted
+returned 0.0335 ± 0.0040. Three implementations, one number. Under means fitted
 to the observed series it is **0.086** (342 of 4,000), and 0.0935 when ρ and σ_δ are redrawn
 from intervals rather than held at their point estimates. Both nulls are
-defensible; the design specified neither for this purpose. Across all eighteen
+defensible. The design specified neither for this purpose. Across all eighteen
 nulls in S10.4 the bound runs from 0.028 to 0.121.
 
 Drawing the panels jointly with the preregistered shared World Bank shock gives
 0.086 against 0.119 for the same comparator draw with independent shocks. That
-is a property of the modelled dependence, not a general fact about Holm: an
-earlier version of this paragraph claimed independence is Holm's worst case over
-two hypotheses, which is false — the supremum of min(*p*₁,*p*₂) ≤ α/2 over
+is a property of the modelled dependence, not a general fact about Holm:
+an earlier version of this paragraph claimed independence is Holm's worst case
+over two hypotheses, which is false. The supremum of min(*p*₁,*p*₂) ≤ α/2 over
 dependence structures is α, not the α − α²/4 independence gives.
 
 Two mechanisms were tested for that gap and both are refuted by the diagnostics
-in S10.4 — neither the shock-to-noise ratio nor the leverage of the ninth block
+in S10.4. Neither the shock-to-noise ratio nor the leverage of the ninth block
 runs in the direction the gap does. What is established is narrower: about two
 fifths of the excess survives at ρ = 0, so **unmodelled one-armed overdispersion,
 not serial dependence, does a large part of the work**, and the earlier claim
@@ -1128,19 +1144,19 @@ held to.
 
 **What survives is about P1's *p*.** The calibrated tail probability of its
 exact 8/512 = 0.0156 is 0.014 under the preregistered null and 0.042 under the
-fitted one. The first is essentially the nominal figure — marginally smaller,
-not larger — so under the process the design was preregistered against the *p*
+fitted one. The first is essentially the nominal figure (marginally smaller,
+not larger), so under the process the design was preregistered against the *p*
 is worth about what it says. Under fitted means it is worth much less, and 0.042
 is **above** the 0.025 the Holm step demanded, which is the direction that
 matters: on that calibration P1's condition 1 would not have passed. An earlier
 version of this paragraph said neither figure approached 0.025 and that both
-were weaker than face value; both halves were wrong. These are model-dependent
+were weaker than face value. Both halves were wrong. These are model-dependent
 calibrated tails, not a replacement *p*-value for a preregistered test.
 
 **The documents seen at Stage A do not carry the result.** 748 Stage-B World Bank
 documents were also in the Stage-A frame, so the design is sequential rather than
 outcome-naïve, and the direct test is to drop them. The 748 are exactly the
-intersection of the two frozen frames; they contribute 164 documents to P1's Bank
+intersection of the two frozen frames. They contribute 164 documents to P1's Bank
 arm and 192 to P2's. Removing them (`tools/stage_a_exposure_sensitivity.py`,
 supplement S10) leaves 27 common years in both panels and moves the estimates
 **away from zero, not toward it**: P1 β 0.586 → 0.613 with *p* 0.0142 → 0.0103,
@@ -1151,7 +1167,7 @@ not make the design outcome-blind: exposure could have shaped the family
 definition, the panel structure and the guards rather than the counts, and this
 sensitivity cannot see any of that (S10.2).
 
-The null *p*-value distribution is also **not uniform** — median 0.336 and 0.326 —
+The null *p*-value distribution is also **not uniform** (median 0.336 and 0.326),
 which is what a statistic on a 512-point discrete support does. An earlier
 version of this sentence went on to call PASS-P valid for the accept/reject
 decision it was built to make. That does not follow from anything measured here
@@ -1164,7 +1180,7 @@ fixes that a differential-trend CI excluding zero, with |τ × post-window|
 comparable to the WB:post estimate, must be "reported as a first-order
 extrapolation threat in the same paragraph as the estimate". Both CIs exclude
 zero. Measured from the design's centring year to the post window, |τ × window| =
-**0.445 against β̂ = 0.586 on P1**, and **0.579 against β̂ = 0.332 on P2** — on
+**0.445 against β̂ = 0.586 on P1**, and **0.579 against β̂ = 0.332 on P2**. On
 P2 the trend contribution is larger than the estimate itself. We report it here,
 as the preregistration requires: the post-period estimate on these panels is a
 short extrapolation off a steep fitted trend, and should be read as one.
@@ -1172,8 +1188,8 @@ short extrapolation off a steep fitted trend, and should be read as one.
 **C2 fails on our error, not on the data.** Its NB2 arm passes in both panels
 (P1 β = 0.542 against 0.586). Its composition-standardized arm was handed a
 stratifier that cannot have cross-institution support, so it reported
-`no_common_support_groups` — a message that reads as a fact about the corpora and
-is not one. The frozen artifacts are left as they are; a repaired grouping is
+`no_common_support_groups`, a message that reads as a fact about the corpora and
+is not one. The frozen artifacts are left as they are. A repaired grouping is
 reported as a post-hoc sensitivity in §6.5 and is not condition 2, because §6's
 income variable is year-matched and ours is current. Supplement S2 gives the
 mechanism, the false premise behind it, and why the repair cannot move the
@@ -1193,44 +1209,45 @@ thousand tokens, by year:
 | WB PAD (P2) | 0.024 | 0.038 | **0.035** | **0.085** | **0.077** |
 | IMF Article IV | 0.103 | 0.115 | **0.128** | **0.112** | **0.160** |
 
-In both panels the Bank's rate in 2023 is at or *below* its 2022 value — on ICR
-it more than halves — and the increase arrives in 2024.
+In both panels the Bank's rate in 2023 is at or *below* its 2022 value (on ICR
+it more than halves), and the increase arrives in 2024.
 
-The same shape appears in the estimand itself (Figure 4). Against a line fitted
+The same shape appears in the estimand itself (Fig 4). Against a line fitted
 through the 1999–2022 contrast and extrapolated forward, P1's 2023 observation
 sits **0.54 log points below** the trend, 2024 sits 1.25 above it, and 2025 falls
-back to 0.70 above — elevated, but a single displaced year rather than a level
-shift, which is what C4 records arithmetically below. That fitted line is an
+back to 0.70 above. That is elevated, but a single displaced year rather than a
+level shift, which is what C4 records arithmetically below. That fitted line is an
 unweighted least-squares display fit on the continuity-corrected annual contrast
-(+0.031 per year on P1, +0.048 on P2); it is **not** the frozen model's τ̂, which
+(+0.031 per year on P1, +0.048 on P2). It is **not** the frozen model's τ̂, which
 Table 4 gives as 0.0371 and 0.0483. Whatever produced the
 post-period rise did not begin at the boundary the design placed it at, which is
-visible in Figure 2 and is the same fact C4 detects arithmetically. A
+visible in Fig 2 and is the same fact C4 detects arithmetically. A
 discontinuity story indexed to the public release of general-purpose chat models
 in late 2022 does not fit a series that falls through 2023 and jumps a year
-later. Diffusion into institutional drafting could plausibly lag by a year; so
-could a dozen other things, including changes in what these documents are for.
+later. Diffusion into institutional drafting could plausibly lag by a year, and
+so could a dozen other things, including changes in what these documents are
+for.
 The design cannot distinguish them, and we do not attempt to.
 
 **The two mandatory validation outcomes.** PREREG §3 requires document prevalence
 and family breadth beside every confirmatory result. Prevalence carries the
 *opposite* sign to the primary in both panels (P1 β = −0.637, P2 −0.333) and
-breadth agrees in sign (+0.228, +0.124); the prespecified count-specific
+breadth agrees in sign (+0.228, +0.124). The prespecified count-specific
 downgrade did not fire. **That is not reassurance.** The jackknife intervals are
 roughly ten times the primary's bootstrap SD, so the rule could scarcely have
-fired whatever the truth was — a failure to reject standing in for a pass. Full
+fired whatever the truth was, a failure to reject standing in for a pass. Full
 intervals in supplement S7.
 
 **H-SHARED, the §5 descriptive companion fixed in PREREG §9: the comparator moved
-too.** The IMF's own pre/post change is +0.145 log points, CI [0.003, 0.356] —
-modest, and its interval excludes zero **by 0.0029 log points**, after 1,607 of
-9,999 bootstrap draws failed to converge and were discarded (`fail_rate` 0.161,
-`B_valid` 8,392). Both figures belong next to the claim, and so does what the
+too.** The IMF's own pre/post change is +0.145 log points, CI [0.003, 0.356].
+That is modest, and its interval excludes zero **by 0.0029 log points**, after
+1,607 of 9,999 bootstrap draws failed to converge and were discarded (`fail_rate`
+0.161, `B_valid` 8,392). Both figures belong next to the claim, and so does what the
 discarded draws were: **all 1,607 failed because the resample contained no
 post-period year, and none failed the other way**
 (`tools/hshared_draw_diagnostics.py`). The discard is structural rather than
-numerical — nine circular blocks over 27 years of which only three are
-post-period make an empty post arm easy to draw and an empty pre arm impossible —
+numerical. Nine circular blocks over 27 years of which only three are
+post-period make an empty post arm easy to draw and an empty pre arm impossible,
 so the surviving 84% are conditioned on containing a post-period year and are not
 a neutral subsample of the intended ones. An exclusion of zero by three
 thousandths, on a set selected that way, is a direction and not a demonstration. And the Fund's pre-period rate is 2.8× the
@@ -1258,9 +1275,12 @@ is the threshold the design chose for its own branch-selection gate, and it is
 almost exactly P1's point estimate of 0.586. At that value, family power is
 0.159–0.216 where 0.80 was required.
 
-**Figure 3** places the observed P1 estimate on the curve computed before it
+**Fig 3** places the observed P1 estimate on the curve computed before it
 existed. The two nearly coincide, which is the least comfortable image in the
 paper.
+
+**Fig 3. Preregistered power under three companion settings.** The preregistered power curve under three companion settings, with the 0.80 requirement and the observed θ̂ = 0.586. (`fig3_power`, regenerated by
+`tools/make_paper_figures.py`.)
 
 Two consequences follow, and both are reported rather than chosen. A null here
 would be **uninformative**, not evidence of absence. And P1's rejection at
@@ -1270,12 +1290,12 @@ poor guide to magnitude even if the effect is real.
 
 The binding constraint is structural, not budgetary. Power is governed by a
 year-level differential shock (σ_δ = 0.3205 from the preregistration's own
-method-of-moments hook); **tripling every panel's documents moves power at
+method-of-moments hook), and **tripling every panel's documents moves power at
 θ = 1.2 from 0.48 to 0.53.** That last comparison comes from a 100-replicate,
 B = 999 pilot rather than the full-precision grid above, and we flag it rather
 than let it borrow the neighbouring precision claim: Monte Carlo error on the
 difference is about 0.07, so the change is not distinguishable from zero. The
-conclusion does not turn on it — even the optimistic end of that interval leaves
+conclusion does not turn on it. Even the optimistic end of that interval leaves
 the design short of 0.80. More sampling is not the remedy. The remedy is
 post-period years, of which the design has three.
 
@@ -1284,11 +1304,11 @@ post-period years, of which the design has three.
 The design preregistered two independent checks on whether the specification
 identifies 2023 in particular, and they do not agree.
 
-**Table 6 — breakpoint specificity, both checks** `placebo_sig_frac` is the
-share of false pre-2023 cuts that are also significant (lower is better); the
+**Table 6: breakpoint specificity, both checks** `placebo_sig_frac` is the
+share of false pre-2023 cuts that are also significant (lower is better). The
 rank places 2023 among all admissible cuts by |b₂| (higher percentile is better).
-**The denominator is six** — the placebo years frozen in `config/config.yaml` are
-2016 through 2021 — so 1.00 means six of six and 0.33 means two of six. Six is a
+**The denominator is six** (the placebo years frozen in `config/config.yaml` are
+2016 through 2021), so 1.00 means six of six and 0.33 means two of six. Six is a
 small denominator and the reader should weigh the column accordingly.
 
 | Series | placebo_sig_frac | 2023 rank | of cuts | percentile |
@@ -1305,25 +1325,25 @@ that the post-SAP pipeline does not regenerate. We leave the cell empty rather
 than quote a stale number.)
 
 **Read the ICR row, because that is the one the confirmatory result rests on.**
-ICR is the World Bank arm of P1 — the only panel that reached significance — and
+ICR is the World Bank arm of P1, the only panel that reached significance, and
 it is the weakest row on both checks: **all six** false breakpoints tried on
 pre-2022 data are also significant, and 2023 ranks tenth of twenty-six admissible
 cuts. A
 test that fires at any date does not identify 2023. Meanwhile PAD and the
-assembled Annual Report series place 2023 second of all candidate cuts — and
+assembled Annual Report series place 2023 second of all candidate cuts, and
 neither carries a passing panel. Specificity is strongest exactly where there is
 no claim to support, and weakest where there would have been one.
 
 The panel-level placebo at 2016 is cleaner (P1 *p* = 0.1674, P2 *p* = 0.4782).
-The checks disagree; all of them are reported.
+The checks disagree. All of them are reported.
 
 **The trend-form arm, and its most awkward cell.** PREREG §9 fixes a second
 non-gating sensitivity beside the placebo: World-Bank × 3-year-bin indicators in
 place of `WB:c_year` and `WB:post`, referenced to the bin holding the centring
 year. It asks the same question without imposing a trend form. It ran and
-returned `status: ok` with no failure reasons; intervals are PASS-E percentile.
+returned `status: ok` with no failure reasons. Intervals are PASS-E percentile.
 
-**Table 6b — trend-form event study** (prespecified, non-gating). β against the
+**Table 6b: trend-form event study** (prespecified, non-gating). β against the
 2011–13 reference bin.
 
 | Bin | P1 β [CI] | P2 β [CI] |
@@ -1342,7 +1362,7 @@ Two readings follow and the second is not in our favour. First, the divergence i
 visible without any line being fitted, and it starts long before 2023: on P2 the
 three earliest bins sit *below* the 2011–13 reference with intervals excluding
 zero, and the 2020–22 bin sits above it in both panels. The bins are **not**
-monotone — P1 runs −0.272, +0.029, −0.216 across the first three — so we describe
+monotone (P1 runs −0.272, +0.029, −0.216 across the first three), so we describe
 the ordering and claim nothing about its shape. Second, and more pointedly: **P1's 2020–22 bin, which is pre-period,
 exceeds the headline estimate for the post window itself** (+0.661 against
 β̂ = 0.586). A pre-period bin larger than the effect the design was built to
@@ -1350,7 +1370,7 @@ detect carries the same message as C4, the placebo fractions and the 2023 rank,
 arriving here by a fourth independent route.
 
 What this arm does *not* do is separate β from τ. Its terminal bin is exactly
-[2023, 2025] — the same three post years — so dropping the linear form adds no
+[2023, 2025], the same three post years, so dropping the linear form adds no
 post-period information, and §7's identification limitation stands unchanged.
 
 ### 6.5 A post-hoc sensitivity: what the standardized arm says once it can run
@@ -1360,7 +1380,7 @@ wrong stratifier. Repairing it is worth doing even though it cannot change the
 verdict, because the repaired arm answers a question the failed one only appeared
 to answer.
 
-**Table 7 — The composition-standardized arm under both groupings.** The
+**Table 7: The composition-standardized arm under both groupings.** The
 right-hand rows are a **post-hoc sensitivity, not condition 2**: PREREG §6
 requires a year-matched income classification and this one is current.
 
@@ -1372,12 +1392,12 @@ requires a year-matched income classification and this one is current.
 | P2 | country → region × income (repaired) | 12 | 0.834 / 0.744 | 0.80 | `post_token_support_below_0.80`, `ess_below_floor` |
 
 The arm remains infeasible either way, and the two reasons have nothing in
-common. Under the grouping used, π retained no group at all — the estimator could
+common. Under the grouping used, π retained no group at all. The estimator could
 not have run whatever the corpora contained. Under the repaired grouping it
 retains twelve groups and stops because **the Fund's post-2022 documents
 concentrate in country groups where the Bank has little presence**: IMF
 post-period token support 0.785 (P1) and 0.744 (P2) against a floor of 0.80, and
-a second preregistered floor — effective sample size ≥ half the token mass —
+a second preregistered floor (effective sample size ≥ half the token mass)
 breached in the same two cells at 0.498 and 0.439. Six of the eight institution ×
 period cells pass both.
 
@@ -1385,9 +1405,9 @@ That is a finding about the comparator and it reinforces §6.2's caution from a
 second direction: the two post-2022 populations differ in *country* composition
 by enough to breach a support floor set in advance, and a differential estimated
 across them carries that divergence whether or not it is standardized away. On P1
-both margins are narrow (0.785 against 0.80; 0.498 against 0.500), so the
+both margins are narrow (0.785 against 0.80 and 0.498 against 0.500), so the
 year-matched classification §6 specifies could fall either side and we do not
-claim to know which; on P2 they are not. Supplement S5 gives per-cell coverage.
+claim to know which. On P2 they are not. Supplement S5 gives per-cell coverage.
 
 ---
 
@@ -1396,27 +1416,27 @@ claim to know which; on P2 they are not. Supplement S5 gives per-cell coverage.
 Grouped by what they threaten, because a numbered list reads as accumulation
 rather than as argument.
 
-**Identification — what the design cannot separate.** The comparator is
+**Identification (what the design cannot separate).** The comparator is
 non-equivalent: institution and genre are confounded, the Fund's pre-period base
 rate is 2.8× the Bank's on P1 and 5.3× on P2, and the Fund also rose. The
-estimate is a short extrapolation off a steep fitted trend — over the post window
+estimate is a short extrapolation off a steep fitted trend (over the post window
 the trend contributes 0.445 against β̂ = 0.586 on P1 and 0.579 against 0.332 on
-P2, larger than the estimate itself — and with three post years β and τ are
+P2, larger than the estimate itself), and with three post years β and τ are
 separated almost entirely by functional form. Lexical tiers cannot distinguish
-direct LLM assistance from human adoption of LLM-popularised vocabulary; we
+direct LLM assistance from human adoption of LLM-popularised vocabulary. We
 measure population-level change, not authorship, and no output here claims a
 document "is AI-generated". PREREG §9 further fixes that a condition-2 failure
 under standardization favours the composition explanation over the LLM-era
-reading; condition 2 did fail, and §6.5 shows the two post-2022 populations
+reading. Condition 2 did fail, and §6.5 shows the two post-2022 populations
 diverge in country composition, which we report as the preregistration directs
 without treating it as established.
 
-**Measurement — what the corpus does to the estimate.** 192 IMF documents had no
-text layer and are OCR'd; every one is pre-period, so extraction method is
+**Measurement (what the corpus does to the estimate).** 192 IMF documents had no
+text layer and are OCR'd. Every one is pre-period, so extraction method is
 collinear with the estimand and cannot be controlled against era. We bounded it
 instead where era is held fixed: OCR recovers a median 1.012× the native token count over 20 paired documents with
-mean token length within 0.6%. Exclusions are pre-period-weighted — seven
-documents leave the panels by language ruling, all ICR, all 2000–2005 — and
+mean token length within 0.6%. Exclusions are pre-period-weighted (seven
+documents leave the panels by language ruling, all ICR, all 2000–2005), and
 removing pre-period documents from one arm is not neutral to a pre/post contrast,
 in the direction that favours our own estimate. Within-stratum composition
 (region, sector, instrument, template era) remains untreated, which is §6.1's own
@@ -1424,8 +1444,8 @@ lesson not yet applied to §6.2. The corpus-selection result carries a limitatio
 and this section should not omit: the excluded class's opposing trend is a
 change of membership between the two windows, not a rise in any institution's
 prose, because ICSID and MIGA did not exist in 1946–65 (Table 3d). The
-factor-of-three finding does not depend on that trend — a higher-rate late
-population flattens a falling one whether or not it is itself rising — but any
+factor-of-three finding does not depend on that trend (a higher-rate late
+population flattens a falling one whether or not it is itself rising), but any
 reading of the excluded class as "sibling organisations writing differently"
 is unsupported, and an earlier draft of this paper made it. Institution, genre,
 period coverage and extraction route change together at that boundary, and
@@ -1433,23 +1453,23 @@ nothing here separates them.
 
 And RQ1 is an **independent reconstruction, not a
 strict replication**: the pamphlet's corpus, features and assembly rules were
-never released, so there is no workflow to re-execute; we claim qualitative
+never released, so there is no workflow to re-execute. We claim qualitative
 directional agreement, and the era figures are means over broad windows rather
 than original endpoints.
 
-**Inference — what the machinery can and cannot carry.** The design cannot reach
+**Inference (what the machinery can and cannot carry).** The design cannot reach
 80% power for any effect in its preregistered grid, which conditions everything
 above. Placebo fractions of 1.00 on two strata limit any 2023-specific reading.
 The engine holds its size only under a Poisson null, and its intervals do not
 cover at their nominal rate. §6.2 and supplement S9 report that PASS-P holds nominal size
-when the counts are Poisson and **loses it under mild overdispersion** — 0.107
-against a nominal 0.05 on P1 at the dispersion the data are consistent with —
+when the counts are Poisson and **loses it under mild overdispersion** (0.107
+against a nominal 0.05 on P1 at the dispersion the data are consistent with),
 because the frozen dispersion estimator recovers roughly an eighth of what is
 there at 30 parameters on 54 cells. The PASS-E intervals are measured at **0.705–0.910 against a nominal 0.95**
 (supplement S10.3), worst under the preregistered serial null, so Table 4 labels
 them nominal and gives the measured range. Being too narrow makes it *easier* to
 exclude zero, so the error is permissive rather than conservative where the
-intervals gate anything — and both conditions that use them failed on the
+intervals gate anything. Both conditions that use them failed on the
 coefficient's sign and magnitude, not on the width. A reader treating the
 apparatus as reusable should establish both first, and should note that the null
 *p*-value distribution is not uniform. **A degrees-of-freedom correction to the dispersion estimator is not the fix**:
@@ -1457,12 +1477,12 @@ supplement S10.1 applies one and the size does not move. What the joint
 calibration adds is that no single fault is the fix either. Under means fitted
 to the observed series the Holm C1 bound is **0.086** against a nominal 0.05,
 but
-**0.045 with no shock at all and 0.063 with an i.i.d. one** — so most of the
+**0.045 with no shock at all and 0.063 with an i.i.d. one**, so most of the
 excess is unmodelled overdispersion in one arm rather than serial dependence,
 and under the preregistered mean structure the same rule sits at **0.0365**,
 below nominal. An earlier version of this paragraph named serial dependence and
 the nine-block construction as the fault. Neither survives the measurement
-(§6.2, S10.4), and the design-level remedy is still more years — not because the
+(§6.2, S10.4), and the design-level remedy is still more years, not because the
 blocks are broken but because three post-period observations cannot separate the
 mean structures that decide the answer.
 
@@ -1470,7 +1490,7 @@ mean structures that decide the answer.
 Bank sample had their outcomes inspected at Stage-A. The IMF half of the contrast
 had never been computed before this analysis, so the interaction itself was
 unseen, but the exposure belongs beside the estimate rather than in an appendix.
-The comparator corpus cannot be redistributed; §9 gives the route by which it can
+The comparator corpus cannot be redistributed. §9 gives the route by which it can
 be obtained from the publisher and verified against our hashes.
 
 ---
@@ -1490,7 +1510,7 @@ predecessor's method is unavailable.
 
 Extension through fiscal 2024 adds the part the pamphlet could not have: the
 drift did not stop when the series did. And the reconstruction earns its keep a
-second time by making the corpus-selection result visible at all — that finding
+second time by making the corpus-selection result visible at all. That finding
 exists only because rebuilding forced a decision about what counts as an Annual
 Report, and then made both answers computable.
 
@@ -1499,10 +1519,10 @@ Report, and then made both answers computable.
 Three results here are about method rather than about the World Bank, and each
 was found by measurement rather than suspicion:
 
-- **Document selection triples a diachronic magnitude; the unit of analysis
+- **Document selection triples a diachronic magnitude. The unit of analysis
   changes nothing.** Assembled and pool Annual-Report series give a 43% and a 14% decline over the
 same fiscal years on the equal-year mean, 28% and 14% token-weighted, and the difference is attributable to which document series
-are included — the excluded sibling-organisation class rises while the Bank's
+are included. The excluded sibling-organisation class rises while the Bank's
 own volumes fall, though Table 3d shows that rise to be composition rather than
 prose: each sibling falls on its own series. Those series differ in institution,
 genre, period coverage and extraction route at once, so the design cannot assign
@@ -1514,7 +1534,7 @@ the effect to any one of them. Concatenation into fiscal-year
   operations that sound methodologically weighty can be inert, and the ones
   recorded in a single clause of a data section can be worth a factor of three.
 - **The source's own plain text is not safer than your extraction.** D9 preferred
-  server-side text precisely to avoid extraction noise; 70 documents arrived with
+  server-side text precisely to avoid extraction noise, yet 70 documents arrived with
   word spacing destroyed, concentrated in 2003–2009 and absent after 2010, and
   the PDF path we had distrusted was clean (0 of 437 against 70 of 2,688, over
   the pre-freeze pool). In the worst case whole-word matching missed 78% of its
@@ -1531,12 +1551,12 @@ to know its rate. What is established more generally is that they would be hard
 to see: Franco et al. (2014), on 221 peer-reviewed social-science experiments
 with a full accounting of what was and was not published, find strong results 40
 percentage points more likely to be published and 60 points more likely to be
-*written up* — locating the loss before peer review rather than at it. That is
+*written up*, locating the loss before peer review rather than at it. That is
 the failure mode this design was built against. It was built to be able to fail,
 and it
 did: a guard fixed before the comparison existed removed a single word family and the
-preregistered estimand crossed zero; a leave-one-out check showed the result
-resting on one year; a comparator chosen to absorb sector-wide drift moved in the
+preregistered estimand crossed zero. A leave-one-out check showed the result
+resting on one year. A comparator chosen to absorb sector-wide drift moved in the
 same direction as the treated arm.
 
 None of those checks would have been reached had the analysis stopped at
@@ -1548,7 +1568,7 @@ institutional prose", and more useful: **a nominally significant aggregate lexic
 family, one post-period year, and one block origin, and the sealed
 multi-condition rule did not confirm it.** Each of those three is a routine choice that a study without a frozen
 decision rule would make silently and defensibly. We do not know how often that
-combination arises elsewhere; we know it arose here, and that a design without
+combination arises elsewhere. We know it arose here, and that a design without
 the guard would have reported the *p*-value.
 
 ### What we do not claim
@@ -1560,46 +1580,26 @@ design is its bound. The reconstructed series stands on its own.
 
 ---
 
-## Figures
-
-All four regenerate from `data/` via `tools/make_paper_figures.py`; PNG and PDF
-in `docs/figures/`.
-
-- **Figure 1** — `fig1_composition`. Temporal anchoring per thousand tokens over
-  common fiscal years, in three panels: the assembled series (the Bank's own
-  volumes), the whole document pool, and the 195 files the assembly excludes.
-  The excluded files rise as a class while the assembled series falls, which is
-  what produces the factor of three; Table 3d decomposes that class rise into a
-  change of membership between the two windows rather than a change in prose.
-- **Figure 2** — `fig2_panels`. Tier-1 markers per thousand tokens by
-  institution, both confirmatory panels, with the prespecified 2023 break marked.
-- **Figure 3** — `fig3_power`. The preregistered power curve under three
-  companion settings, with the 0.80 requirement and the observed θ̂ = 0.586.
-- **Figure 4** — `fig4_contrast`. The estimand itself: the annual World Bank–IMF
-  log-rate contrast for both panels, with the pre-2023 trend fitted and
-  extrapolated across the post window. Drawn without a confidence band, because
-  the band would come from the frozen bootstrap and this is a display, not a
-  second inference.
-
----
-
 ## 9. Data and code availability
+
+All four regenerate from `data/` via `tools/make_paper_figures.py`, with PNG and PDF
+in `docs/figures/`.
 
 **Preregistration.** Stage-A OSF `10.17605/OSF.IO/5C9J8`. Stage-B analysis plan
 Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
 **Code and design record.** Concept DOI `10.5281/zenodo.22152944`, which always
-resolves to the latest version; **version DOI [VERSION DOI — to be completed
+resolves to the latest version, and **version DOI [VERSION DOI, to be completed
 before submission]**, archived from
 `github.com/alicetinkaya76/bankspeak-continued`: the frozen inference engine,
 the validation battery, the full pipeline, the test suite, every preregistration
 draft and amendment, decisions D-1..D-13, both deviation records, and the
 generators that produce every table and figure here. The earlier archived
 release `10.5281/zenodo.22168611` (v1.2.0, 357 tests) **predates the calibration
-and the guards reported here and must not be cited for them**;
+and the guards reported here and must not be cited for them**.
 `tools/check_submission_metadata.py` refuses to pass while the version DOI above
-is unfilled. Code is MIT-licensed and author-created documentation CC BY 4.0; World
+is unfilled. Code is MIT-licensed and author-created documentation CC BY 4.0. World
 Bank and IMF source reports keep their own rights and are not relicensed by
 either deposit.
 
@@ -1617,15 +1617,15 @@ number or by the DOI, which identifies the document and redirects to its
 eLibrary landing page rather than to the PDF. Automated collection is another matter and we report it as we met it. The site is
 bot-protected and its failures are silent: an absent report redirects to an error
 page served at **HTTP 200 with `text/html`**, so a status code alone reports
-success for a document that is not there — a byte-checked probe of 20 sampled documents on 2026-08-29 found the static path serving a real PDF for 16 and an error page for four, and the DOI resolving to a document for none (`data/meta/imf_access_probe.json`). Our own retrieval needed a
+success for a document that is not there. A byte-checked probe of 20 sampled documents on 2026-08-29 found the static path serving a real PDF for 16 and an error page for four, and the DOI resolving to a document for none (`data/meta/imf_access_probe.json`). Our own retrieval needed a
 documented ladder in which **705 documents came from legacy static paths, four
 from the CMS media tree, one from a bounded verification-gated sequence and 354
 from the media-tree link the IMF itself published on the report's own page, read
-out of a web-archive snapshot of that page because the live page is WAF-blocked**
-— a split the probe reproduces (`tools/retrieval_route_tally.py`). **All 1,064
-PDFs were fetched from `www.imf.org`; none came from the archive.** An earlier
+out of a web-archive snapshot of that page because the live page is WAF-blocked**,
+a split the probe reproduces (`tools/retrieval_route_tally.py`). **All 1,064
+PDFs were fetched from `www.imf.org`, and none came from the archive.** An earlier
 wording of this sentence said 354 documents came "through a public web archive",
-which an external reviewer read as 354 documents obtained from an archive; the
+which an external reviewer read as 354 documents obtained from an archive. The
 manifest records `www.imf.org` as the host for every one. `data/meta/imf_document_index.csv` lists all
 1,064 by report number, year, country, DOI and SHA-256, so a reader who obtains a
 document by any route can hash it against that index and confirm byte identity
@@ -1643,14 +1643,22 @@ IMF is not responsible for any analysis or conclusions drawn from these document
 World Bank content is public disclosure under its Access to Information Policy.
 
 **Use of AI assistance.** Disclosed in §5.1, inside the methods, where
-PLOS asks for it; the attestation that closes that subsection is the
+PLOS asks for it. The attestation that closes that subsection is the
 author's.
+
+---
+
+## Acknowledgments
+
+Twenty-one rounds of independent third-party review were commissioned during
+preparation. Their findings, and the responses to them, are recorded in the
+repository under `docs/`. The use of AI assistance is disclosed in §5.1.
 
 ---
 
 ## References
 
-*Lopez Bernal et al. (2017) is cited in its print form, 46(1):348–355; the
+*Lopez Bernal et al. (2017) is cited in its print form, 46(1):348–355. The
 Crossref record for `10.1093/ije/dyw098` is the online-first one, dated 2016
 and carrying neither volume nor pages.*
 
@@ -1731,3 +1739,12 @@ Computing* 8(4):243–257. DOI 10.1093/llc/8.4.243. · Sandve, G. K. et al. (201
 Wilkinson, M. D. et al. (2016). *Scientific Data* 3:160018. DOI
 10.1038/sdata.2016.18.
 
+---
+
+## Supporting information
+
+**S1 Text. Supplementary material.** Sections S1 to S10: PASS-P size under a
+Poisson null, the standardized arm, retrieval verification, the branch rule,
+standardized-arm coverage, the corpus quality scan, the mandatory validation
+outcomes in full, the corpus repairs, the dispersion estimator, and the
+post-freeze checks requested by review (S10.1 to S10.9).

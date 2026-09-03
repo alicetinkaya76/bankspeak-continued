@@ -486,7 +486,7 @@ def test_a_dangling_reference_inside_the_supplement_is_caught(tmp_path):
     reference in the supplement passed for two rounds."""
     t = _mutated_copy(tmp_path, {
         "docs/PAPER_SUPPLEMENT_v1.md":
-            lambda s: s + "\n\nSee §17.3, Table 99 and Figure 9.\n"})
+            lambda s: s + "\n\nSee §17.3, Table 99 and Fig 9.\n"})
     r = _run(t, "check_cross_references.py")
     assert r.returncode == 1, r.stdout
     for want in ("section 17.3", "table 99", "figure 9"):
@@ -520,17 +520,21 @@ def test_numeric_intervals_are_never_reported_as_placeholders():
     assert not re.search(r"\[[\s\-\u2212]*\d[^\]]*\]", "\n".join(hits)), hits
 
 
-def test_the_author_attestation_keeps_the_package_unsubmittable():
-    """The AI-use disclosure carries one bracket only the author can sign, and a
-    guard whose length budget misses it lets that field ship unfilled."""
+def test_the_author_attestation_is_filled_and_no_longer_a_placeholder():
+    """Round 18 held this bracket open on purpose: only the author could sign
+    it. He instructed it be completed (2026-09-03), so the test inverts: the
+    bracket must be gone, the attestation must make the affirmations PLOS's AI
+    policy asks for, and the placeholder guard must not list it."""
     paper = (ROOT / "docs" / "PAPER_DRAFT_v2.md").read_text(encoding="utf-8")
-    assert "AUTHOR ATTESTATION" in paper
-    assert "Use of AI assistance" in paper
+    assert "AUTHOR ATTESTATION" not in paper
+    i = paper.index("### 5.1 Use of AI assistance"); j = paper.index("## 6. Results")
+    body = paper[i:j]
+    for phrase in ("takes full responsibility", "represents his own view",
+                   "No AI system is an author"):
+        assert phrase in body, phrase
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "placeholder_report.py")],
                        capture_output=True, text=True, cwd=ROOT)
-    assert r.returncode != 0, r.stdout
-    assert "AUTHOR ATTESTATION" in r.stdout
-
+    assert "AUTHOR ATTESTATION" not in r.stdout
 
 def test_a_missing_artifact_does_not_read_as_clean(tmp_path):
     """Deleting the built PDF used to turn exit 2 into exit 0 and print
