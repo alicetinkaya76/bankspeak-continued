@@ -14,7 +14,7 @@ Three things it does that a plain `pandoc paper.md -o paper.pdf` does not:
   * embeds the figures. The manuscript's §Figures is a list of captions naming
     image stems, which is right for a repository and useless in a submission;
     each entry becomes the actual figure with its caption beneath.
-  * adds the title page PLOS expects, with the affiliation and ORCID left as
+  * adds the title page PLOS expects, with the affiliation, email and ORCID
     visible placeholders. A made-up affiliation on a submitted manuscript is
     worse than an obvious gap.
   * uses XeLaTeX and a font with Greek and combining marks, because the paper
@@ -40,12 +40,12 @@ SUPP = ROOT / "docs" / "PAPER_SUPPLEMENT_v1.md"
 SUPP_OUT = BUILD / "PLOS_ONE_supplement.pdf"
 
 AUTHOR = "Ali Çetinkaya"
-# Affiliation as the author records it elsewhere in his own materials; the
-# ORCID is filled by tools/fill_orcid.py from the public registry when a single
-# unambiguous match exists, and is otherwise left as a bracket the guard sees.
+# Author fields as supplied by the author on 2026-09-03. PLOS bylines carry no
+# title, so "Dr." is not printed.
 AFFIL = ("Department of Computer Engineering, Faculty of Technology, Selçuk "
          "University, Konya, Türkiye")
-ORCID = "[ORCID — to be completed before submission]"
+ORCID = "ORCID 0000-0002-7747-6854"
+EMAIL = "ali.cetinkaya@selcuk.edu.tr"
 
 # Fonts are tried in order; the first one fontspec can load wins. Times New Roman
 # and Helvetica ship with macOS; the two Latin Modern entries are the TeX
@@ -248,7 +248,7 @@ def main(supplement: bool = False) -> int:
         "---\n"
         f'title: "{title}"\n'
         f'author: "{AUTHOR}"\n'
-        + ("" if supplement else f'date: "{AFFIL}\\\\newline {ORCID}"\n')
+        + ("" if supplement else f'date: "{AFFIL}\\\\newline {EMAIL} \\\\textperiodcentered\\\\ {ORCID}"\n')
         +
         "geometry: margin=2.4cm\n"
         f'mainfont: "{font}"\n'

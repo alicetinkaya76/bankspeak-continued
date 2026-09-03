@@ -69,9 +69,9 @@ stage.
   under his standing instruction and adopted by him across twenty-one review
   rounds he commissioned and acted on.
 - Affiliation and email: filled from his own materials.
-- ORCID: left as a bracket. The public registry lists three Selçuk-affiliated
-  records under this name (0000-0003-4535-3953, 0000-0002-7747-6854,
-  0000-0001-5446-2938); no tool can tell which is his.
+- ORCID: 0000-0002-7747-6854, supplied by the author after the registry lookup had
+  returned three Selçuk-affiliated candidates; the email is the institutional
+  one, ali.cetinkaya@selcuk.edu.tr.
 - Funding and competing interests: declarations of none, prepared for the
   form; they are statements in his name that he confirms by submitting.
 - D-14, the three IMF-derived aggregates: ruled redistributable as derived
@@ -107,5 +107,5 @@ stage.
    run. Upload by hand or supply the token, then
    `python tools/record_evidence_doi.py <DOI>`.
 
-Suite: 479. Guards: placeholder report lists only the ORCID and the two DOI
-brackets; every other guard is green.
+Suite: 479. Guards: placeholder report lists only the two DOI brackets; every
+other guard is green.

@@ -10,7 +10,7 @@ Reconstructing Bankspeak and a preregistered post-2022 null
 
 **Corresponding author.** Ali Çetinkaya, Department of Computer Engineering,
 Faculty of Technology, Selçuk University, Konya, Türkiye.
-kapsul.yonetim@gmail.com. ORCID: [to be completed].
+ali.cetinkaya@selcuk.edu.tr. ORCID: 0000-0002-7747-6854.
 
 **Financial disclosure.** The author received no specific funding for this
 work.

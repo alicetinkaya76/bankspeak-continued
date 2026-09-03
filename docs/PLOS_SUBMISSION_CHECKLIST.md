@@ -170,16 +170,15 @@ file, so nothing here should be pasted into the paper:
 | field | where the text is | still needed |
 |---|---|---|
 | Data availability | `docs/SUBMISSION_DATA_AVAILABILITY.md` | the Zenodo evidence-deposit DOI, once uploaded |
-| Cover letter | `docs/SUBMISSION_COVER_LETTER.md` | ORCID |
+| Cover letter | `docs/SUBMISSION_COVER_LETTER.md` | — |
 | Financial disclosure | `docs/SUBMISSION_FORM_FIELDS.md` | confirm the declaration of none |
 | Competing interests | `docs/SUBMISSION_FORM_FIELDS.md` | confirm the declaration of none |
 | Author contributions | `docs/SUBMISSION_FORM_FIELDS.md` | — |
 | Ethics | not applicable, no human or animal subjects | — |
 
-The corresponding author needs an ORCID iD. The public registry lists three
-Selçuk-affiliated records under this name (0000-0003-4535-3953,
-0000-0002-7747-6854, 0000-0001-5446-2938) and no tool can tell which is his,
-so the bracket stays until he fills it.
+The corresponding author's ORCID is 0000-0002-7747-6854, supplied by him on 2026-09-03
+and filled into the title page, the cover letter, the form fields and the
+archive metadata.
 
 ---
 

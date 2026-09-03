@@ -1,7 +1,7 @@
 # Cover letter for PLOS ONE
 
-*Two brackets remain for the author: the ORCID, and the evidence-deposit DOI
-or a reviewer access link.*
+*One bracket remains for the author: the evidence-deposit DOI or a reviewer
+access link.*
 
 ---
 
@@ -65,5 +65,5 @@ Sincerely,
 Ali Çetinkaya
 Department of Computer Engineering, Faculty of Technology, Selçuk University,
 Konya, Türkiye
-kapsul.yonetim@gmail.com
-[ORCID: to be completed before submission]
+ali.cetinkaya@selcuk.edu.tr
+ORCID 0000-0002-7747-6854
