@@ -84,7 +84,11 @@ stage.
 
 ## The release, and what remains
 
-**The version DOI is filled: `10.5281/zenodo.22272212`, v1.3.1.** The first
+**The version DOI is filled: `10.5281/zenodo.22277902`, v1.3.2.** (It was
+first filled with v1.3.1, `10.5281/zenodo.22272212`, on the same day; v1.3.1
+carries the same results but the test fixtures that quoted IMF titles, so
+v1.3.2 was cut from the sanitised head and is the release cited. The paper
+names v1.3.1 and the reason.) The first
 attempt at the release was blocked by the harness as an outward-facing
 publish; on the author's renewed instruction it was cut, and it was cut twice.
 A v1.3.0 release already existed by then, created at 06:53 UTC with its tag at
@@ -123,8 +127,11 @@ files, not only the redacted CSV. The four archived code releases predate this
 and carry the fixtures; the next release does not.
 
 The repository was created and pushed on 2026-09-03: `main` and the tag
-`v1.0.0` both at `8c1f75c`, 836 files, `.zenodo.json` at the root, public, no
-release yet.
+`v1.0.0` (moved once, to `d0ca3e5`, when the supplement link was updated to
+v1.3.2), 836 files, `.zenodo.json` at the root, public, no release yet. Until
+the DOI exists, the data-availability statement and the manuscript name that
+repository and tag as the reviewer's access route: the same tree, MANIFEST and
+hashes.
 
 **What remains is the one browser step.** The webhook that lets Zenodo see the
 new repository is created by switching it on at

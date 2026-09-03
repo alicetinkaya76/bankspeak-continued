@@ -1590,13 +1590,15 @@ Zenodo `10.5281/zenodo.22098259`, sha256 `4aa12279…2677`, timestamped
 2026-08-25T15:01:07Z, before any outcome reported here was computed.
 
 **Code and design record.** Concept DOI `10.5281/zenodo.22152944`, which always
-resolves to the latest version, and **version DOI `10.5281/zenodo.22272212`**, archived from
+resolves to the latest version, and **version DOI `10.5281/zenodo.22277902`**, archived from
 `github.com/alicetinkaya76/bankspeak-continued`: the frozen inference engine,
 the validation battery, the full pipeline, the test suite, every preregistration
 draft and amendment, decisions D-1..D-13, both deviation records, and the
 generators that produce every table and figure here. The earlier archived releases `10.5281/zenodo.22168611` (v1.2.0) and
 `10.5281/zenodo.22271589` (v1.3.0, tagged at an earlier commit) **predate the
-calibration and the guards reported here and must not be cited for them**.
+calibration and the guards reported here and must not be cited for them**, and
+`10.5281/zenodo.22272212` (v1.3.1) carries the same results as the cited
+release but test fixtures that quoted IMF document titles, replaced in v1.3.2.
 `tools/check_submission_metadata.py` refuses to pass while the version DOI above
 is unfilled. Code is MIT-licensed and author-created documentation CC BY 4.0. World
 Bank and IMF source reports keep their own rights and are not relicensed by
@@ -1605,7 +1607,9 @@ either deposit.
 **Evidence deposit.** Frames, frozen samples, raw World Bank API captures, power
 curves, quality flags, per-document exclusion ledgers, panel cells, both
 validation batteries and the family verdict. **Not yet deposited at the time of
-writing: DOI to be inserted here before publication.** It is built by
+writing: DOI to be inserted here before publication. Until then the identical
+tree, with the same MANIFEST.csv and hashes, is public at
+https://github.com/alicetinkaya76/bankspeak-evidence-deposit (tag v1.0.0).** It is built by
 `tools/prepare_zenodo_deposit.py`, which also writes the SHA-256 manifest listing
 every IMF-derived file by hash without depositing its bytes.
 

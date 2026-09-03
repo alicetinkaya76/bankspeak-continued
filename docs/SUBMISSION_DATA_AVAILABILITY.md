@@ -83,7 +83,7 @@ grant nor withhold it.
 the IMF document index are archived at Zenodo under concept DOI
 10.5281/zenodo.22152944, which always resolves to the latest version. The
 version DOI for the release that carries the results reported in the manuscript
-is **`10.5281/zenodo.22272212`**. The repository is
+is **`10.5281/zenodo.22277902`**. The repository is
 https://github.com/alicetinkaya76/bankspeak-continued. **Cite the version DOI,
 not the concept DOI**: the concept DOI moves, and the earlier version
 10.5281/zenodo.22168611 (v1.2.0) predates the calibration and the guards
@@ -97,7 +97,10 @@ The **evidence deposit** (write-once raw World Bank API captures, frozen
 sampling frames, retrieval and exclusion logs, quality-control summaries, derived
 document- and year-level counts with token denominators, feature-family counts,
 annual panel cells, validation batteries, the family verdict, and SHA-256 hashes
-for every restricted source file) is **[deposited at DOI … / to be deposited before publication]**.
+for every restricted source file) is **[deposited at DOI … / to be deposited before publication; until the DOI is
+minted the identical tree is public at
+https://github.com/alicetinkaya76/bankspeak-evidence-deposit, tag v1.0.0, with
+the same MANIFEST.csv and hashes]**.
 It is built reproducibly by
 `tools/prepare_zenodo_deposit.py` in the archived repository.
 

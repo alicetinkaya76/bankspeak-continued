@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STAGE = ROOT / "zenodo_deposit"
 REPO_DIR = ROOT.parent / "bankspeak-evidence-deposit"
 OWNER, NAME = "alicetinkaya76", "bankspeak-evidence-deposit"
-CODE_DOI = os.environ.get("BANKSPEAK_CODE_VERSION_DOI", "10.5281/zenodo.22272212")
+CODE_DOI = os.environ.get("BANKSPEAK_CODE_VERSION_DOI", "10.5281/zenodo.22277902")
 SAP_DOI, OSF_DOI = "10.5281/zenodo.22098259", "10.17605/OSF.IO/5C9J8"
 
 sys.path.insert(0, str(ROOT / "tools"))
@@ -50,7 +50,7 @@ DESCRIPTION = (
     "post-2022 vocabulary associated with large language models shows a World Bank "
     "discontinuity against an IMF Article IV comparator. <b>The confirmatory result "
     "is negative</b>: no panel satisfies the preregistered decision rule.</p>"
-    "<p>The companion code archive is {code} (v1.3.1); this record carries the "
+    "<p>The companion code archive is {code} (v1.3.2); this record carries the "
     "evidence it was run on. Unpack <code>payload/data</code> as <code>data/</code> "
     "in a checkout of that release, then <code>python tools/make_paper_tables.py</code> "
     "reproduces all seven manuscript tables byte for byte and "

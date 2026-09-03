@@ -126,7 +126,7 @@ This repository is archived with a DOI:
 
 That is the **concept DOI**: it always resolves to the latest version, so it
 cannot go stale the way a version DOI in a file inside that same version does.
-The release the manuscript cites is **v1.3.1, `10.5281/zenodo.22272212`**.
+The release the manuscript cites is **v1.3.2, `10.5281/zenodo.22277902`**.
 Two earlier archives must not be cited for the reported results: v1.2.0
 (`10.5281/zenodo.22168611`) predates the round-18 to round-22 work, and v1.3.0
 (`10.5281/zenodo.22271589`) was tagged at the round-19 commit rather than at

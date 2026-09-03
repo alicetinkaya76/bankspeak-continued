@@ -32,12 +32,18 @@ API = "https://zenodo.org/api/records/"
 
 # Each target names the exact string to replace, so a document that has been
 # edited since fails loudly instead of being silently missed.
+# Needles are regular expressions tolerant of line wrapping: a prose pass
+# re-wrapped the data-availability statement and the exact string stopped
+# matching, which would have failed at the moment the DOI arrived.
 TARGETS = [
     (ROOT / "docs" / "SUBMISSION_DATA_AVAILABILITY.md",
-     "**[deposited at DOI … / to be deposited\nbefore publication]**",
+     r"\*\*\[deposited at DOI[^\]]*\]\*\*",
      "deposited at **https://doi.org/{doi}**"),
+    (ROOT / "docs" / "SUBMISSION_COVER_LETTER.md",
+     r"\[Evidence deposit DOI or reviewer\s+access link[^\]]*\]",
+     "Evidence deposit: https://doi.org/{doi}."),
     (ROOT / "docs" / "PAPER_DRAFT_v2.md",
-     "**Not yet deposited at the time of\nwriting: DOI to be inserted here before publication.**",
+     r"\*\*Not yet deposited at the time of\s+writing:[^*]*\*\*",
      "Deposited at `{doi}`."),
 ]
 
@@ -81,7 +87,7 @@ def check(rec: dict) -> int:
 def apply(doi: str) -> int:
     missing = []
     for path, needle, _ in TARGETS:
-        if not path.exists() or needle not in path.read_text(encoding="utf-8"):
+        if not path.exists() or not re.search(needle, path.read_text(encoding="utf-8")):
             missing.append(path.name)
     if missing:
         raise SystemExit(f"[doi] REFUSING: expected placeholder not found in "
@@ -90,7 +96,7 @@ def apply(doi: str) -> int:
                          "rather than letting this write to the wrong place.")
     for path, needle, repl in TARGETS:
         s = path.read_text(encoding="utf-8")
-        path.write_text(s.replace(needle, repl.format(doi=doi)), encoding="utf-8")
+        path.write_text(re.sub(needle, repl.format(doi=doi), s, count=1), encoding="utf-8")
         print(f"  wrote {doi} into {path.relative_to(ROOT)}")
     print("\nNow rerun: tools/placeholder_report.py, tools/build_submission_pdf.py")
     return 0
