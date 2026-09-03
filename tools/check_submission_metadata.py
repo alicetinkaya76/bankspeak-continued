@@ -173,10 +173,15 @@ def main() -> int:
     # the manuscript said that release must not be cited for these results --
     # two submission documents contradicting each other, and no guard saw it
     # because each was internally consistent.
+    # A superseded release is one the manuscript says predates these results
+    # or must not be cited for them. The window used to stop at a line break
+    # and to require "predates" singular; once two releases were named in one
+    # sentence ("... and ... predate the calibration"), the sentence wrapped
+    # and neither was detected, and the negative control caught it.
     superseded = re.findall(r"10\.5281/zenodo\.(\d+)", paper_t)
     named_superseded = {d for d in superseded
-                        if re.search(r"zenodo\.%s[^\n]{0,120}"
-                                     r"(?:predates|must not be cited)" % d, paper_t)}
+                        if re.search(r"zenodo\.%s[\s\S]{0,240}?"
+                                     r"(?:predates?\b|must not be cited)" % d, paper_t)}
     # Scan by LINE, not by sentence. The first version of this split on "." and
     # so cut every match in half, because both a DOI and a version number are
     # full of dots -- it reported "0 (`10.5281/zenodo.22168611`)" as the context
